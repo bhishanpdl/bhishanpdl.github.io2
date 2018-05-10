@@ -1,2 +1,2 @@
 # bpRsh.github.io
-This is my personal [website](https://bhishanpdl.github.io/).
+My [website](https://bpPrg.github.io/) hosted by this repo.
