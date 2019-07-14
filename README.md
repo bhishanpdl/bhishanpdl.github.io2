@@ -1,17 +1,4 @@
-# My personal website (bhishanpdl.github.io)
-My personal [website](https://bhishanpdl.github.io/).
-
-
-# Some useful online links
-- [codecogs.com](https://www.codecogs.com/latex/eqneditor.php) # online latex
-- [dillinger.io](https://dillinger.io) # online markdown
-
-# Using emojis in github
-https://gist.github.com/rxaviers/7360908
-
-
-# Quote of the Day:
-“Experience is simply the name we give our mistakes.” (Oscar Wilde)
-
-# Programmars joke
->> “When I wrote this code, only God and I understood what it did. Now… only God knows.” 
+# bhishanpdl.github.io
+This is my personal website and it contains my data science side-projects
+on data analysis, machine learning, social media mining, text analysis, visualization, etc.
+[My blog](http://bhishan_poudel.com/index.html)
