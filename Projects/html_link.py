@@ -24,7 +24,7 @@ for folder in folders:
     one_project = []
     for html in sorted(glob.glob(folder + '/*.html')):
         base = html.split('/')[1].rstrip('.html')
-        out = template.format(folder,base)
+        out = template.format(html,base)
         one_project.append(out)
     one_project = head + '\n' + '\n'.join(one_project) + tail
     all_projects.append(one_project)
