@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>a08_prudential_modelling_xgboost_linear_reg_offset</title>
+<title>b05_prudential_modelling_xgboost_linear_reg_offset</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13141,6 +13141,9 @@ Dependent Variable: 1 (Response)</code></pre>
 <ul>
 <li><a href="https://www.kaggle.com/zeroblue/xgboost-with-optimized-offsets">https://www.kaggle.com/zeroblue/xgboost-with-optimized-offsets</a></li>
 </ul>
+<p><strong>Notes about offset</strong><br>
+Here, in this project the metric of evaluation is kappa. But when we fit the linear regression using xgboost the loss function is squared error (MSE). The predictions given by optimizing MSE may not be optimal for the evaluation metric kappa.</p>
+<p>For the ordinal ranking metric such as kappa, we assume there is parameter space which is more suitable to predictions if we offset the predictions given by MSE. For example, a prediction 1.6 from MSE belongs to class 2. But if we had a offset of 1 for that prediction, then 1.6+1 = 2.6, which becomes class 3. By changing the class we may achieve the better results.</p>
 
 </div>
 </div>
@@ -13157,125 +13160,28 @@ Dependent Variable: 1 (Response)</code></pre>
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%capture</span>
-<span class="c1"># capture will not print in notebook</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">ENV_COLAB</span> <span class="o">=</span> <span class="s1">&#39;google.colab&#39;</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span>
-
-<span class="k">if</span> <span class="n">ENV_COLAB</span><span class="p">:</span>
-    <span class="c1">### mount google drive</span>
-    <span class="kn">from</span> <span class="nn">google.colab</span> <span class="kn">import</span> <span class="n">drive</span>
-    <span class="n">drive</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span><span class="s1">&#39;/content/drive&#39;</span><span class="p">)</span>
-
-    <span class="c1">### load the data dir</span>
-    <span class="n">dat_dir</span> <span class="o">=</span> <span class="s1">&#39;drive/My Drive/Colab Notebooks/data/&#39;</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dat_dir</span><span class="p">)</span>
-
-    <span class="c1">### Image dir</span>
-    <span class="n">img_dir</span> <span class="o">=</span> <span class="s1">&#39;drive/My Drive/Colab Notebooks/images/&#39;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">img_dir</span><span class="p">):</span> <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">img_dir</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img_dir</span><span class="p">)</span>
-
-    <span class="c1">### Output dir</span>
-    <span class="n">out_dir</span> <span class="o">=</span> <span class="s1">&#39;drive/My Drive/Colab Notebooks/outputs/&#39;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">out_dir</span><span class="p">):</span> <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
-
-    <span class="c1">### Also install my custom module</span>
-    <span class="n">module_dir</span> <span class="o">=</span> <span class="s1">&#39;drive/My Drive/Colab Notebooks/Bhishan_Modules/&#39;</span> 
-    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">module_dir</span><span class="p">)</span>
-    <span class="err">!</span><span class="n">cd</span> <span class="n">drive</span><span class="o">/</span><span class="n">My</span> <span class="n">Drive</span><span class="o">/</span><span class="n">Colab</span> <span class="n">Notebooks</span><span class="o">/</span><span class="n">Bhishan_Modules</span><span class="o">/</span>
-    <span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">e</span> <span class="n">bhishan</span>
-    <span class="err">!</span><span class="n">cd</span> <span class="o">-</span>
-    <span class="kn">import</span> <span class="nn">bhishan</span>
-    <span class="kn">from</span> <span class="nn">bhishan</span> <span class="kn">import</span> <span class="n">bp</span>
-
-    <span class="c1">## upgrade</span>
-    <span class="err">!</span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">U</span> <span class="n">xgboost</span>
-
-    <span class="c1">#### print</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Environment: Google Colaboratory.&#39;</span><span class="p">)</span>
-
-<span class="c1"># NOTE: If we update modules in gcolab, we need to restart runtime.</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
-
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm_notebook</span> <span class="k">as</span> <span class="n">tqdm</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="o">%</span><span class="k">config</span> InlineBackend.figure_format = &#39;retina&#39;
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span> 
-
-<span class="c1"># random state</span>
 <span class="n">SEED</span><span class="o">=</span><span class="mi">100</span>
-
 <span class="n">home</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">)</span>
+<span class="n">time_start_notebook</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-<span class="p">[(</span><span class="n">x</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="n">x</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">np</span><span class="p">,</span><span class="n">pd</span><span class="p">,</span><span class="n">sns</span><span class="p">]]</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[2]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[(&#39;numpy&#39;, &#39;1.18.5&#39;), (&#39;pandas&#39;, &#39;1.0.4&#39;), (&#39;seaborn&#39;, &#39;0.10.1&#39;)]</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
 <span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">StratifiedKFold</span>
-
-<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
-
-
-<span class="kn">from</span> <span class="nn">mlxtend.feature_selection</span> <span class="kn">import</span> <span class="n">ColumnSelector</span>
-
 <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
-
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">make_scorer</span>
-<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">fmin_powell</span>
+<span class="kn">import</span> <span class="nn">xgboost</span> <span class="k">as</span> <span class="nn">xgb</span>
+<span class="n">xgb</span><span class="o">.</span><span class="n">__version__</span>
 </pre></div>
 
     </div>
@@ -13292,39 +13198,15 @@ Dependent Variable: 1 (Response)</code></pre>
 
 
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>/usr/local/lib/python3.6/dist-packages/sklearn/externals/joblib/__init__.py:15: FutureWarning:
-
-sklearn.externals.joblib is deprecated in 0.21 and will be removed in 0.23. Please import this functionality directly from joblib, which can be installed with: pip install joblib. If this warning is raised when loading pickled models, you may need to re-serialize those models with scikit-learn 0.21+.
-
+<pre>/usr/local/lib/python3.6/dist-packages/statsmodels/tools/_testing.py:19: FutureWarning: pandas.util.testing is deprecated. Use the functions in the public API at pandas.testing instead.
+  import pandas.util.testing as tm
 </pre>
 </div>
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">xgboost</span> <span class="k">as</span> <span class="nn">xgb</span>
-
-<span class="n">xgb</span><span class="o">.</span><span class="n">__version__</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[4]:</div>
+    <div class="prompt output_prompt">Out[1]:</div>
 
 
 
@@ -13339,19 +13221,6 @@ sklearn.externals.joblib is deprecated in 0.21 and will be removed in 0.23. Plea
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">fmin_powell</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -13361,7 +13230,7 @@ sklearn.externals.joblib is deprecated in 0.21 and will be removed in 0.23. Plea
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">data_cleaning</span><span class="p">():</span>
@@ -13410,7 +13279,7 @@ sklearn.externals.joblib is deprecated in 0.21 and will be removed in 0.23. Plea
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[7]:</div>
+    <div class="prompt output_prompt">Out[2]:</div>
 
 
 
@@ -13425,42 +13294,16 @@ sklearn.externals.joblib is deprecated in 0.21 and will be removed in 0.23. Plea
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_already_cleaned_data</span><span class="p">():</span>
-    <span class="n">file_data</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">+</span> <span class="s1">&#39;Prudential/&#39;</span> <span class="o">+</span> <span class="s1">&#39;clean_data.csv&#39;</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_data</span><span class="p">,</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zip&#39;</span><span class="p">)</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Id&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">file_features</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">+</span> <span class="s1">&#39;Prudential/&#39;</span><span class="o">+</span><span class="s1">&#39;categorical_features.json&#39;</span>
-    <span class="n">cols_cat</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">file_features</span><span class="p">))</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="n">cols_cat</span><span class="p">,</span><span class="n">drop_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">df</span>
-
-<span class="c1"># this gives worse result. </span>
-<span class="c1"># df = get_already_cleaned_data()</span>
-<span class="c1"># print(df.shape)</span>
-<span class="c1"># df.isna().sum().sum(), df.sum().sum()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Train-test-Split-with-Stratify">Train-test Split with Stratify<a class="anchor-link" href="#Train-test-Split-with-Stratify">&#182;</a></h1>
+<h1 id="Train-Test-Split-with-Stratify">Train Test Split with Stratify<a class="anchor-link" href="#Train-Test-Split-with-Stratify">&#182;</a></h1>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
@@ -13473,334 +13316,16 @@ sklearn.externals.joblib is deprecated in 0.21 and will be removed in 0.23. Plea
 
 <span class="n">ytrain</span> <span class="o">=</span> <span class="n">ser_ytrain</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
 <span class="n">ytest</span> <span class="o">=</span> <span class="n">ser_ytest</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;df             : </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">df_Xtrain      : </span><span class="si">{</span><span class="n">df_Xtrain</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ser_ytrain     : </span><span class="si">{</span><span class="n">ser_ytrain</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">df_Xtest       : </span><span class="si">{</span><span class="n">df_Xtest</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ser_ytest      : </span><span class="si">{</span><span class="n">ser_ytest</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="n">df_Xtrain</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>df             : (59381, 129)
-
-df_Xtrain      : (47504, 128)
-ser_ytrain     : (47504,)
-
-df_Xtest       : (11877, 128)
-ser_ytest      : (11877,)
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[10]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Product_Info_1</th>
-      <th>Product_Info_2</th>
-      <th>Product_Info_3</th>
-      <th>Product_Info_4</th>
-      <th>Product_Info_5</th>
-      <th>Product_Info_6</th>
-      <th>Product_Info_7</th>
-      <th>Ins_Age</th>
-      <th>Ht</th>
-      <th>Wt</th>
-      <th>BMI</th>
-      <th>Employment_Info_1</th>
-      <th>Employment_Info_2</th>
-      <th>Employment_Info_3</th>
-      <th>Employment_Info_4</th>
-      <th>Employment_Info_5</th>
-      <th>Employment_Info_6</th>
-      <th>InsuredInfo_1</th>
-      <th>InsuredInfo_2</th>
-      <th>InsuredInfo_3</th>
-      <th>InsuredInfo_4</th>
-      <th>InsuredInfo_5</th>
-      <th>InsuredInfo_6</th>
-      <th>InsuredInfo_7</th>
-      <th>Insurance_History_1</th>
-      <th>Insurance_History_2</th>
-      <th>Insurance_History_3</th>
-      <th>Insurance_History_4</th>
-      <th>Insurance_History_5</th>
-      <th>Insurance_History_7</th>
-      <th>Insurance_History_8</th>
-      <th>Insurance_History_9</th>
-      <th>Family_Hist_1</th>
-      <th>Family_Hist_2</th>
-      <th>Family_Hist_3</th>
-      <th>Family_Hist_4</th>
-      <th>Family_Hist_5</th>
-      <th>Medical_History_1</th>
-      <th>Medical_History_2</th>
-      <th>Medical_History_3</th>
-      <th>...</th>
-      <th>Medical_Keyword_13</th>
-      <th>Medical_Keyword_14</th>
-      <th>Medical_Keyword_15</th>
-      <th>Medical_Keyword_16</th>
-      <th>Medical_Keyword_17</th>
-      <th>Medical_Keyword_18</th>
-      <th>Medical_Keyword_19</th>
-      <th>Medical_Keyword_20</th>
-      <th>Medical_Keyword_21</th>
-      <th>Medical_Keyword_22</th>
-      <th>Medical_Keyword_23</th>
-      <th>Medical_Keyword_24</th>
-      <th>Medical_Keyword_25</th>
-      <th>Medical_Keyword_26</th>
-      <th>Medical_Keyword_27</th>
-      <th>Medical_Keyword_28</th>
-      <th>Medical_Keyword_29</th>
-      <th>Medical_Keyword_30</th>
-      <th>Medical_Keyword_31</th>
-      <th>Medical_Keyword_32</th>
-      <th>Medical_Keyword_33</th>
-      <th>Medical_Keyword_34</th>
-      <th>Medical_Keyword_35</th>
-      <th>Medical_Keyword_36</th>
-      <th>Medical_Keyword_37</th>
-      <th>Medical_Keyword_38</th>
-      <th>Medical_Keyword_39</th>
-      <th>Medical_Keyword_40</th>
-      <th>Medical_Keyword_41</th>
-      <th>Medical_Keyword_42</th>
-      <th>Medical_Keyword_43</th>
-      <th>Medical_Keyword_44</th>
-      <th>Medical_Keyword_45</th>
-      <th>Medical_Keyword_46</th>
-      <th>Medical_Keyword_47</th>
-      <th>Medical_Keyword_48</th>
-      <th>Product_Info_2_char</th>
-      <th>Product_Info_2_num</th>
-      <th>BMI_Age</th>
-      <th>Med_Keywords_Count</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>616</th>
-      <td>1</td>
-      <td>10</td>
-      <td>26</td>
-      <td>0.230769</td>
-      <td>2</td>
-      <td>3</td>
-      <td>1</td>
-      <td>0.059701</td>
-      <td>0.727273</td>
-      <td>0.225941</td>
-      <td>0.341911</td>
-      <td>0.03</td>
-      <td>9</td>
-      <td>1</td>
-      <td>0.0</td>
-      <td>2</td>
-      <td>0.015</td>
-      <td>1</td>
-      <td>2</td>
-      <td>3</td>
-      <td>3</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>-1.000000</td>
-      <td>3</td>
-      <td>2</td>
-      <td>3</td>
-      <td>3</td>
-      <td>0.376812</td>
-      <td>-1.0</td>
-      <td>0.366197</td>
-      <td>-1.000000</td>
-      <td>-1.0</td>
-      <td>162</td>
-      <td>2</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0.020413</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>3239</th>
-      <td>1</td>
-      <td>0</td>
-      <td>26</td>
-      <td>0.230769</td>
-      <td>2</td>
-      <td>3</td>
-      <td>1</td>
-      <td>0.417910</td>
-      <td>0.654545</td>
-      <td>0.209205</td>
-      <td>0.376858</td>
-      <td>0.09</td>
-      <td>14</td>
-      <td>1</td>
-      <td>0.0</td>
-      <td>2</td>
-      <td>0.600</td>
-      <td>1</td>
-      <td>2</td>
-      <td>8</td>
-      <td>3</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>3</td>
-      <td>1</td>
-      <td>0.000333</td>
-      <td>1</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>0.710145</td>
-      <td>-1.0</td>
-      <td>-1.000000</td>
-      <td>0.419643</td>
-      <td>3.0</td>
-      <td>413</td>
-      <td>2</td>
-      <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.157493</td>
-      <td>2</td>
-    </tr>
-  </tbody>
-</table>
-<p>2 rows × 128 columns</p>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">dtrain</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">DMatrix</span><span class="p">(</span><span class="n">df_Xtrain</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">ser_ytrain</span><span class="p">)</span>
@@ -13821,15 +13346,15 @@ ser_ytest      : (11877,)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">eval_wrapper</span><span class="p">(</span><span class="n">yhat</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>  
-    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">eval_wrapper</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">yhat</span><span class="p">):</span>
+    <span class="c1"># cohens kappa is symmetrics. y &lt;=&gt; yhat gives same result.</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="n">yhat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">yhat</span><span class="p">)</span>
     <span class="n">yhat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">yhat</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>   
-    <span class="k">return</span> <span class="n">metrics</span><span class="o">.</span><span class="n">cohen_kappa_score</span><span class="p">(</span><span class="n">yhat</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span><span class="n">weights</span><span class="o">=</span><span class="s1">&#39;quadratic&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">metrics</span><span class="o">.</span><span class="n">cohen_kappa_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">yhat</span><span class="p">,</span><span class="n">weights</span><span class="o">=</span><span class="s1">&#39;quadratic&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13846,7 +13371,7 @@ ser_ytest      : (11877,)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">xgboost</span>
@@ -13865,7 +13390,7 @@ ser_ytest      : (11877,)
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[13]:</div>
+    <div class="prompt output_prompt">Out[6]:</div>
 
 
 
@@ -13882,55 +13407,17 @@ ser_ytest      : (11877,)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_params</span><span class="p">():</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;objective&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;reg:squarederror&quot;</span>  
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;eta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.05</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;min_child_weight&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">240</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;subsample&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.9</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;colsample_bytree&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.67</span>
-    <span class="n">params</span><span class="p">[</span><span class="s2">&quot;max_depth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span>
-    <span class="n">params_lst</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-
-    <span class="k">return</span> <span class="n">params_lst</span>
-
-<span class="n">params_lst</span> <span class="o">=</span> <span class="n">get_params</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">params_lst</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>[(&#39;objective&#39;, &#39;reg:squarederror&#39;), (&#39;eta&#39;, 0.05), (&#39;min_child_weight&#39;, 240), (&#39;subsample&#39;, 0.9), (&#39;colsample_bytree&#39;, 0.67), (&#39;max_depth&#39;, 6)]
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">xgb_num_rounds</span> <span class="o">=</span> <span class="mi">800</span>
-<span class="n">num_classes</span> <span class="o">=</span> <span class="mi">8</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">params_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;objective&#39;</span><span class="p">:</span> <span class="s1">&#39;reg:squarederror&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;eta&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+              <span class="s1">&#39;min_child_weight&#39;</span><span class="p">:</span> <span class="mi">240</span><span class="p">,</span>
+              <span class="s1">&#39;subsample&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
+              <span class="s1">&#39;colsample_bytree&#39;</span><span class="p">:</span> <span class="mf">0.67</span><span class="p">,</span>
+              <span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="mi">6</span>
+<span class="p">}</span>
+<span class="n">xgb_num_rounds</span> <span class="o">=</span> <span class="mi">800</span>
 </pre></div>
 
     </div>
@@ -13940,12 +13427,11 @@ ser_ytest      : (11877,)
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
-<span class="c1"># train model</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">params_lst</span><span class="p">,</span> <span class="n">dtrain</span><span class="p">,</span> <span class="n">xgb_num_rounds</span><span class="p">)</span> 
+<span class="n">bst</span> <span class="o">=</span> <span class="n">xgb</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">params_dict</span><span class="p">,</span> <span class="n">dtrain</span><span class="p">,</span> <span class="n">xgb_num_rounds</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13962,8 +13448,8 @@ ser_ytest      : (11877,)
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 4min 12s, sys: 144 ms, total: 4min 13s
-Wall time: 2min 8s
+<pre>CPU times: user 4min 15s, sys: 167 ms, total: 4min 15s
+Wall time: 2min 9s
 </pre>
 </div>
 </div>
@@ -13972,30 +13458,24 @@ Wall time: 2min 8s
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Model-Evaluation">Model Evaluation<a class="anchor-link" href="#Model-Evaluation">&#182;</a></h1>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># get preds</span>
-<span class="n">train_preds</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">dtrain</span><span class="p">,</span> <span class="n">ntree_limit</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">best_iteration</span><span class="p">)</span>
-<span class="n">test_preds</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">dtest</span><span class="p">,</span> <span class="n">ntree_limit</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">best_iteration</span><span class="p">)</span>
+<span class="n">train_preds</span> <span class="o">=</span> <span class="n">bst</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">dtrain</span><span class="p">,</span> <span class="n">ntree_limit</span><span class="o">=</span><span class="n">bst</span><span class="o">.</span><span class="n">best_iteration</span><span class="p">)</span>
+<span class="n">test_preds</span> <span class="o">=</span> <span class="n">bst</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">dtest</span><span class="p">,</span> <span class="n">ntree_limit</span><span class="o">=</span><span class="n">bst</span><span class="o">.</span><span class="n">best_iteration</span><span class="p">)</span>
 
-<span class="n">train_preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">train_preds</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.99</span><span class="p">,</span> <span class="mf">8.99</span><span class="p">)</span>
-<span class="n">test_preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">test_preds</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.99</span><span class="p">,</span> <span class="mf">8.99</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train score is:&#39;</span><span class="p">,</span> <span class="n">eval_wrapper</span><span class="p">(</span><span class="n">train_preds</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test score is :&#39;</span><span class="p">,</span> <span class="n">eval_wrapper</span><span class="p">(</span><span class="n">test_preds</span><span class="p">,</span> <span class="n">ytest</span><span class="p">))</span>
-
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Train score is: 0.6691834159910361</span>
-<span class="sd">Test score is : 0.6040096397174282</span>
-
-<span class="sd">Using already cleaned data:</span>
-
-<span class="sd">Train score is: 0.6594926527156114</span>
-<span class="sd">Test score is : 0.5903855023812505</span>
-<span class="sd">&quot;&quot;&quot;</span><span class="p">;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train score is:&#39;</span><span class="p">,</span> <span class="n">eval_wrapper</span><span class="p">(</span><span class="n">ytrain</span><span class="p">,</span><span class="n">train_preds</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test score is :&#39;</span><span class="p">,</span> <span class="n">eval_wrapper</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">test_preds</span><span class="p">))</span>
 </pre></div>
 
     </div>
@@ -14012,7 +13492,7 @@ Wall time: 2min 8s
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Train score is: 0.6691834159910361
+<pre>Train score is: 0.669183415991036
 Test score is : 0.6040096397174282
 </pre>
 </div>
@@ -14025,28 +13505,21 @@ Test score is : 0.6040096397174282
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Training-Offsets">Training Offsets<a class="anchor-link" href="#Training-Offsets">&#182;</a></h1>
+<h1 id="Find-Offsets-for-Train">Find Offsets for Train<a class="anchor-link" href="#Find-Offsets-for-Train">&#182;</a></h1><ul>
+<li><a href="https://www.kaggle.com/c/prudential-life-insurance-assessment/discussion/19003">https://www.kaggle.com/c/prudential-life-insurance-assessment/discussion/19003</a></li>
+<li><a href="https://github.com/zhurak/kaggle-prudential/blob/master/code/predict.py">https://github.com/zhurak/kaggle-prudential/blob/master/code/predict.py</a></li>
+</ul>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">apply_offset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bin_offset</span><span class="p">,</span> <span class="n">sv</span><span class="p">,</span> <span class="n">scorer</span><span class="o">=</span><span class="n">eval_wrapper</span><span class="p">):</span>
-    <span class="c1"># data has dimension (3,N)</span>
-    <span class="c1"># offsets = np.array([0.1, -1, -2, -1, -0.8, 0.02, 0.8, 1])</span>
-    <span class="c1"># data = np.vstack((train_preds, train_preds, ytrain_orig))</span>
-    <span class="c1">#</span>
-    <span class="c1"># 0 = data, 1 = offset_pred, 2 = labels</span>
-    <span class="c1"># offset_pred = pred + bin_offset</span>
-    <span class="c1">#</span>
-    <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">==</span><span class="n">sv</span><span class="p">]</span> <span class="o">=</span> \
-    <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">==</span><span class="n">sv</span><span class="p">]</span> <span class="o">+</span> <span class="n">bin_offset</span>
-
-    <span class="n">score</span> <span class="o">=</span> <span class="n">scorer</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">score</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">quadratic_weighted_kappa</span><span class="p">(</span><span class="n">ytrue</span><span class="p">,</span><span class="n">ypreds</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">metrics</span><span class="o">.</span><span class="n">cohen_kappa_score</span><span class="p">(</span><span class="n">ytrue</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">,</span><span class="n">weights</span><span class="o">=</span><span class="s1">&#39;quadratic&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14056,47 +13529,29 @@ Test score is : 0.6040096397174282
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">offsets</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">train_preds</span><span class="p">,</span> <span class="n">train_preds</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">))</span>
-<span class="n">data</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[23]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>(3, 47504)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_classes</span><span class="p">):</span>
-    <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">==</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> \
-    <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">==</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">offsets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">digitize_train</span><span class="p">(</span><span class="n">train_preds</span><span class="p">,</span> <span class="n">guess_lst</span><span class="p">):</span>
+    <span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">x3</span><span class="p">,</span><span class="n">x4</span><span class="p">,</span><span class="n">x5</span><span class="p">,</span><span class="n">x6</span><span class="p">,</span><span class="n">x7</span><span class="p">)</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">guess_lst</span><span class="p">)</span>   
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">train_preds</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">x1</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">x2</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">x3</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">x4</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">x5</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">x6</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">x7</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
 </pre></div>
 
     </div>
@@ -14106,16 +13561,47 @@ Test score is : 0.6040096397174282
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_classes</span><span class="p">):</span>
-    <span class="n">func_train_offset</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">apply_offset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-    <span class="c1"># note: scipy function fmin_powell needs initial guess to minimize the func</span>
-    <span class="c1"># here initial guess is offsets[i]</span>
-    <span class="c1"># the default guess is 0.5, but we need to run this function</span>
-    <span class="c1"># multiple times with different guess values to get useful offsets.</span>
-    <span class="n">offsets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fmin_powell</span><span class="p">(</span><span class="n">func_train_offset</span><span class="p">,</span> <span class="n">offsets</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_offsets_minimizing_train_preds_kappa</span><span class="p">(</span><span class="n">guess_lst</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">digitize_train</span><span class="p">(</span><span class="n">train_preds</span><span class="p">,</span> <span class="n">guess_lst</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">quadratic_weighted_kappa</span><span class="p">(</span><span class="n">ytrain</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>  
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Here, we already have train predictions.</span>
+<span class="sd">For these train predictions, if we compare them with original train labels,</span>
+<span class="sd">we get some kappa value. But we want to change the train predictions such</span>
+<span class="sd">that when comparing this changed train prediction with original train labels</span>
+<span class="sd">we get better kappa.</span>
+
+<span class="sd">For that we use scipy function &quot;fmin_powell&quot;. The function needs some initial</span>
+<span class="sd">guess so that it can give better offset next time. The default guess is 0.5.</span>
+<span class="sd">For 8 classes (1-8) we can start with (1.5,2.5,...,8.5) then use the result</span>
+<span class="sd">and run the function again.</span>
+
+<span class="sd">fmin_powell is costly function. It takes about 7 minutes to run.</span>
+
+<span class="sd">&quot;&quot;&quot;</span><span class="p">;</span>
+<span class="n">x0</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.5</span><span class="p">,</span><span class="mf">2.9</span><span class="p">,</span><span class="mf">3.1</span><span class="p">,</span><span class="mf">4.5</span><span class="p">,</span><span class="mf">5.5</span><span class="p">,</span><span class="mf">6.1</span><span class="p">,</span><span class="mf">7.1</span><span class="p">)</span>    <span class="c1"># initial guess </span>
+
+<span class="c1"># offsets = fmin_powell(get_offsets_minimizing_train_preds_kappa, x0, disp = True)</span>
+
+<span class="c1"># offsets = [3.11768886, 3.5742616, 4.34722233, 4.91914813,</span>
+<span class="c1">#            5.5290772,  6.16230137, 6.82661745]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">offsets</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14133,37 +13619,13 @@ Test score is : 0.6040096397174282
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Optimization terminated successfully.
-         Current function value: -0.718521
-         Iterations: 1
-         Function evaluations: 14
-Optimization terminated successfully.
-         Current function value: -0.718521
-         Iterations: 1
-         Function evaluations: 14
-Optimization terminated successfully.
-         Current function value: -0.718521
-         Iterations: 1
-         Function evaluations: 14
-Optimization terminated successfully.
-         Current function value: -0.718849
-         Iterations: 2
-         Function evaluations: 81
-Optimization terminated successfully.
-         Current function value: -0.718879
-         Iterations: 1
-         Function evaluations: 24
-Optimization terminated successfully.
-         Current function value: -0.718900
-         Iterations: 1
-         Function evaluations: 18
-Optimization terminated successfully.
-         Current function value: -0.719639
-         Iterations: 2
-         Function evaluations: 50
-Optimization terminated successfully.
-         Current function value: -0.719639
-         Iterations: 1
-         Function evaluations: 13
+         Current function value: -0.720997
+         Iterations: 4
+         Function evaluations: 779
+[3.11768886 3.5742616  4.34722233 4.91914813 5.5290772  6.16230137
+ 6.82661745]
+CPU times: user 6min 30s, sys: 666 ms, total: 6min 30s
+Wall time: 6min 31s
 </pre>
 </div>
 </div>
@@ -14172,18 +13634,60 @@ Optimization terminated successfully.
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Apply-Offsets-to-Test-Data">Apply Offsets to Test Data<a class="anchor-link" href="#Apply-Offsets-to-Test-Data">&#182;</a></h1>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># apply offsets to test</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">test_preds</span><span class="p">,</span> <span class="n">test_preds</span><span class="p">,</span> <span class="n">ytest</span><span class="p">))</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_classes</span><span class="p">):</span>
-    <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">==</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> \
-    <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">==</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">offsets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">apply_offsets_to_test</span><span class="p">(</span><span class="n">test_preds</span><span class="p">,</span> <span class="n">offsets</span><span class="p">):</span>
+    <span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">,</span><span class="n">x3</span><span class="p">,</span><span class="n">x4</span><span class="p">,</span><span class="n">x5</span><span class="p">,</span><span class="n">x6</span><span class="p">,</span><span class="n">x7</span><span class="p">)</span> <span class="o">=</span> <span class="n">offsets</span>  
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">test_preds</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">x1</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">x2</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">x3</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">x4</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">x5</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">x6</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">x7</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
 
-<span class="n">final_test_preds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">final_test_preds</span> <span class="o">=</span> <span class="n">apply_offsets_to_test</span><span class="p">(</span><span class="n">test_preds</span><span class="p">,</span> <span class="n">offsets</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Model-evaluation-after-applying-offset">Model evaluation after applying offset<a class="anchor-link" href="#Model-evaluation-after-applying-offset">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kappa</span> <span class="o">=</span> <span class="n">quadratic_weighted_kappa</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span><span class="n">final_test_preds</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14193,10 +13697,11 @@ Optimization terminated successfully.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test score using offset is :&#39;</span><span class="p">,</span> <span class="n">eval_wrapper</span><span class="p">(</span><span class="n">final_test_preds</span><span class="p">,</span> <span class="n">ytest</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test score using offset is :&#39;</span><span class="p">,</span> <span class="n">kappa</span><span class="p">)</span>
+<span class="c1"># Test score using offset is : 0.6510844397754416</span>
 </pre></div>
 
     </div>
@@ -14213,7 +13718,7 @@ Optimization terminated successfully.
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>Test score using offset is : 0.6490565088506439
+<pre>Test score using offset is : 0.6510844397754416
 </pre>
 </div>
 </div>
@@ -14222,15 +13727,43 @@ Optimization terminated successfully.
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Time-taken">Time taken<a class="anchor-link" href="#Time-taken">&#182;</a></h1>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">time_taken</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_start_notebook</span>
+<span class="n">h</span><span class="p">,</span><span class="n">m</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">time_taken</span><span class="p">,</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Time taken to run whole notebook: </span><span class="si">{:.0f}</span><span class="s1"> hr &#39;</span>\
+      <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1"> min </span><span class="si">{:.0f}</span><span class="s1"> secs&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="o">*</span><span class="nb">divmod</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">60</span><span class="p">)))</span>
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Time taken to run whole notebook: 0 hr 8 min 46 secs
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
