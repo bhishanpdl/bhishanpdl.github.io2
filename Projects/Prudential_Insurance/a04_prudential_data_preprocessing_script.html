@@ -13096,6 +13096,14 @@ div#notebook {
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p><h1>Table of Contents<span class="tocSkip"></span></h1></p>
+<div class="toc"><ul class="toc-item"><li><span><a href="#Description" data-toc-modified-id="Description-1"><span class="toc-item-num">1&nbsp;&nbsp;</span>Description</a></span></li><li><span><a href="#Script-for-data-cleaning" data-toc-modified-id="Script-for-data-cleaning-2"><span class="toc-item-num">2&nbsp;&nbsp;</span>Script for data cleaning</a></span></li><li><span><a href="#Get-data-from-saved-path" data-toc-modified-id="Get-data-from-saved-path-3"><span class="toc-item-num">3&nbsp;&nbsp;</span>Get data from saved path</a></span></li><li><span><a href="#Time-Taken" data-toc-modified-id="Time-Taken-4"><span class="toc-item-num">4&nbsp;&nbsp;</span>Time Taken</a></span></li></ul></div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <div class="alert alert-block alert-success">
 <b>Kernel Author:</b>  <br>
 <a href="https://bhishanpdl.github.io/" , target="_blank">Bhishan Poudel, Ph.D Astrophysics</a> .
@@ -13135,7 +13143,21 @@ Dependent Variable: 1 (Response)</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="n">time_start_notebook</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%capture</span>
@@ -13182,6 +13204,48 @@ Dependent Variable: 1 (Response)</code></pre>
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">if</span> <span class="n">ENV_COLAB</span><span class="p">:</span>
+    <span class="n">out_dir</span> <span class="o">=</span> <span class="s1">&#39;drive/My Drive/Colab Notebooks/outputs&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">out_dir</span> <span class="o">=</span> <span class="s1">&#39;../outputs&#39;</span>
+    
+<span class="n">out_dir</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">+</span> <span class="s1">&#39;/Prudential/&#39;</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">out_dir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
+
+<span class="n">out_dir</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[3]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&#39;../outputs/Prudential/&#39;</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -13191,7 +13255,7 @@ Dependent Variable: 1 (Response)</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -13229,17 +13293,6 @@ Dependent Variable: 1 (Response)</code></pre>
 
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">cond</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">get_high_correlated_features</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">thr</span><span class="o">=</span><span class="mf">0.95</span><span class="p">):</span>
-    <span class="n">cols_corr</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-    <span class="n">df_corr</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_corr</span><span class="o">.</span><span class="n">columns</span><span class="p">)):</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">df_corr</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">thr</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">df_corr</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cols_corr</span><span class="p">):</span>
-                <span class="n">colname</span> <span class="o">=</span> <span class="n">df_corr</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-                <span class="n">cols_corr</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">colname</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">cols_corr</span>
-
 <span class="c1">#================== Variables =====================================</span>
 <span class="n">cols_missing_high</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Medical_History_10&#39;</span><span class="p">,</span> 
                      <span class="s1">&#39;Medical_History_32&#39;</span><span class="p">,</span>
@@ -13276,7 +13329,7 @@ Dependent Variable: 1 (Response)</code></pre>
 
 <span class="n">cols_cat</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cols_cat</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;Product_Info_2&#39;</span><span class="p">]]</span>
 <span class="n">risk_cat</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Age_cat&#39;</span><span class="p">,</span><span class="s1">&#39;Ht_cat&#39;</span><span class="p">,</span><span class="s1">&#39;Wt_cat&#39;</span><span class="p">,</span><span class="s1">&#39;BMI_cat&#39;</span><span class="p">]</span>
-<span class="n">cols_cat_all</span> <span class="o">=</span> <span class="n">cols_cat</span> <span class="o">+</span> <span class="n">cols_discreet</span> <span class="o">+</span> <span class="n">risk_cat</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;Product_Info_2_char&#39;</span><span class="p">]</span>
+<span class="n">cols_cat_all</span> <span class="o">=</span> <span class="n">cols_cat</span> <span class="o">+</span> <span class="n">cols_discrete</span> <span class="o">+</span> <span class="n">risk_cat</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;Product_Info_2_char&#39;</span><span class="p">]</span>
 
 <span class="c1">#===================== Data cleaning =======================</span>
 <span class="k">def</span> <span class="nf">get_clean_data</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
@@ -13408,26 +13461,28 @@ Dependent Variable: 1 (Response)</code></pre>
     <span class="n">cols_drop</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="s1">&#39;cluster&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">cols_drop</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="c1">#=============================== Remove highly correlated features ========</span>
-    <span class="n">cols_high_corr</span> <span class="o">=</span> <span class="n">get_high_correlated_features</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">thr</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">cols_high_corr</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
     <span class="k">return</span> <span class="n">df</span>
 
-<span class="c1">#========================= Save the clean data ================================</span>
+<span class="c1">#================ Save the clean data ========</span>
 <span class="c1"># load the data</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://github.com/bhishanpdl/Datasets/blob/master/Prudential_Insurance/raw/train.csv.zip?raw=true&#39;</span><span class="p">,</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zip&#39;</span><span class="p">)</span>
 <span class="n">df_clean</span> <span class="o">=</span> <span class="n">get_clean_data</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 
-<span class="n">file_features</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">+</span> <span class="s1">&#39;Prudential/&#39;</span><span class="o">+</span><span class="s1">&#39;categorical_features.json&#39;</span>
+
+<span class="c1"># create directory</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">out_dir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">out_dir</span><span class="p">)</span>
+
+<span class="c1"># save categorical features</span>
+<span class="n">file_features</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">+</span><span class="s1">&#39;categorical_features.json&#39;</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_features</span><span class="p">,</span><span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
     <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">cols_cat_all</span><span class="p">,</span><span class="n">fo</span><span class="p">)</span>
 
-<span class="n">file_data</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">+</span> <span class="s1">&#39;Prudential/&#39;</span> <span class="o">+</span> <span class="s1">&#39;clean_data.csv&#39;</span>
 
+<span class="c1"># save clean data</span>
+<span class="n">file_data</span> <span class="o">=</span> <span class="n">out_dir</span> <span class="o">+</span> <span class="s1">&#39;clean_data.csv&#39;</span>
 <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">file_data</span><span class="p">):</span>
     <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">file_data</span><span class="p">)</span>
-
 <span class="n">df_clean</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">file_data</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zip&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -13445,17 +13500,17 @@ Dependent Variable: 1 (Response)</code></pre>
 
 
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>/usr/local/lib/python3.6/dist-packages/sklearn/cluster/_birch.py:638: ConvergenceWarning: Number of subclusters found (1) by Birch is less than (2). Decrease the threshold.
+<pre>/Users/poudel/opt/miniconda3/envs/dataSc/lib/python3.7/site-packages/sklearn/cluster/_birch.py:649: ConvergenceWarning: Number of subclusters found (1) by Birch is less than (2). Decrease the threshold.
   % (len(centroids), self.n_clusters), ConvergenceWarning)
-/usr/local/lib/python3.6/dist-packages/sklearn/cluster/_birch.py:638: ConvergenceWarning: Number of subclusters found (1) by Birch is less than (2). Decrease the threshold.
+/Users/poudel/opt/miniconda3/envs/dataSc/lib/python3.7/site-packages/sklearn/cluster/_birch.py:649: ConvergenceWarning: Number of subclusters found (1) by Birch is less than (2). Decrease the threshold.
   % (len(centroids), self.n_clusters), ConvergenceWarning)
-/usr/local/lib/python3.6/dist-packages/sklearn/cluster/_birch.py:638: ConvergenceWarning: Number of subclusters found (1) by Birch is less than (2). Decrease the threshold.
+/Users/poudel/opt/miniconda3/envs/dataSc/lib/python3.7/site-packages/sklearn/cluster/_birch.py:649: ConvergenceWarning: Number of subclusters found (1) by Birch is less than (2). Decrease the threshold.
   % (len(centroids), self.n_clusters), ConvergenceWarning)
-/usr/local/lib/python3.6/dist-packages/sklearn/cluster/_birch.py:638: ConvergenceWarning: Number of subclusters found (1) by Birch is less than (2). Decrease the threshold.
+/Users/poudel/opt/miniconda3/envs/dataSc/lib/python3.7/site-packages/sklearn/cluster/_birch.py:649: ConvergenceWarning: Number of subclusters found (1) by Birch is less than (2). Decrease the threshold.
   % (len(centroids), self.n_clusters), ConvergenceWarning)
-/usr/local/lib/python3.6/dist-packages/sklearn/cluster/_birch.py:638: ConvergenceWarning: Number of subclusters found (1) by Birch is less than (2). Decrease the threshold.
+/Users/poudel/opt/miniconda3/envs/dataSc/lib/python3.7/site-packages/sklearn/cluster/_birch.py:649: ConvergenceWarning: Number of subclusters found (1) by Birch is less than (2). Decrease the threshold.
   % (len(centroids), self.n_clusters), ConvergenceWarning)
-/usr/local/lib/python3.6/dist-packages/sklearn/cluster/_birch.py:638: ConvergenceWarning: Number of subclusters found (1) by Birch is less than (2). Decrease the threshold.
+/Users/poudel/opt/miniconda3/envs/dataSc/lib/python3.7/site-packages/sklearn/cluster/_birch.py:649: ConvergenceWarning: Number of subclusters found (1) by Birch is less than (2). Decrease the threshold.
   % (len(centroids), self.n_clusters), ConvergenceWarning)
 </pre>
 </div>
@@ -13474,7 +13529,7 @@ Dependent Variable: 1 (Response)</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;max_rows&#39;</span><span class="p">,</span><span class="kc">None</span><span class="p">)</span>
@@ -13487,7 +13542,7 @@ Dependent Variable: 1 (Response)</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_clean</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
@@ -13503,7 +13558,7 @@ Dependent Variable: 1 (Response)</code></pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[27]:</div>
+    <div class="prompt output_prompt">Out[6]:</div>
 
 
 
@@ -13536,77 +13591,17 @@ Dependent Variable: 1 (Response)</code></pre>
       <th>Ins_Age</th>
       <th>Ht</th>
       <th>Wt</th>
-      <th>BMI</th>
-      <th>Employment_Info_1</th>
-      <th>Employment_Info_2</th>
-      <th>Employment_Info_3</th>
-      <th>Employment_Info_4</th>
-      <th>Employment_Info_5</th>
-      <th>Employment_Info_6</th>
-      <th>InsuredInfo_1</th>
-      <th>InsuredInfo_2</th>
-      <th>InsuredInfo_3</th>
-      <th>InsuredInfo_4</th>
-      <th>InsuredInfo_5</th>
-      <th>InsuredInfo_6</th>
-      <th>InsuredInfo_7</th>
-      <th>Insurance_History_1</th>
-      <th>Insurance_History_2</th>
-      <th>Insurance_History_3</th>
-      <th>Insurance_History_4</th>
-      <th>Insurance_History_7</th>
-      <th>Insurance_History_8</th>
-      <th>Family_Hist_1</th>
-      <th>Family_Hist_2</th>
-      <th>Family_Hist_3</th>
-      <th>Family_Hist_4</th>
-      <th>Family_Hist_5</th>
-      <th>Medical_History_1</th>
-      <th>Medical_History_2</th>
-      <th>Medical_History_3</th>
-      <th>Medical_History_4</th>
-      <th>Medical_History_5</th>
       <th>...</th>
-      <th>Medical_Keyword_38</th>
-      <th>Medical_Keyword_39</th>
-      <th>Medical_Keyword_40</th>
-      <th>Medical_Keyword_41</th>
-      <th>Medical_Keyword_42</th>
-      <th>Medical_Keyword_43</th>
-      <th>Medical_Keyword_44</th>
-      <th>Medical_Keyword_45</th>
-      <th>Medical_Keyword_46</th>
-      <th>Medical_Keyword_47</th>
-      <th>Medical_Keyword_48</th>
-      <th>Response</th>
-      <th>Product_Info_2_char</th>
-      <th>Product_Info_2_num</th>
-      <th>Ins_Age_cu</th>
-      <th>Wt_cu</th>
-      <th>BMI_cu</th>
-      <th>Age_Wt</th>
-      <th>Age_cat</th>
-      <th>Ht_cat</th>
-      <th>Wt_cat</th>
-      <th>BMI_cat</th>
-      <th>Medical_Keyword_count</th>
-      <th>Medical_Keyword_max</th>
-      <th>Medical_Keyword_std</th>
-      <th>Medical_Keyword_skew</th>
-      <th>risk_BMI_medium_bool</th>
-      <th>risk_at_least_one_low</th>
-      <th>risk_at_least_one_high</th>
-      <th>risk_extreme</th>
-      <th>nan_count</th>
-      <th>cluster_gmix20</th>
-      <th>cluster_birch20</th>
-      <th>cluster2_BMI_vs_Medical_Keyword_count</th>
-      <th>cluster2_risk_at_least_one_low_vs_Medical_Keyword_15</th>
-      <th>cluster2_risk_at_least_one_low_vs_Medical_Keyword_count</th>
-      <th>cluster2_risk_at_least_one_high_vs_Medical_History_4</th>
-      <th>cluster2_risk_at_least_one_high_vs_Medical_Keyword_count</th>
       <th>cluster2_risk_at_least_one_high_vs_Product_Info_4</th>
+      <th>cluster2_risk_at_least_one_high_vs_InsuredInfo_6</th>
+      <th>cluster2_risk_at_least_one_high_vs_BMI</th>
+      <th>cluster2_risk_extreme_vs_Medical_History_23</th>
+      <th>cluster2_risk_extreme_vs_Medical_History_4</th>
+      <th>cluster2_risk_extreme_vs_Medical_Keyword_15</th>
+      <th>cluster2_risk_extreme_vs_Medical_Keyword_count</th>
       <th>cluster2_risk_extreme_vs_Product_Info_4</th>
+      <th>cluster2_risk_extreme_vs_InsuredInfo_6</th>
+      <th>cluster2_risk_extreme_vs_BMI</th>
     </tr>
   </thead>
   <tbody>
@@ -13622,77 +13617,17 @@ Dependent Variable: 1 (Response)</code></pre>
       <td>0.641791</td>
       <td>0.581818</td>
       <td>0.148536</td>
-      <td>0.323008</td>
-      <td>0.028</td>
-      <td>12</td>
-      <td>1</td>
-      <td>0.0</td>
-      <td>3</td>
-      <td>-1.0000</td>
-      <td>1</td>
-      <td>2</td>
-      <td>6</td>
-      <td>3</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>-1.000000</td>
-      <td>0.598039</td>
-      <td>-1.000000</td>
-      <td>0.526786</td>
-      <td>4.0</td>
-      <td>112</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
       <td>...</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>8</td>
-      <td>D</td>
-      <td>3</td>
-      <td>0.264351</td>
-      <td>0.003277</td>
-      <td>0.033701</td>
-      <td>0.095329</td>
-      <td>high</td>
-      <td>low</td>
-      <td>low</td>
-      <td>low</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
       <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>6</td>
-      <td>3</td>
-      <td>4</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
+      <td>1</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>1</th>
@@ -13706,77 +13641,17 @@ Dependent Variable: 1 (Response)</code></pre>
       <td>0.059701</td>
       <td>0.600000</td>
       <td>0.131799</td>
-      <td>0.272288</td>
-      <td>0.000</td>
-      <td>1</td>
-      <td>3</td>
-      <td>0.0</td>
-      <td>2</td>
-      <td>0.0018</td>
-      <td>1</td>
-      <td>2</td>
-      <td>6</td>
-      <td>3</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>3</td>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>2</td>
-      <td>0.188406</td>
-      <td>-1.000000</td>
-      <td>0.084507</td>
-      <td>-1.000000</td>
-      <td>5.0</td>
-      <td>412</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
       <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>4</td>
-      <td>A</td>
-      <td>1</td>
-      <td>0.000213</td>
-      <td>0.002289</td>
-      <td>0.020188</td>
-      <td>0.007869</td>
-      <td>low</td>
-      <td>low</td>
-      <td>low</td>
-      <td>low</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
       <td>1</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
-      <td>5</td>
-      <td>18</td>
-      <td>4</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
-      <td>1</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>2</th>
@@ -13790,77 +13665,17 @@ Dependent Variable: 1 (Response)</code></pre>
       <td>0.029851</td>
       <td>0.745455</td>
       <td>0.288703</td>
-      <td>0.428780</td>
-      <td>0.030</td>
-      <td>9</td>
-      <td>1</td>
-      <td>0.0</td>
-      <td>2</td>
-      <td>0.0300</td>
-      <td>1</td>
-      <td>2</td>
-      <td>8</td>
-      <td>3</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>3</td>
-      <td>2</td>
-      <td>3</td>
-      <td>0.304348</td>
-      <td>-1.000000</td>
-      <td>0.225352</td>
-      <td>-1.000000</td>
-      <td>10.0</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
       <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>8</td>
-      <td>E</td>
-      <td>1</td>
-      <td>0.000027</td>
-      <td>0.024063</td>
-      <td>0.078832</td>
-      <td>0.008618</td>
-      <td>low</td>
-      <td>medium</td>
-      <td>medium</td>
-      <td>medium</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0</td>
       <td>1</td>
       <td>0</td>
       <td>0</td>
-      <td>7</td>
-      <td>0</td>
-      <td>4</td>
-      <td>1</td>
-      <td>1</td>
       <td>1</td>
       <td>0</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
+      <td>0</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>3</th>
@@ -13874,77 +13689,17 @@ Dependent Variable: 1 (Response)</code></pre>
       <td>0.164179</td>
       <td>0.672727</td>
       <td>0.205021</td>
-      <td>0.352438</td>
-      <td>0.042</td>
-      <td>9</td>
-      <td>1</td>
-      <td>0.0</td>
-      <td>3</td>
-      <td>0.2000</td>
-      <td>2</td>
-      <td>2</td>
-      <td>8</td>
-      <td>3</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>3</td>
-      <td>2</td>
-      <td>3</td>
-      <td>0.420290</td>
-      <td>-1.000000</td>
-      <td>0.352113</td>
-      <td>-1.000000</td>
-      <td>0.0</td>
-      <td>350</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
       <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>8</td>
-      <td>D</td>
-      <td>4</td>
-      <td>0.004425</td>
-      <td>0.008618</td>
-      <td>0.043777</td>
-      <td>0.033660</td>
-      <td>low</td>
-      <td>medium</td>
-      <td>low</td>
-      <td>low</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0.144338</td>
-      <td>6.928203</td>
       <td>1</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
-      <td>7</td>
-      <td>5</td>
-      <td>18</td>
-      <td>1</td>
-      <td>1</td>
       <td>1</td>
       <td>0</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
+      <td>1</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>4</th>
@@ -13958,81 +13713,21 @@ Dependent Variable: 1 (Response)</code></pre>
       <td>0.417910</td>
       <td>0.654545</td>
       <td>0.234310</td>
-      <td>0.424046</td>
-      <td>0.027</td>
-      <td>9</td>
-      <td>1</td>
-      <td>0.0</td>
-      <td>2</td>
-      <td>0.0500</td>
-      <td>1</td>
-      <td>2</td>
-      <td>6</td>
-      <td>3</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>0.463768</td>
-      <td>-1.000000</td>
-      <td>0.408451</td>
-      <td>-1.000000</td>
-      <td>-1.0</td>
-      <td>162</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
       <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>8</td>
-      <td>D</td>
-      <td>2</td>
-      <td>0.072988</td>
-      <td>0.012864</td>
-      <td>0.076250</td>
-      <td>0.097920</td>
-      <td>medium</td>
-      <td>low</td>
-      <td>medium</td>
-      <td>medium</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>8</td>
-      <td>0</td>
-      <td>4</td>
       <td>1</td>
       <td>1</td>
+      <td>0</td>
       <td>1</td>
       <td>0</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
+      <td>1</td>
+      <td>0</td>
     </tr>
   </tbody>
 </table>
-<p>5 rows × 149 columns</p>
+<p>5 rows × 178 columns</p>
 </div>
 </div>
 
@@ -14044,7 +13739,7 @@ Dependent Variable: 1 (Response)</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_data</span><span class="p">,</span><span class="n">compression</span><span class="o">=</span><span class="s1">&#39;zip&#39;</span><span class="p">)</span>
@@ -14061,7 +13756,7 @@ Dependent Variable: 1 (Response)</code></pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[29]:</div>
+    <div class="prompt output_prompt">Out[7]:</div>
 
 
 
@@ -14094,77 +13789,17 @@ Dependent Variable: 1 (Response)</code></pre>
       <th>Ins_Age</th>
       <th>Ht</th>
       <th>Wt</th>
-      <th>BMI</th>
-      <th>Employment_Info_1</th>
-      <th>Employment_Info_2</th>
-      <th>Employment_Info_3</th>
-      <th>Employment_Info_4</th>
-      <th>Employment_Info_5</th>
-      <th>Employment_Info_6</th>
-      <th>InsuredInfo_1</th>
-      <th>InsuredInfo_2</th>
-      <th>InsuredInfo_3</th>
-      <th>InsuredInfo_4</th>
-      <th>InsuredInfo_5</th>
-      <th>InsuredInfo_6</th>
-      <th>InsuredInfo_7</th>
-      <th>Insurance_History_1</th>
-      <th>Insurance_History_2</th>
-      <th>Insurance_History_3</th>
-      <th>Insurance_History_4</th>
-      <th>Insurance_History_7</th>
-      <th>Insurance_History_8</th>
-      <th>Family_Hist_1</th>
-      <th>Family_Hist_2</th>
-      <th>Family_Hist_3</th>
-      <th>Family_Hist_4</th>
-      <th>Family_Hist_5</th>
-      <th>Medical_History_1</th>
-      <th>Medical_History_2</th>
-      <th>Medical_History_3</th>
-      <th>Medical_History_4</th>
-      <th>Medical_History_5</th>
       <th>...</th>
-      <th>Medical_Keyword_38</th>
-      <th>Medical_Keyword_39</th>
-      <th>Medical_Keyword_40</th>
-      <th>Medical_Keyword_41</th>
-      <th>Medical_Keyword_42</th>
-      <th>Medical_Keyword_43</th>
-      <th>Medical_Keyword_44</th>
-      <th>Medical_Keyword_45</th>
-      <th>Medical_Keyword_46</th>
-      <th>Medical_Keyword_47</th>
-      <th>Medical_Keyword_48</th>
-      <th>Response</th>
-      <th>Product_Info_2_char</th>
-      <th>Product_Info_2_num</th>
-      <th>Ins_Age_cu</th>
-      <th>Wt_cu</th>
-      <th>BMI_cu</th>
-      <th>Age_Wt</th>
-      <th>Age_cat</th>
-      <th>Ht_cat</th>
-      <th>Wt_cat</th>
-      <th>BMI_cat</th>
-      <th>Medical_Keyword_count</th>
-      <th>Medical_Keyword_max</th>
-      <th>Medical_Keyword_std</th>
-      <th>Medical_Keyword_skew</th>
-      <th>risk_BMI_medium_bool</th>
-      <th>risk_at_least_one_low</th>
-      <th>risk_at_least_one_high</th>
-      <th>risk_extreme</th>
-      <th>nan_count</th>
-      <th>cluster_gmix20</th>
-      <th>cluster_birch20</th>
-      <th>cluster2_BMI_vs_Medical_Keyword_count</th>
-      <th>cluster2_risk_at_least_one_low_vs_Medical_Keyword_15</th>
-      <th>cluster2_risk_at_least_one_low_vs_Medical_Keyword_count</th>
-      <th>cluster2_risk_at_least_one_high_vs_Medical_History_4</th>
-      <th>cluster2_risk_at_least_one_high_vs_Medical_Keyword_count</th>
       <th>cluster2_risk_at_least_one_high_vs_Product_Info_4</th>
+      <th>cluster2_risk_at_least_one_high_vs_InsuredInfo_6</th>
+      <th>cluster2_risk_at_least_one_high_vs_BMI</th>
+      <th>cluster2_risk_extreme_vs_Medical_History_23</th>
+      <th>cluster2_risk_extreme_vs_Medical_History_4</th>
+      <th>cluster2_risk_extreme_vs_Medical_Keyword_15</th>
+      <th>cluster2_risk_extreme_vs_Medical_Keyword_count</th>
       <th>cluster2_risk_extreme_vs_Product_Info_4</th>
+      <th>cluster2_risk_extreme_vs_InsuredInfo_6</th>
+      <th>cluster2_risk_extreme_vs_BMI</th>
     </tr>
   </thead>
   <tbody>
@@ -14180,77 +13815,17 @@ Dependent Variable: 1 (Response)</code></pre>
       <td>0.641791</td>
       <td>0.581818</td>
       <td>0.148536</td>
-      <td>0.323008</td>
-      <td>0.028</td>
-      <td>12</td>
-      <td>1</td>
-      <td>0.0</td>
-      <td>3</td>
-      <td>-1.0000</td>
-      <td>1</td>
-      <td>2</td>
-      <td>6</td>
-      <td>3</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>-1.000000</td>
-      <td>0.598039</td>
-      <td>-1.000000</td>
-      <td>0.526786</td>
-      <td>4.0</td>
-      <td>112</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
       <td>...</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>8</td>
-      <td>D</td>
-      <td>3</td>
-      <td>0.264351</td>
-      <td>0.003277</td>
-      <td>0.033701</td>
-      <td>0.095329</td>
-      <td>high</td>
-      <td>low</td>
-      <td>low</td>
-      <td>low</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
       <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>6</td>
-      <td>3</td>
-      <td>4</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
+      <td>1</td>
+      <td>1</td>
     </tr>
     <tr>
       <th>1</th>
@@ -14264,77 +13839,17 @@ Dependent Variable: 1 (Response)</code></pre>
       <td>0.059701</td>
       <td>0.600000</td>
       <td>0.131799</td>
-      <td>0.272288</td>
-      <td>0.000</td>
-      <td>1</td>
-      <td>3</td>
-      <td>0.0</td>
-      <td>2</td>
-      <td>0.0018</td>
-      <td>1</td>
-      <td>2</td>
-      <td>6</td>
-      <td>3</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>3</td>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>2</td>
-      <td>0.188406</td>
-      <td>-1.000000</td>
-      <td>0.084507</td>
-      <td>-1.000000</td>
-      <td>5.0</td>
-      <td>412</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
       <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>4</td>
-      <td>A</td>
-      <td>1</td>
-      <td>0.000213</td>
-      <td>0.002289</td>
-      <td>0.020188</td>
-      <td>0.007869</td>
-      <td>low</td>
-      <td>low</td>
-      <td>low</td>
-      <td>low</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
       <td>1</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
-      <td>5</td>
-      <td>18</td>
-      <td>4</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
-      <td>1</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>2</th>
@@ -14348,77 +13863,17 @@ Dependent Variable: 1 (Response)</code></pre>
       <td>0.029851</td>
       <td>0.745455</td>
       <td>0.288703</td>
-      <td>0.428780</td>
-      <td>0.030</td>
-      <td>9</td>
-      <td>1</td>
-      <td>0.0</td>
-      <td>2</td>
-      <td>0.0300</td>
-      <td>1</td>
-      <td>2</td>
-      <td>8</td>
-      <td>3</td>
-      <td>1</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>3</td>
-      <td>2</td>
-      <td>3</td>
-      <td>0.304348</td>
-      <td>-1.000000</td>
-      <td>0.225352</td>
-      <td>-1.000000</td>
-      <td>10.0</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
       <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>8</td>
-      <td>E</td>
-      <td>1</td>
-      <td>0.000027</td>
-      <td>0.024063</td>
-      <td>0.078832</td>
-      <td>0.008618</td>
-      <td>low</td>
-      <td>medium</td>
-      <td>medium</td>
-      <td>medium</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0</td>
       <td>1</td>
       <td>0</td>
       <td>0</td>
-      <td>7</td>
-      <td>0</td>
-      <td>4</td>
-      <td>1</td>
-      <td>1</td>
       <td>1</td>
       <td>0</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
+      <td>0</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>3</th>
@@ -14432,77 +13887,17 @@ Dependent Variable: 1 (Response)</code></pre>
       <td>0.164179</td>
       <td>0.672727</td>
       <td>0.205021</td>
-      <td>0.352438</td>
-      <td>0.042</td>
-      <td>9</td>
-      <td>1</td>
-      <td>0.0</td>
-      <td>3</td>
-      <td>0.2000</td>
-      <td>2</td>
-      <td>2</td>
-      <td>8</td>
-      <td>3</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>3</td>
-      <td>2</td>
-      <td>3</td>
-      <td>0.420290</td>
-      <td>-1.000000</td>
-      <td>0.352113</td>
-      <td>-1.000000</td>
-      <td>0.0</td>
-      <td>350</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
       <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>8</td>
-      <td>D</td>
-      <td>4</td>
-      <td>0.004425</td>
-      <td>0.008618</td>
-      <td>0.043777</td>
-      <td>0.033660</td>
-      <td>low</td>
-      <td>medium</td>
-      <td>low</td>
-      <td>low</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0.144338</td>
-      <td>6.928203</td>
       <td>1</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
-      <td>7</td>
-      <td>5</td>
-      <td>18</td>
-      <td>1</td>
-      <td>1</td>
       <td>1</td>
       <td>0</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
+      <td>1</td>
+      <td>0</td>
     </tr>
     <tr>
       <th>4</th>
@@ -14516,81 +13911,21 @@ Dependent Variable: 1 (Response)</code></pre>
       <td>0.417910</td>
       <td>0.654545</td>
       <td>0.234310</td>
-      <td>0.424046</td>
-      <td>0.027</td>
-      <td>9</td>
-      <td>1</td>
-      <td>0.0</td>
-      <td>2</td>
-      <td>0.0500</td>
-      <td>1</td>
-      <td>2</td>
-      <td>6</td>
-      <td>3</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>2</td>
-      <td>1</td>
-      <td>1</td>
-      <td>3</td>
-      <td>3</td>
-      <td>2</td>
-      <td>2</td>
-      <td>0.463768</td>
-      <td>-1.000000</td>
-      <td>0.408451</td>
-      <td>-1.000000</td>
-      <td>-1.0</td>
-      <td>162</td>
-      <td>2</td>
-      <td>2</td>
-      <td>1</td>
       <td>...</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>8</td>
-      <td>D</td>
-      <td>2</td>
-      <td>0.072988</td>
-      <td>0.012864</td>
-      <td>0.076250</td>
-      <td>0.097920</td>
-      <td>medium</td>
-      <td>low</td>
-      <td>medium</td>
-      <td>medium</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>8</td>
-      <td>0</td>
-      <td>4</td>
       <td>1</td>
       <td>1</td>
+      <td>0</td>
       <td>1</td>
       <td>0</td>
       <td>1</td>
       <td>1</td>
       <td>1</td>
+      <td>1</td>
+      <td>0</td>
     </tr>
   </tbody>
 </table>
-<p>5 rows × 149 columns</p>
+<p>5 rows × 178 columns</p>
 </div>
 </div>
 
@@ -14602,12 +13937,12 @@ Dependent Variable: 1 (Response)</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">file_features</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cols_cat</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">file_features</span><span class="p">))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cols_cat</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14635,10 +13970,10 @@ Dependent Variable: 1 (Response)</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cols_cat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 
     </div>
@@ -14651,7 +13986,7 @@ Dependent Variable: 1 (Response)</code></pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[16]:</div>
+    <div class="prompt output_prompt">Out[9]:</div>
 
 
 
@@ -14668,7 +14003,204 @@ Dependent Variable: 1 (Response)</code></pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="n">cols_cat</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Product_Info_1</th>
+      <th>Product_Info_3</th>
+      <th>Product_Info_5</th>
+      <th>Product_Info_6</th>
+      <th>Product_Info_7</th>
+      <th>Employment_Info_2</th>
+      <th>Employment_Info_3</th>
+      <th>Employment_Info_5</th>
+      <th>InsuredInfo_1</th>
+      <th>InsuredInfo_2</th>
+      <th>...</th>
+      <th>Medical_History_39</th>
+      <th>Medical_History_40</th>
+      <th>Medical_History_41</th>
+      <th>Medical_History_1</th>
+      <th>Medical_History_15</th>
+      <th>Age_cat</th>
+      <th>Ht_cat</th>
+      <th>Wt_cat</th>
+      <th>BMI_cat</th>
+      <th>Product_Info_2_char</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>10</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>12</td>
+      <td>1</td>
+      <td>3</td>
+      <td>1</td>
+      <td>2</td>
+      <td>...</td>
+      <td>3</td>
+      <td>3</td>
+      <td>3</td>
+      <td>4.0</td>
+      <td>240.0</td>
+      <td>high</td>
+      <td>low</td>
+      <td>low</td>
+      <td>low</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>26</td>
+      <td>2</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1</td>
+      <td>3</td>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>...</td>
+      <td>3</td>
+      <td>3</td>
+      <td>1</td>
+      <td>5.0</td>
+      <td>0.0</td>
+      <td>low</td>
+      <td>low</td>
+      <td>low</td>
+      <td>low</td>
+      <td>A</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>26</td>
+      <td>2</td>
+      <td>3</td>
+      <td>1</td>
+      <td>9</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>...</td>
+      <td>3</td>
+      <td>3</td>
+      <td>1</td>
+      <td>10.0</td>
+      <td>-1.0</td>
+      <td>low</td>
+      <td>medium</td>
+      <td>medium</td>
+      <td>medium</td>
+      <td>E</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>10</td>
+      <td>2</td>
+      <td>3</td>
+      <td>1</td>
+      <td>9</td>
+      <td>1</td>
+      <td>3</td>
+      <td>2</td>
+      <td>2</td>
+      <td>...</td>
+      <td>3</td>
+      <td>3</td>
+      <td>1</td>
+      <td>0.0</td>
+      <td>-1.0</td>
+      <td>low</td>
+      <td>medium</td>
+      <td>low</td>
+      <td>low</td>
+      <td>D</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>26</td>
+      <td>2</td>
+      <td>3</td>
+      <td>1</td>
+      <td>9</td>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+      <td>2</td>
+      <td>...</td>
+      <td>3</td>
+      <td>3</td>
+      <td>1</td>
+      <td>-1.0</td>
+      <td>-1.0</td>
+      <td>medium</td>
+      <td>low</td>
+      <td>medium</td>
+      <td>medium</td>
+      <td>D</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 66 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span>
@@ -14684,28 +14216,56 @@ Dependent Variable: 1 (Response)</code></pre>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[18]:</div>
+    <div class="prompt output_prompt">Out[11]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>Employment_Info_1         19
-Employment_Info_4       6779
-Employment_Info_6      10854
-Insurance_History_5    25396
-Family_Hist_2          28656
-Family_Hist_3          34241
-Family_Hist_4          19184
-Family_Hist_5          41811
-Medical_History_1       8889
-Medical_History_10     58824
-Medical_History_15     44596
-Medical_History_24     55580
-Medical_History_32     58274
-dtype: int64</pre>
+<pre>Series([], dtype: int64)</pre>
 </div>
 
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Time-Taken">Time Taken<a class="anchor-link" href="#Time-Taken">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">time_taken</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_start_notebook</span>
+<span class="n">h</span><span class="p">,</span><span class="n">m</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">time_taken</span><span class="p">,</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Time taken to run whole notebook: </span><span class="si">{:.0f}</span><span class="s1"> hr &#39;</span>\
+      <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1"> min </span><span class="si">{:.0f}</span><span class="s1"> secs&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="o">*</span><span class="nb">divmod</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">60</span><span class="p">)))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Time taken to run whole notebook: 0 hr 1 min 3 secs
+</pre>
+</div>
 </div>
 
 </div>
@@ -14714,7 +14274,7 @@ dtype: int64</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[0]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span> 
