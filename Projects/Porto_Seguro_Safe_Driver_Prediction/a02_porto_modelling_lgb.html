@@ -13271,7 +13271,7 @@ If AUC is less than below, simply simply invert 0 &lt;==&gt; 1 then we will get 
                         <span class="s1">&#39;Recall&#39;</span><span class="p">:[],</span>
                         <span class="s1">&#39;F1&#39;</span><span class="p">:[],</span>
                         <span class="s1">&#39;AUC&#39;</span><span class="p">:[],</span>
-                        <span class="s1">&#39;NormlaizedGini&#39;</span><span class="p">:</span> <span class="p">[]</span>
+                        <span class="s1">&#39;NormalizedGini&#39;</span><span class="p">:</span> <span class="p">[]</span>
                     <span class="p">})</span>
 </pre></div>
 
@@ -15439,6 +15439,55 @@ Name: target, dtype: float64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Evaluation-Metric">Evaluation Metric<a class="anchor-link" href="#Evaluation-Metric">&#182;</a></h1><ul>
+<li><a href="https://www.kaggle.com/rshally/porto-xgb-lgb-kfold-lb-0-282">https://www.kaggle.com/rshally/porto-xgb-lgb-kfold-lb-0-282</a></li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># @numba.jit fails and falls back to object mode.</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+
+<span class="k">def</span> <span class="nf">eval_gini</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_prob</span><span class="p">):</span>
+    <span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span>
+    <span class="n">y_true</span> <span class="o">=</span> <span class="n">y_true</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">y_prob</span><span class="p">)]</span>
+    <span class="n">ntrue</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">gini</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">y_i</span> <span class="o">=</span> <span class="n">y_true</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">ntrue</span> <span class="o">+=</span> <span class="n">y_i</span>
+        <span class="n">gini</span> <span class="o">+=</span> <span class="n">y_i</span> <span class="o">*</span> <span class="n">delta</span>
+        <span class="n">delta</span> <span class="o">+=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">y_i</span>
+    <span class="n">gini</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">gini</span> <span class="o">/</span> <span class="p">(</span><span class="n">ntrue</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">ntrue</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">gini</span>
+
+<span class="k">def</span> <span class="nf">gini</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+    <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">thr</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">roc_curve</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">pos_label</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">metrics</span><span class="o">.</span><span class="n">auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="n">g</span>
+
+<span class="k">def</span> <span class="nf">gini_lgb</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">dtrain</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dtrain</span><span class="o">.</span><span class="n">get_label</span><span class="p">())</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">gini</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">preds</span><span class="p">)</span> <span class="o">/</span> <span class="n">gini</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;gini&#39;</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="kc">True</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Modelling:-LightGBM">Modelling: LightGBM<a class="anchor-link" href="#Modelling:-LightGBM">&#182;</a></h1>
 </div>
 </div>
@@ -15582,6 +15631,672 @@ Name: target, dtype: float64</pre>
       <td>0.000921</td>
       <td>0.500226</td>
       <td>0.000452</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># changing threshold</span>
+<span class="n">yprobs</span> <span class="o">=</span> <span class="n">clf_lgb</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">Xtx</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">thresholds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)</span>
+<span class="n">auc_scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">roc_auc_score</span><span class="p">(</span><span class="n">ytx</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">thr</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">yprobs</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">thr</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">]</span>
+
+<span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">auc_scores</span><span class="p">)</span>
+<span class="n">best_thr</span> <span class="o">=</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="n">ypreds</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">best_thr</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">yprobs</span><span class="p">]</span>
+
+<span class="c1"># model evaluation</span>
+<span class="n">average</span> <span class="o">=</span> <span class="s1">&#39;binary&#39;</span>
+<span class="n">model_name</span> <span class="o">=</span> <span class="s1">&#39;lgb&#39;</span>
+<span class="n">desc</span> <span class="o">=</span> <span class="s1">&#39;default, threshold change&#39;</span>
+<span class="n">row_eval</span> <span class="o">=</span> <span class="p">[</span><span class="n">model_name</span><span class="p">,</span><span class="n">desc</span><span class="p">,</span> 
+            <span class="n">accuracy_score</span><span class="p">(</span><span class="n">ytx</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">),</span>
+            <span class="n">precision_score</span><span class="p">(</span><span class="n">ytx</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="n">average</span><span class="p">),</span>
+            <span class="n">recall_score</span><span class="p">(</span><span class="n">ytx</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="n">average</span><span class="p">),</span>
+            <span class="n">f1_score</span><span class="p">(</span><span class="n">ytx</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="n">average</span><span class="p">),</span>
+            <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">ytx</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">),</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">ytx</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="p">]</span>
+
+<span class="n">df_eval</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">df_eval</span><span class="p">)]</span> <span class="o">=</span> <span class="n">row_eval</span>
+<span class="n">df_eval</span> <span class="o">=</span> <span class="n">df_eval</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_eval</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Model</th>
+      <th>Description</th>
+      <th>Accuracy</th>
+      <th>Precision</th>
+      <th>Recall</th>
+      <th>F1</th>
+      <th>AUC</th>
+      <th>NormlaizedGini</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>lgb</td>
+      <td>default</td>
+      <td>0.963559</td>
+      <td>0.666667</td>
+      <td>0.000461</td>
+      <td>0.000921</td>
+      <td>0.500226</td>
+      <td>0.000452</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>lgb</td>
+      <td>default, threshold change</td>
+      <td>0.600556</td>
+      <td>0.053908</td>
+      <td>0.601752</td>
+      <td>0.098952</td>
+      <td>0.601131</td>
+      <td>0.202262</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Lightgbm-with-tuned-parameters">Lightgbm with tuned parameters<a class="anchor-link" href="#Lightgbm-with-tuned-parameters">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">num_leaves</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">min_data_in_leaf</span> <span class="o">=</span> <span class="mi">2000</span>
+<span class="n">feature_fraction</span> <span class="o">=</span> <span class="mf">0.6</span>
+<span class="n">num_boost_round</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;objective&quot;</span><span class="p">:</span> <span class="s2">&quot;binary&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;boosting_type&quot;</span><span class="p">:</span> <span class="s2">&quot;gbdt&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="n">learning_rate</span><span class="p">,</span>
+          <span class="s2">&quot;num_leaves&quot;</span><span class="p">:</span> <span class="n">num_leaves</span><span class="p">,</span>
+           <span class="s2">&quot;max_bin&quot;</span><span class="p">:</span> <span class="mi">256</span><span class="p">,</span>
+          <span class="s2">&quot;feature_fraction&quot;</span><span class="p">:</span> <span class="n">feature_fraction</span><span class="p">,</span>
+          <span class="s2">&quot;verbosity&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+          <span class="s2">&quot;drop_rate&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+          <span class="s2">&quot;is_unbalance&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+          <span class="s2">&quot;max_drop&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+          <span class="s2">&quot;min_child_samples&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+          <span class="s2">&quot;min_child_weight&quot;</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span>
+          <span class="s2">&quot;min_split_gain&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+          <span class="s2">&quot;subsample&quot;</span><span class="p">:</span> <span class="mf">0.9</span>
+          <span class="p">}</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">time_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="n">K</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">skf</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">SEED</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ser_vdprobs</span> <span class="o">=</span> <span class="n">ser_ytrain</span> <span class="o">*</span> <span class="mi">0</span>
+<span class="n">ser_vdpreds</span> <span class="o">=</span> <span class="n">ser_ytrain</span> <span class="o">*</span> <span class="mi">0</span> <span class="c1"># all index of validation makes same as train</span>
+<span class="n">txprobs</span> <span class="o">=</span> <span class="n">ser_ytest</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.0</span> <span class="c1"># make it zero, to add values from CV</span>
+<span class="n">increase</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">best_thr_lst</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">idx_tr</span><span class="p">,</span> <span class="n">idx_vd</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">skf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">Xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)):</span>
+    <span class="c1"># print</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Fold &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+    <span class="c1"># data for this fold</span>
+    <span class="n">df_Xtr</span> <span class="o">=</span> <span class="n">df_Xtrain</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_tr</span><span class="p">,:]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">ser_ytr</span> <span class="o">=</span> <span class="n">ser_ytrain</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_tr</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">df_Xvd</span> <span class="o">=</span> <span class="n">df_Xtrain</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_vd</span><span class="p">,:]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">ser_yvd</span> <span class="o">=</span> <span class="n">ser_ytrain</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_vd</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">df_Xtx</span> <span class="o">=</span> <span class="n">df_Xtest</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># we add target encoding features to test</span>
+
+    <span class="n">clf</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">LGBMClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">SEED</span><span class="p">,</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="c1"># Upsample during cross validation to avoid having the same samples</span>
+    <span class="c1"># in both train and validation sets</span>
+    <span class="c1"># Validation set is not up-sampled to monitor overfitting</span>
+    <span class="k">if</span> <span class="n">increase</span><span class="p">:</span>
+        <span class="c1"># Get positive examples</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">ser_ytr</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Add positive examples</span>
+        <span class="n">df_Xtr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_Xtr</span><span class="p">,</span> <span class="n">df_Xtr</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pos</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ser_ytr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">ser_ytr</span><span class="p">,</span> <span class="n">ser_ytr</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pos</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Shuffle data</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_Xtr</span><span class="p">))</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="n">df_Xtr</span> <span class="o">=</span> <span class="n">df_Xtr</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">ser_ytr</span> <span class="o">=</span> <span class="n">ser_ytr</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+ 
+    <span class="n">fit_model</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_Xtr</span><span class="p">,</span> <span class="n">ser_ytr</span><span class="p">,</span> 
+            <span class="n">eval_set</span><span class="o">=</span><span class="p">[(</span><span class="n">df_Xtr</span><span class="p">,</span> <span class="n">ser_ytr</span><span class="p">),</span> <span class="p">(</span><span class="n">df_Xvd</span><span class="p">,</span> <span class="n">ser_yvd</span><span class="p">)],</span>
+            <span class="n">eval_metric</span><span class="o">=</span><span class="s1">&#39;auc&#39;</span><span class="p">,</span> <span class="c1"># gini_lgb gives error.</span>
+            <span class="n">early_stopping_rounds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># valid probs for this fold</span>
+    <span class="n">vdprobs</span> <span class="o">=</span> <span class="n">fit_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">df_Xvd</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;  Gini (from probs) : &quot;</span><span class="p">,</span> <span class="n">eval_gini</span><span class="p">(</span><span class="n">ser_yvd</span><span class="p">,</span> <span class="n">vdprobs</span><span class="p">)</span> <span class="p">)</span>
+
+    <span class="c1"># find the best threshold using validation data</span>
+    <span class="n">thresholds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)</span>
+
+
+    <span class="c1"># using auc instead of gini to find best threshold</span>
+    <span class="n">auc_scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">roc_auc_score</span><span class="p">(</span><span class="n">ser_yvd</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">thr</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">vdprobs</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">thr</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">]</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">auc_scores</span><span class="p">)</span>
+    <span class="n">best_thr</span> <span class="o">=</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">best_auc</span> <span class="o">=</span> <span class="n">auc_scores</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">best_thr_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">best_thr</span><span class="p">)</span>
+    <span class="n">vdpreds</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">best_thr</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">vdprobs</span><span class="p">]</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Best threshold    : </span><span class="si">{</span><span class="n">best_thr</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Best AUC          : </span><span class="si">{</span><span class="n">best_auc</span><span class="si">:</span><span class="s1">.5f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;  Gini (from preds) : &quot;</span><span class="p">,</span> <span class="n">eval_gini</span><span class="p">(</span><span class="n">ser_yvd</span><span class="p">,</span> <span class="n">vdpreds</span><span class="p">)</span> <span class="p">)</span>
+
+    <span class="n">ser_vdprobs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_vd</span><span class="p">]</span> <span class="o">=</span> <span class="n">vdprobs</span>
+    <span class="n">ser_vdpreds</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_vd</span><span class="p">]</span> <span class="o">=</span> <span class="n">vdpreds</span>
+
+    <span class="c1"># accumulate probs</span>
+    <span class="n">txprobs</span> <span class="o">+=</span> <span class="n">fit_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">df_Xtx</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># test probs</span>
+
+    <span class="c1"># clean memory</span>
+    <span class="k">del</span> <span class="n">df_Xtr</span><span class="p">,</span> <span class="n">ser_ytr</span><span class="p">,</span> <span class="n">df_Xvd</span><span class="p">,</span> <span class="n">ser_yvd</span><span class="p">,</span> <span class="n">df_Xtx</span>
+
+    <span class="c1"># time taken</span>
+    <span class="n">time_taken</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_start</span>
+    <span class="n">h</span><span class="p">,</span><span class="n">m</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">time_taken</span><span class="p">,</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Time taken        : </span><span class="si">{:.0f}</span><span class="s1"> hr &#39;</span>\
+        <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1"> min </span><span class="si">{:.0f}</span><span class="s1"> secs&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="o">*</span><span class="nb">divmod</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">60</span><span class="p">)))</span>
+
+<span class="n">txprobs</span> <span class="o">/=</span> <span class="n">K</span>  <span class="c1"># avg test probs</span>
+<span class="n">best_thr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">best_thr_lst</span><span class="p">)</span>
+<span class="n">txpreds</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">best_thr</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">txprobs</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Best thresholds for fold                : </span><span class="si">{</span><span class="n">best_thr_lst</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gini for full training set (from probs)  : &quot;</span><span class="p">,</span>
+      <span class="n">eval_gini</span><span class="p">(</span><span class="n">ser_ytrain</span><span class="p">,</span> <span class="n">ser_vdprobs</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gini for full training set   (from preds): &quot;</span><span class="p">,</span>
+      <span class="n">eval_gini</span><span class="p">(</span><span class="n">ser_ytrain</span><span class="p">,</span> <span class="n">ser_vdpreds</span><span class="p">))</span>
+
+<span class="c1"># predictions</span>
+<span class="n">ypreds</span> <span class="o">=</span> <span class="n">txpreds</span>
+
+<span class="c1"># model evaluation</span>
+<span class="n">average</span> <span class="o">=</span> <span class="s1">&#39;binary&#39;</span>
+<span class="n">row_eval</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;lgb&#39;</span><span class="p">,</span><span class="s1">&#39;skf cv, upsample, threshold change&#39;</span><span class="p">,</span> 
+            <span class="n">accuracy_score</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">),</span>
+            <span class="n">precision_score</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="n">average</span><span class="p">),</span>
+            <span class="n">recall_score</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="n">average</span><span class="p">),</span>
+            <span class="n">f1_score</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="n">average</span><span class="p">),</span>
+            <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">),</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+           <span class="p">]</span>
+
+<span class="n">df_eval</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">df_eval</span><span class="p">)]</span> <span class="o">=</span> <span class="n">row_eval</span>
+<span class="n">df_eval</span> <span class="o">=</span> <span class="n">df_eval</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_eval</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+Fold  0
+  Gini (from probs) :  0.26891993222441213
+  Best threshold    : 0.068
+  Best AUC          : 0.59816
+  Gini (from preds) :  0.197157284285006
+  Time taken        : 0 hr 1 min 2 secs
+
+Fold  1
+  Gini (from probs) :  0.28118799191507626
+  Best threshold    : 0.072
+  Best AUC          : 0.59746
+  Gini (from preds) :  0.19650610093662768
+  Time taken        : 0 hr 2 min 3 secs
+
+Fold  2
+  Gini (from probs) :  0.2772138105963996
+  Best threshold    : 0.073
+  Best AUC          : 0.59812
+  Gini (from preds) :  0.19726425130980363
+  Time taken        : 0 hr 3 min 5 secs
+
+Fold  3
+  Gini (from probs) :  0.2783405906236863
+  Best threshold    : 0.075
+  Best AUC          : 0.60125
+  Gini (from preds) :  0.19187021224646972
+  Time taken        : 0 hr 4 min 5 secs
+
+Fold  4
+  Gini (from probs) :  0.27643897160813047
+  Best threshold    : 0.069
+  Best AUC          : 0.60025
+  Gini (from preds) :  0.1878881415516125
+  Time taken        : 0 hr 5 min 9 secs
+
+Best thresholds for fold                : [0.068, 0.07200000000000001, 0.073, 0.075, 0.069]
+Gini for full training set (from probs)  :  0.2763446163276101
+Gini for full training set   (from preds):  0.1934090454052645
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Model</th>
+      <th>Description</th>
+      <th>Accuracy</th>
+      <th>Precision</th>
+      <th>Recall</th>
+      <th>F1</th>
+      <th>AUC</th>
+      <th>NormlaizedGini</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>lgb</td>
+      <td>default</td>
+      <td>0.963559</td>
+      <td>0.666667</td>
+      <td>0.000461</td>
+      <td>0.000921</td>
+      <td>0.500226</td>
+      <td>0.000452</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>lgb</td>
+      <td>default, threshold change</td>
+      <td>0.600556</td>
+      <td>0.053908</td>
+      <td>0.601752</td>
+      <td>0.098952</td>
+      <td>0.601131</td>
+      <td>0.202262</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>lgb</td>
+      <td>skf cv, upsample, threshold change</td>
+      <td>0.636804</td>
+      <td>0.056224</td>
+      <td>0.567873</td>
+      <td>0.102317</td>
+      <td>0.603642</td>
+      <td>0.207284</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">time_start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+<span class="n">K</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">skf</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="n">n_splits</span><span class="o">=</span><span class="n">K</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">SEED</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ser_vdprobs</span> <span class="o">=</span> <span class="n">ser_ytrain</span> <span class="o">*</span> <span class="mi">0</span>
+<span class="n">ser_vdpreds</span> <span class="o">=</span> <span class="n">ser_ytrain</span> <span class="o">*</span> <span class="mi">0</span> <span class="c1"># all index of validation makes same as train</span>
+<span class="n">txprobs</span> <span class="o">=</span> <span class="n">ser_ytest</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.0</span> <span class="c1"># make it zero, to add values from CV</span>
+<span class="n">increase</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">best_thr_lst</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">idx_tr</span><span class="p">,</span> <span class="n">idx_vd</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">skf</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">Xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)):</span>
+    <span class="c1"># print</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Fold &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+
+    <span class="c1"># data for this fold</span>
+    <span class="n">df_Xtr</span> <span class="o">=</span> <span class="n">df_Xtrain</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_tr</span><span class="p">,:]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">ser_ytr</span> <span class="o">=</span> <span class="n">ser_ytrain</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_tr</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">df_Xvd</span> <span class="o">=</span> <span class="n">df_Xtrain</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_vd</span><span class="p">,:]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">ser_yvd</span> <span class="o">=</span> <span class="n">ser_ytrain</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_vd</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">df_Xtx</span> <span class="o">=</span> <span class="n">df_Xtest</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="c1"># we add target encoding features to test</span>
+
+    <span class="n">clf</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">LGBMClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">SEED</span><span class="p">,</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="c1"># Upsample during cross validation to avoid having the same samples</span>
+    <span class="c1"># in both train and validation sets</span>
+    <span class="c1"># Validation set is not up-sampled to monitor overfitting</span>
+    <span class="k">if</span> <span class="n">increase</span><span class="p">:</span>
+        <span class="c1"># Get positive examples</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">ser_ytr</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Add positive examples</span>
+        <span class="n">df_Xtr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_Xtr</span><span class="p">,</span> <span class="n">df_Xtr</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pos</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">ser_ytr</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">ser_ytr</span><span class="p">,</span> <span class="n">ser_ytr</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">pos</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Shuffle data</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_Xtr</span><span class="p">))</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+        <span class="n">df_Xtr</span> <span class="o">=</span> <span class="n">df_Xtr</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">ser_ytr</span> <span class="o">=</span> <span class="n">ser_ytr</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+ 
+    <span class="n">fit_model</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_Xtr</span><span class="p">,</span> <span class="n">ser_ytr</span><span class="p">,</span> 
+            <span class="n">eval_set</span><span class="o">=</span><span class="p">[(</span><span class="n">df_Xtr</span><span class="p">,</span> <span class="n">ser_ytr</span><span class="p">),</span> <span class="p">(</span><span class="n">df_Xvd</span><span class="p">,</span> <span class="n">ser_yvd</span><span class="p">)],</span>
+            <span class="n">eval_metric</span><span class="o">=</span><span class="s1">&#39;auc&#39;</span><span class="p">,</span> <span class="c1"># gini_lgb gives error.</span>
+            <span class="n">early_stopping_rounds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># valid probs for this fold</span>
+    <span class="n">vdprobs</span> <span class="o">=</span> <span class="n">fit_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">df_Xvd</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;  Gini (from probs) : &quot;</span><span class="p">,</span> <span class="n">eval_gini</span><span class="p">(</span><span class="n">ser_yvd</span><span class="p">,</span> <span class="n">vdprobs</span><span class="p">)</span> <span class="p">)</span>
+
+    <span class="c1"># find the best threshold using validation data</span>
+    <span class="n">thresholds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)</span>
+
+
+    <span class="c1"># using auc instead of gini to find best threshold</span>
+    <span class="n">auc_scores</span> <span class="o">=</span> <span class="p">[</span><span class="n">roc_auc_score</span><span class="p">(</span><span class="n">ser_yvd</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">thr</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">vdprobs</span><span class="p">])</span>
+                    <span class="k">for</span> <span class="n">thr</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">]</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">auc_scores</span><span class="p">)</span>
+    <span class="n">best_thr</span> <span class="o">=</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">best_auc</span> <span class="o">=</span> <span class="n">auc_scores</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+    <span class="n">best_thr_lst</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">best_thr</span><span class="p">)</span>
+    <span class="n">vdpreds</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">best_thr</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">vdprobs</span><span class="p">]</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Best threshold    : </span><span class="si">{</span><span class="n">best_thr</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Best AUC          : </span><span class="si">{</span><span class="n">best_auc</span><span class="si">:</span><span class="s1">.5f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;  Gini (from preds) : &quot;</span><span class="p">,</span> <span class="n">eval_gini</span><span class="p">(</span><span class="n">ser_yvd</span><span class="p">,</span> <span class="n">vdpreds</span><span class="p">)</span> <span class="p">)</span>
+
+    <span class="n">ser_vdprobs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_vd</span><span class="p">]</span> <span class="o">=</span> <span class="n">vdprobs</span>
+    <span class="n">ser_vdpreds</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">idx_vd</span><span class="p">]</span> <span class="o">=</span> <span class="n">vdpreds</span>
+
+    <span class="c1"># accumulate probs</span>
+    <span class="n">txprobs</span> <span class="o">+=</span> <span class="n">fit_model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">df_Xtx</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># test probs</span>
+
+    <span class="c1"># clean memory</span>
+    <span class="k">del</span> <span class="n">df_Xtr</span><span class="p">,</span> <span class="n">ser_ytr</span><span class="p">,</span> <span class="n">df_Xvd</span><span class="p">,</span> <span class="n">ser_yvd</span><span class="p">,</span> <span class="n">df_Xtx</span>
+
+    <span class="c1"># time taken</span>
+    <span class="n">time_taken</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_start</span>
+    <span class="n">h</span><span class="p">,</span><span class="n">m</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">time_taken</span><span class="p">,</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Time taken        : </span><span class="si">{:.0f}</span><span class="s1"> hr &#39;</span>\
+        <span class="s1">&#39;</span><span class="si">{:.0f}</span><span class="s1"> min </span><span class="si">{:.0f}</span><span class="s1"> secs&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="o">*</span><span class="nb">divmod</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">60</span><span class="p">)))</span>
+
+<span class="n">txprobs</span> <span class="o">/=</span> <span class="n">K</span>  <span class="c1"># avg test probs</span>
+<span class="n">best_thr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">best_thr_lst</span><span class="p">)</span>
+<span class="n">txpreds</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">best_thr</span> <span class="k">else</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">txprobs</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Best thresholds for fold                : </span><span class="si">{</span><span class="n">best_thr_lst</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gini for full training set (from probs)  : &quot;</span><span class="p">,</span>
+      <span class="n">eval_gini</span><span class="p">(</span><span class="n">ser_ytrain</span><span class="p">,</span> <span class="n">ser_vdprobs</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gini for full training set   (from preds): &quot;</span><span class="p">,</span>
+      <span class="n">eval_gini</span><span class="p">(</span><span class="n">ser_ytrain</span><span class="p">,</span> <span class="n">ser_vdpreds</span><span class="p">))</span>
+
+<span class="c1"># predictions</span>
+<span class="n">ypreds</span> <span class="o">=</span> <span class="n">txpreds</span>
+
+<span class="c1"># model evaluation</span>
+<span class="n">average</span> <span class="o">=</span> <span class="s1">&#39;binary&#39;</span>
+<span class="n">row_eval</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;lgb&#39;</span><span class="p">,</span><span class="s1">&#39;skf cv, NO upsample, threshold change&#39;</span><span class="p">,</span> 
+            <span class="n">accuracy_score</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">),</span>
+            <span class="n">precision_score</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="n">average</span><span class="p">),</span>
+            <span class="n">recall_score</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="n">average</span><span class="p">),</span>
+            <span class="n">f1_score</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="n">average</span><span class="p">),</span>
+            <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">),</span>
+            <span class="mi">2</span> <span class="o">*</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">ytest</span><span class="p">,</span> <span class="n">ypreds</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+           <span class="p">]</span>
+
+<span class="n">df_eval</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">df_eval</span><span class="p">)]</span> <span class="o">=</span> <span class="n">row_eval</span>
+<span class="n">df_eval</span> <span class="o">=</span> <span class="n">df_eval</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_eval</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+Fold  0
+  Gini (from probs) :  0.26685514526443777
+  Best threshold    : 0.037
+  Best AUC          : 0.59549
+  Gini (from preds) :  0.18615586863749845
+  Time taken        : 0 hr 1 min 0 secs
+
+Fold  1
+  Gini (from probs) :  0.2824486832291745
+  Best threshold    : 0.035
+  Best AUC          : 0.59934
+  Gini (from preds) :  0.20650834975584842
+  Time taken        : 0 hr 2 min 1 secs
+
+Fold  2
+  Gini (from probs) :  0.27314526470779876
+  Best threshold    : 0.033
+  Best AUC          : 0.59634
+  Gini (from preds) :  0.18780766932092763
+  Time taken        : 0 hr 3 min 0 secs
+
+Fold  3
+  Gini (from probs) :  0.27811358317546275
+  Best threshold    : 0.036
+  Best AUC          : 0.60136
+  Gini (from preds) :  0.19769684768429097
+  Time taken        : 0 hr 3 min 59 secs
+
+Fold  4
+  Gini (from probs) :  0.2785345183336665
+  Best threshold    : 0.034
+  Best AUC          : 0.60164
+  Gini (from preds) :  0.19344096801069643
+  Time taken        : 0 hr 4 min 58 secs
+
+Best thresholds for fold                : [0.037, 0.035, 0.033, 0.036000000000000004, 0.034]
+Gini for full training set (from probs)  :  0.2757617667779544
+Gini for full training set   (from preds):  0.19242741588993084
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+<div class="output_html rendered_html output_subarea ">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Model</th>
+      <th>Description</th>
+      <th>Accuracy</th>
+      <th>Precision</th>
+      <th>Recall</th>
+      <th>F1</th>
+      <th>AUC</th>
+      <th>NormlaizedGini</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>lgb</td>
+      <td>default</td>
+      <td>0.963559</td>
+      <td>0.666667</td>
+      <td>0.000461</td>
+      <td>0.000921</td>
+      <td>0.500226</td>
+      <td>0.000452</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>lgb</td>
+      <td>default, threshold change</td>
+      <td>0.600556</td>
+      <td>0.053908</td>
+      <td>0.601752</td>
+      <td>0.098952</td>
+      <td>0.601131</td>
+      <td>0.202262</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>lgb</td>
+      <td>skf cv, upsample, threshold change</td>
+      <td>0.636804</td>
+      <td>0.056224</td>
+      <td>0.567873</td>
+      <td>0.102317</td>
+      <td>0.603642</td>
+      <td>0.207284</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>lgb</td>
+      <td>skf cv, NO upsample, threshold change</td>
+      <td>0.589837</td>
+      <td>0.053728</td>
+      <td>0.617193</td>
+      <td>0.098850</td>
+      <td>0.602998</td>
+      <td>0.205995</td>
     </tr>
   </tbody>
 </table>
