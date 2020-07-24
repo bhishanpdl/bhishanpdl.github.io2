@@ -13120,7 +13120,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -13134,7 +13134,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># pyspark</span>
@@ -13174,7 +13174,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -13189,6 +13189,25 @@ div#notebook {
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The sql extension is already loaded. To reload it, use:
+  %reload_ext sql
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13209,7 +13228,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
@@ -13242,7 +13261,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[4]:</div>
+    <div class="prompt output_prompt">Out[16]:</div>
 
 
 
@@ -13389,7 +13408,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
@@ -13445,7 +13464,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Register the DataFrame as a SQL temporary view</span>
@@ -13485,7 +13504,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -13502,7 +13521,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;select * from cats limit 3;&quot;</span>
@@ -13548,13 +13567,12 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-    <span class="s2">&quot;/Users/poudel/opt/miniconda3/envs/spk/lib/python3.7/site-packages/databricks&quot;</span>
-<span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/Users/poudel/opt/miniconda3/envs/spk/&quot;</span>
+                <span class="s2">&quot;lib/python3.7/site-packages/databricks&quot;</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">koalas</span> <span class="k">as</span> <span class="nn">ks</span>
 <span class="n">ks</span><span class="o">.</span><span class="n">__version__</span>
@@ -13570,7 +13588,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[9]:</div>
+    <div class="prompt output_prompt">Out[21]:</div>
 
 
 
@@ -13587,7 +13605,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdf</span> <span class="o">=</span> <span class="n">ks</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -13604,7 +13622,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[10]:</div>
+    <div class="prompt output_prompt">Out[22]:</div>
 
 
 
@@ -13758,7 +13776,7 @@ Order by: age</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -13774,7 +13792,7 @@ Order by: age</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[11]:</div>
+    <div class="prompt output_prompt">Out[23]:</div>
 
 
 
@@ -13834,7 +13852,7 @@ Order by: age</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
@@ -13880,7 +13898,7 @@ Order by: age</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdf</span>
@@ -13896,7 +13914,7 @@ Order by: age</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[13]:</div>
+    <div class="prompt output_prompt">Out[25]:</div>
 
 
 
@@ -14036,11 +14054,10 @@ Order by: age</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
-    <span class="s2">&quot;weight&gt;12&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdf</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;age&#39;</span><span class="p">)[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;weight&gt;12&quot;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14053,7 +14070,7 @@ Order by: age</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[14]:</div>
+    <div class="prompt output_prompt">Out[26]:</div>
 
 
 
@@ -14123,7 +14140,7 @@ Order by: name</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
@@ -14176,7 +14193,7 @@ Order by: name</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdf</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -14192,7 +14209,7 @@ Order by: name</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[16]:</div>
+    <div class="prompt output_prompt">Out[28]:</div>
 
 
 
@@ -14252,11 +14269,10 @@ Order by: name</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdf</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span>
-     <span class="p">]]</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdf</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -14269,7 +14285,7 @@ Order by: name</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[17]:</div>
+    <div class="prompt output_prompt">Out[29]:</div>
 
 
 
@@ -14370,7 +14386,7 @@ Order by: name</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdf1</span> <span class="o">=</span> <span class="n">kdf</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
@@ -14387,7 +14403,7 @@ Order by: name</p>
 
 <div class="output_area">
 
-    <div class="prompt output_prompt">Out[18]:</div>
+    <div class="prompt output_prompt">Out[30]:</div>
 
 
 
@@ -14579,18 +14595,17 @@ Order by: breed, name</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%sql</span>
 <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT name,</span>
-<span class="s2">       breed,</span>
-<span class="s2">       sum(weight) OVER (PARTITION BY breed</span>
-<span class="s2">                         ORDER BY name) AS running_total_weight</span>
-<span class="s2">FROM cats</span>
-<span class="s2">ORDER BY breed,</span>
-<span class="s2">         name</span>
+<span class="s2">select name,breed,</span>
+<span class="s2">       sum(weight) over (partition by breed</span>
+<span class="s2">                         order by name</span>
+<span class="s2">                         ) as running_total_weight</span>
+<span class="s2">from cats</span>
+<span class="s2">order by breed,name</span>
 <span class="s2">&quot;&quot;&quot;</span>
 <span class="n">f</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
 </pre></div>
@@ -14718,57 +14733,18 @@ Order by: weight</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">(3.8+4.2)/2 = 4.0</span>
-
-<span class="sd">(3.8+4.2+4.5)/3 = 4.16667</span>
-
-<span class="sd">Note: in website the answer is rounded to one decimal place.</span>
-
-<span class="sd">&quot;&quot;&quot;</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[20]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>&#39;\n(3.8+4.2)/2 = 4.0\n\n(3.8+4.2+4.5)/3 = 4.16667\n\nNote: in website the answer is rounded to one decimal place.\n\n&#39;</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%sql</span>
 <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT name,</span>
-<span class="s2">       weight,</span>
-<span class="s2">       avg(weight) OVER (</span>
-<span class="s2">                         ORDER BY weight ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING) AS average_weight</span>
-<span class="s2">FROM cats</span>
-<span class="s2">ORDER BY weight</span>
+<span class="s2">select name, weight,</span>
+<span class="s2">       avg(weight) over (order by weight</span>
+<span class="s2">                         rows between 1 preceding </span>
+<span class="s2">                         and 1 following)</span>
+<span class="s2">                         as avg_wt</span>
+<span class="s2">from cats</span>
+<span class="s2">order by weight</span>
 <span class="s2">&quot;&quot;&quot;</span>
 <span class="n">f</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
 </pre></div>
@@ -14777,44 +14753,10 @@ Order by: weight</p>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>+-------+------+------------------+
-|   name|weight|    average_weight|
-+-------+------+------------------+
-| Tigger|   3.8|               4.0|
-|  Molly|   4.2| 4.166666666666667|
-|  Ashes|   4.5|               4.5|
-|Charlie|   4.8| 4.733333333333333|
-| Smudge|   4.9|4.8999999999999995|
-|  Felix|   5.0|               5.0|
-|   Puss|   5.1| 5.166666666666667|
-| Millie|   5.4| 5.333333333333333|
-|  Alfie|   5.5| 5.533333333333334|
-|  Misty|   5.7| 5.766666666666666|
-|  Oscar|   6.1| 5.966666666666666|
-| Smokey|   6.1|               6.1|
-+-------+------+------------------+
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">col</span> <span class="o">=</span> <span class="s1">&#39;weight&#39;</span>
@@ -14830,54 +14772,10 @@ Order by: weight</p>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/Users/poudel/opt/miniconda3/envs/spk/lib/python3.7/site-packages/pyspark/sql/pandas/functions.py:386: UserWarning: In Python 3.6+ and Spark 3.0+, it is preferred to specify type hints for pandas UDF instead of specifying pandas UDF type which will be deprecated in the future releases. See SPARK-28264 for more details.
-  &#34;in the future releases. See SPARK-28264 for more details.&#34;, UserWarning)
-</pre>
-</div>
-</div>
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[22]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>4     4.000000
-0     4.166667
-1     4.500000
-11    4.733333
-3     4.900000
-2     5.000000
-9     5.166667
-7     5.333333
-5     5.533333
-8     5.766667
-6     5.966667
-10    6.100000
-Name: weight, dtype: float64</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># pandas has arguments center and min_periods, but not koalas</span>
@@ -14888,42 +14786,10 @@ Name: weight, dtype: float64</pre>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[23]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>4     4.000000
-0     4.166667
-1     4.500000
-11    4.733333
-3     4.900000
-2     5.000000
-9     5.166667
-7     5.333333
-5     5.533333
-8     5.766667
-6     5.966667
-10    6.100000
-Name: weight, dtype: float64</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># kdf.weight.sort_values().rolling(3,center=True).mean()</span>
@@ -15011,16 +14877,18 @@ Order by: weight desc</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%sql</span>
 <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT name,</span>
-<span class="s2">       sum(weight) OVER (</span>
-<span class="s2">                         ORDER BY weight DESC ROWS BETWEEN UNBOUNDED preceding AND CURRENT ROW) AS running_total_weight</span>
-<span class="s2">FROM cats</span>
-<span class="s2">ORDER BY running_total_weight</span>
+<span class="s2">select name,</span>
+<span class="s2">       sum(weight) over (order by weight desc</span>
+<span class="s2">                         rows between unbounded preceding</span>
+<span class="s2">                         and current row</span>
+<span class="s2">                         ) as running_total_weight</span>
+<span class="s2">from cats</span>
+<span class="s2">order by running_total_weight</span>
 <span class="s2">&quot;&quot;&quot;</span>
 <span class="n">f</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
 </pre></div>
@@ -15029,82 +14897,16 @@ Order by: weight desc</p>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>+-------+--------------------+
-|   name|running_total_weight|
-+-------+--------------------+
-|  Oscar|                 6.1|
-| Smokey|                12.2|
-|  Misty|                17.9|
-|  Alfie|                23.4|
-| Millie|  28.799999999999997|
-|   Puss|                33.9|
-|  Felix|                38.9|
-| Smudge|                43.8|
-|Charlie|  48.599999999999994|
-|  Ashes|  53.099999999999994|
-|  Molly|                57.3|
-| Tigger|  61.099999999999994|
-+-------+--------------------+
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdf</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">expanding</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[26]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>6      6.1
-10    12.2
-8     17.9
-5     23.4
-7     28.8
-9     33.9
-2     38.9
-3     43.8
-11    48.6
-1     53.1
-0     57.3
-4     61.1
-Name: weight, dtype: float64</pre>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -15204,17 +15006,15 @@ The cats form a line grouped by color. Inside each color group the cats order th
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%sql</span>
 <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT row_number() OVER (</span>
-<span class="s2">                          ORDER BY color,</span>
-<span class="s2">                                   name) AS unique_number,</span>
-<span class="s2">                         name,</span>
-<span class="s2">                         color</span>
-<span class="s2">FROM cats</span>
+<span class="s2">select name,color</span>
+<span class="s2">    row_number() over (order by color,name) as row_number</span>
+
+<span class="s2">from cats</span>
 <span class="s2">&quot;&quot;&quot;</span>
 <span class="n">f</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
 </pre></div>
@@ -15223,44 +15023,10 @@ The cats form a line grouped by color. Inside each color group the cats order th
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>+-------------+-------+-------------+
-|unique_number|   name|        color|
-+-------------+-------+-------------+
-|            1|  Ashes|        Black|
-|            2|Charlie|        Black|
-|            3|  Molly|        Black|
-|            4|  Oscar|        Black|
-|            5| Smudge|        Black|
-|            6|  Alfie|        Brown|
-|            7|  Misty|        Brown|
-|            8| Smokey|        Brown|
-|            9|  Felix|Tortoiseshell|
-|           10| Millie|Tortoiseshell|
-|           11|   Puss|Tortoiseshell|
-|           12| Tigger|Tortoiseshell|
-+-------------+-------+-------------+
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdf2</span> <span class="o">=</span> <span class="n">kdf</span><span class="p">[[</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">])</span>
@@ -15274,123 +15040,6 @@ The cats form a line grouped by color. Inside each color group the cats order th
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[28]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>color</th>
-      <th>name</th>
-      <th>unique_number</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1</th>
-      <td>Black</td>
-      <td>Ashes</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>Black</td>
-      <td>Charlie</td>
-      <td>2</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>Black</td>
-      <td>Molly</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>Black</td>
-      <td>Oscar</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Black</td>
-      <td>Smudge</td>
-      <td>5</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>Brown</td>
-      <td>Alfie</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>Brown</td>
-      <td>Misty</td>
-      <td>7</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>Brown</td>
-      <td>Smokey</td>
-      <td>8</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>Tortoiseshell</td>
-      <td>Felix</td>
-      <td>9</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>Tortoiseshell</td>
-      <td>Millie</td>
-      <td>10</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>Tortoiseshell</td>
-      <td>Puss</td>
-      <td>11</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>Tortoiseshell</td>
-      <td>Tigger</td>
-      <td>12</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -15481,18 +15130,15 @@ Order by: ranking, name</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%sql</span>
 <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT rank() OVER (</span>
-<span class="s2">                    ORDER BY weight DESC) AS ranking,</span>
-<span class="s2">                   weight,</span>
-<span class="s2">                   name</span>
-<span class="s2">FROM cats</span>
-<span class="s2">ORDER BY ranking,</span>
-<span class="s2">         name</span>
+<span class="s2">select weight, name,</span>
+<span class="s2">       rank() over (order by weight desc) as rank</span>
+<span class="s2">from cats</span>
+<span class="s2">order by rank, name</span>
 <span class="s2">&quot;&quot;&quot;</span>
 <span class="n">f</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
 </pre></div>
@@ -15501,169 +15147,19 @@ Order by: ranking, name</p>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>+-------+------+-------+
-|ranking|weight|   name|
-+-------+------+-------+
-|      1|   6.1|  Oscar|
-|      1|   6.1| Smokey|
-|      3|   5.7|  Misty|
-|      4|   5.5|  Alfie|
-|      5|   5.4| Millie|
-|      6|   5.1|   Puss|
-|      7|   5.0|  Felix|
-|      8|   4.9| Smudge|
-|      9|   4.8|Charlie|
-|     10|   4.5|  Ashes|
-|     11|   4.2|  Molly|
-|     12|   3.8| Tigger|
-+-------+------+-------+
-
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdf</span><span class="p">[[</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
-    <span class="n">ranking</span><span class="o">=</span><span class="n">kdf</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span>
-        <span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">kdf</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">]]</span>
+  <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">ranking</span><span class="o">=</span><span class="n">kdf</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;min&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+  <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[30]:</div>
-
-
-
-<div class="output_html rendered_html output_subarea output_execute_result">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>weight</th>
-      <th>name</th>
-      <th>ranking</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>6</th>
-      <td>6.1</td>
-      <td>Oscar</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>6.1</td>
-      <td>Smokey</td>
-      <td>1.0</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>5.7</td>
-      <td>Misty</td>
-      <td>3.0</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>5.5</td>
-      <td>Alfie</td>
-      <td>4.0</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>5.4</td>
-      <td>Millie</td>
-      <td>5.0</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>5.1</td>
-      <td>Puss</td>
-      <td>6.0</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>5.0</td>
-      <td>Felix</td>
-      <td>7.0</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>4.9</td>
-      <td>Smudge</td>
-      <td>8.0</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>4.8</td>
-      <td>Charlie</td>
-      <td>9.0</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>4.5</td>
-      <td>Ashes</td>
-      <td>10.0</td>
-    </tr>
-    <tr>
-      <th>0</th>
-      <td>4.2</td>
-      <td>Molly</td>
-      <td>11.0</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>3.8</td>
-      <td>Tigger</td>
-      <td>12.0</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -15754,18 +15250,16 @@ Order by: ranking, name</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%sql</span>
 <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT dense_rank() OVER (</span>
-<span class="s2">                          ORDER BY age DESC) AS r,</span>
-<span class="s2">                         name,</span>
-<span class="s2">                         age</span>
-<span class="s2">FROM cats</span>
-<span class="s2">ORDER BY r,</span>
-<span class="s2">         name</span>
+<span class="s2">select name,age,</span>
+<span class="s2">       dense_rank() over (order by age desc) as dense_rank</span>
+
+<span class="s2">from cats</span>
+<span class="s2">order by dense_rank, name</span>
 <span class="s2">&quot;&quot;&quot;</span>
 <span class="n">f</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
 </pre></div>
@@ -15784,22 +15278,22 @@ Order by: ranking, name</p>
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>+---+-------+---+
-|  r|   name|age|
-+---+-------+---+
-|  1|  Alfie|  5|
-|  1|  Ashes|  5|
-|  1| Millie|  5|
-|  2|Charlie|  4|
-|  2| Smokey|  4|
-|  2| Smudge|  4|
-|  3|  Felix|  2|
-|  3|  Misty|  2|
-|  3|   Puss|  2|
-|  3| Tigger|  2|
-|  4|  Molly|  1|
-|  4|  Oscar|  1|
-+---+-------+---+
+<pre>+-------+---+----------+
+|   name|age|dense_rank|
++-------+---+----------+
+|  Alfie|  5|         1|
+|  Ashes|  5|         1|
+| Millie|  5|         1|
+|Charlie|  4|         2|
+| Smokey|  4|         2|
+| Smudge|  4|         2|
+|  Felix|  2|         3|
+|  Misty|  2|         3|
+|   Puss|  2|         3|
+| Tigger|  2|         3|
+|  Molly|  1|         4|
+|  Oscar|  1|         4|
++-------+---+----------+
 
 </pre>
 </div>
@@ -16029,12 +15523,10 @@ Order by: weight</p>
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%sql</span>
 <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT name,</span>
-<span class="s2">       weight,</span>
-<span class="s2">       percent_rank() OVER (</span>
-<span class="s2">                            ORDER BY weight) * 100 AS percent</span>
-<span class="s2">FROM cats</span>
-<span class="s2">ORDER BY weight</span>
+<span class="s2">select name, weight,</span>
+<span class="s2">       percent_rank() over (order by weight) * 100 as percent_rank</span>
+<span class="s2">from cats</span>
+<span class="s2">order by weight</span>
 <span class="s2">&quot;&quot;&quot;</span>
 <span class="n">f</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
 </pre></div>
@@ -16177,18 +15669,17 @@ Order by: weight</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%sql</span>
 <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT name,</span>
-<span class="s2">       weight,</span>
-<span class="s2">       percent_rank() OVER (ORDER BY weight) * 100 AS percent_rank,</span>
-<span class="s2">       cume_dist() OVER ( ORDER BY weight) * 100 AS cume_dist,</span>
-<span class="s2">       cast(cume_dist() OVER (ORDER BY weight) * 100 AS integer) AS cume_dist_percent</span>
-<span class="s2">FROM cats</span>
-<span class="s2">ORDER BY weight</span>
+<span class="s2">select name, weight,</span>
+<span class="s2">       percent_rank()   over (order by weight) * 100 as percent_rank,</span>
+<span class="s2">       cume_dist()      over (order by weight) * 100 as cume_dist,</span>
+<span class="s2">       cast(cume_dist() over (order by weight) * 100 as integer) as cume_dist_percent</span>
+<span class="s2">from cats</span>
+<span class="s2">order by weight</span>
 <span class="s2">&quot;&quot;&quot;</span>
 <span class="n">f</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
 </pre></div>
@@ -16242,8 +15733,10 @@ Order by: weight</p>
 
 <span class="n">w</span> <span class="o">=</span> <span class="n">Window</span><span class="o">.</span><span class="n">orderBy</span><span class="p">(</span><span class="n">sdf</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">])</span>
 
-<span class="n">sdf</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">cume_dist</span><span class="p">()</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span>
-    <span class="n">IntegerType</span><span class="p">())</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;percentile&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="p">(</span><span class="n">sdf</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">cume_dist</span><span class="p">()</span><span class="o">.</span><span class="n">over</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">IntegerType</span><span class="p">())</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">&quot;percentile&quot;</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="p">)</span>
 </pre></div>
 
     </div>
@@ -16387,7 +15880,7 @@ Order by: weight</p>
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%sql</span>
 <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">select name, weight, </span>
-<span class="s2">ntile(4) over ( order by weight) as weight_quartile </span>
+<span class="s2">       ntile(4) over (order by weight) as weight_quartile </span>
 <span class="s2">from cats </span>
 <span class="s2">order by weight</span>
 <span class="s2">&quot;&quot;&quot;</span>
@@ -16427,114 +15920,6 @@ Order by: weight</p>
 
 </pre>
 </div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdf</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">([</span><span class="o">.</span><span class="mi">25</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">75</span><span class="p">,</span><span class="mf">1.0</span><span class="p">])</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[38]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>0.25    4.5
-0.5     5.0
-0.75    5.5
-1.0     6.1
-Name: weight, dtype: float64</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kdf</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">([</span><span class="o">.</span><span class="mi">25</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">75</span><span class="p">,</span><span class="mf">1.0</span><span class="p">])</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[39]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>0.25    4.5
-0.5     5.0
-0.75    5.5
-1.0     6.1
-Name: weight, dtype: float64</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">kdf</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">([</span><span class="o">.</span><span class="mi">25</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">75</span><span class="p">,</span><span class="mf">1.0</span><span class="p">])</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
-<span class="n">a</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[40]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>4.5</pre>
-</div>
-
 </div>
 
 </div>
@@ -16862,8 +16247,10 @@ Name: weight, dtype: float64</pre>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># pandas quantile is qcut with 4</span>
-<span class="n">df</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="s1">&#39;weight&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">weight_quartile</span><span class="o">=</span>
-                <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">],</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="s1">&#39;weight&#39;</span><span class="p">]]</span>
+ <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">weight_quartile</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">],</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;weight&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 
     </div>
@@ -17080,8 +16467,12 @@ Order by: weight</p>
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%sql</span>
 <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">select name, weight, </span>
-<span class="s2">round(coalesce(weight - lag(weight, 1) over (order by weight), 0),2) as weight_to_lose </span>
-<span class="s2">FROM cats</span>
+<span class="s2">        round(</span>
+<span class="s2">            coalesce(  weight </span>
+<span class="s2">                     - lag(weight, 1) over (order by weight),</span>
+<span class="s2">                   0),2</span>
+<span class="s2">            ) as weight_to_lose </span>
+<span class="s2">from cats</span>
 <span class="s2">order by weight</span>
 <span class="s2">&quot;&quot;&quot;</span>
 <span class="n">f</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
@@ -17861,9 +17252,10 @@ Order by: color, name</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># pandas</span>
-<span class="n">df</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="s1">&#39;color&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
-    <span class="n">lowest_weight_by_color</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;min&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span>
-<span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">,</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+<span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="s1">&#39;color&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+    <span class="n">lowest_weight_by_color</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;min&#39;</span><span class="p">))</span>
+ <span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;color&#39;</span><span class="p">,</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+<span class="p">)</span>
 </pre></div>
 
     </div>
@@ -20099,18 +19491,18 @@ Order by: weight</p>
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#%%sql</span>
 <span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT name, weight,</span>
-<span class="s2">    ntile(2) OVER window_wt AS by_half,</span>
-<span class="s2">    ntile(3) OVER window_wt AS thirds,</span>
-<span class="s2">    ntile(4) OVER window_wt AS quart</span>
+<span class="s2">select name, weight,</span>
+<span class="s2">    ntile(2) over window_wt as by_half,</span>
+<span class="s2">    ntile(3) over window_wt as thirds,</span>
+<span class="s2">    ntile(4) over window_wt as quart</span>
 
-<span class="s2">FROM cats</span>
+<span class="s2">from cats</span>
 
-<span class="s2">window window_wt AS (ORDER BY weight)</span>
-<span class="s2">-- here (ORDER BY weight) is aliased as window_wt</span>
+<span class="s2">window window_wt as (order by weight)</span>
+<span class="s2">-- here (order by weight) is aliased as window_wt</span>
 
 
-<span class="s2">ORDER BY weight,name</span>
+<span class="s2">order by weight,name</span>
 <span class="s2">&quot;&quot;&quot;</span>
 <span class="n">f</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
 </pre></div>
@@ -20330,9 +19722,9 @@ Order by: weight</p>
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## pandas</span>
 <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span><span class="s1">&#39;weight&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
-    <span class="n">half</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">half</span>   <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
     <span class="n">thirds</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">],</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">quart</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">],</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">quart</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;weight&#39;</span><span class="p">],</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
 <span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
 </pre></div>
 
@@ -21430,9 +20822,11 @@ Order by: breed</p>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">## pandas 2</span>
-<span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;breed&#39;</span><span class="p">)[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
-  <span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">ser</span><span class="p">:</span> <span class="n">ser</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()]</span>
-<span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span><span class="s1">&#39;avg_wt&#39;</span><span class="p">,</span><span class="s1">&#39;&lt;lambda_0&gt;&#39;</span><span class="p">:</span><span class="s1">&#39;avg_wt_age_gt1&#39;</span><span class="p">})</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;breed&#39;</span><span class="p">)</span>
+<span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;breed&#39;</span><span class="p">)[</span><span class="s1">&#39;weight&#39;</span><span class="p">]</span>
+ <span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">ser</span><span class="p">:</span> <span class="n">ser</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()])</span>
+ <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">:</span><span class="s1">&#39;avg_wt&#39;</span><span class="p">,</span><span class="s1">&#39;&lt;lambda_0&gt;&#39;</span><span class="p">:</span><span class="s1">&#39;avg_wt_age_gt1&#39;</span><span class="p">})</span>
+ <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;breed&#39;</span><span class="p">)</span>
+<span class="p">)</span>
 </pre></div>
 
     </div>
@@ -21578,19 +20972,6 @@ Order by: breed</p>
 </div>
 </div>
 
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
 </div>
 </div>
 
