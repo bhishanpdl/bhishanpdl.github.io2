@@ -1,3 +1,13 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
 <h1 id="project-description">Project Description</h1>
 <p>In this project I used the <a href="https://www.kaggle.com/mlg-ulb/creditcardfraud">Kaggle Creditcard Fraud</a> data to determine whether the transaction is fraud or not.</p>
 <p><strong>Assumptions</strong>: - Here we have data for just two days, but we assume the data is representative of the whole population of credit card transactions. - We assume the 28 variables V1-V28 are obtained from correct method of PCA and are scaled properly.</p>
@@ -6,64 +16,64 @@
 <h1 style="background-color:tomato;">
 Best Model So Far
 </h1>
-<table style="width:100%;">
+<table style="width:62%;">
 <colgroup>
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Model</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: left;">Accuracy</th>
-<th style="text-align: left;">Precision</th>
-<th style="text-align: left;">Recall</th>
-<th style="text-align: left;">F1</th>
-<th style="text-align: left;">AUC</th>
-<th style="text-align: left;">Untrue Frauds</th>
-<th style="text-align: left;">Missed Frauds</th>
+<th align="left">Model</th>
+<th align="left">Description</th>
+<th align="left">Accuracy</th>
+<th align="left">Precision</th>
+<th align="left">Recall</th>
+<th align="left">F1</th>
+<th align="left">AUC</th>
+<th align="left">Untrue Frauds</th>
+<th align="left">Missed Frauds</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">keras</td>
-<td style="text-align: left;">1 layer, class_weight, early_stopping, scikit api</td>
-<td style="text-align: left;">0.987939</td>
-<td style="text-align: left;">0.111989</td>
-<td style="text-align: left;">0.867347</td>
-<td style="text-align: left;">0.198366</td>
-<td style="text-align: left;">0.927747</td>
-<td style="text-align: left;">674</td>
-<td style="text-align: left;">13</td>
+<td align="left">keras</td>
+<td align="left">1 layer, class_weight, early_stopping, scikit api</td>
+<td align="left">0.987939</td>
+<td align="left">0.111989</td>
+<td align="left">0.867347</td>
+<td align="left">0.198366</td>
+<td align="left">0.927747</td>
+<td align="left">674</td>
+<td align="left">13</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">cb_tuned pycaret</td>
-<td style="text-align: left;">fold=5</td>
-<td style="text-align: left;">0.9996</td>
-<td style="text-align: left;">0.9659</td>
-<td style="text-align: left;">0.7865</td>
-<td style="text-align: left;">0.9667</td>
-<td style="text-align: left;">0.8642</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;"></td>
+<td align="left">cb_tuned pycaret</td>
+<td align="left">fold=5</td>
+<td align="left">0.9996</td>
+<td align="left">0.9659</td>
+<td align="left">0.7865</td>
+<td align="left">0.9667</td>
+<td align="left">0.8642</td>
+<td align="left"></td>
+<td align="left"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">catboost</td>
-<td style="text-align: left;">seed=100,depth=6,iter=1k</td>
-<td style="text-align: left;">0.999631</td>
-<td style="text-align: left;">1.000000</td>
-<td style="text-align: left;">0.785714</td>
-<td style="text-align: left;">0.880000</td>
-<td style="text-align: left;">0.892857</td>
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">21</td>
+<td align="left">catboost</td>
+<td align="left">seed=100,depth=6,iter=1k</td>
+<td align="left">0.999631</td>
+<td align="left">1.000000</td>
+<td align="left">0.785714</td>
+<td align="left">0.880000</td>
+<td align="left">0.892857</td>
+<td align="left">0</td>
+<td align="left">21</td>
 </tr>
 </tbody>
 </table>
@@ -84,30 +94,30 @@ Anomaly Detection Methods
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Model</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: left;">Accuracy</th>
-<th style="text-align: left;">Precision</th>
-<th style="text-align: left;">Recall</th>
-<th style="text-align: left;">F1(Weighted)</th>
+<th align="left">Model</th>
+<th align="left">Description</th>
+<th align="left">Accuracy</th>
+<th align="left">Precision</th>
+<th align="left">Recall</th>
+<th align="left">F1(Weighted)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Isolation Forest</td>
-<td style="text-align: left;">default</td>
-<td style="text-align: left;">0.997384</td>
-<td style="text-align: left;">0.261682</td>
-<td style="text-align: left;">0.285714</td>
-<td style="text-align: left;">0.997442</td>
+<td align="left">Isolation Forest</td>
+<td align="left">default</td>
+<td align="left">0.997384</td>
+<td align="left">0.261682</td>
+<td align="left">0.285714</td>
+<td align="left">0.997442</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Local Outlier Factor</td>
-<td style="text-align: left;">default</td>
-<td style="text-align: left;">0.996331</td>
-<td style="text-align: left;">0.025641</td>
-<td style="text-align: left;">0.030612</td>
-<td style="text-align: left;">0.996493</td>
+<td align="left">Local Outlier Factor</td>
+<td align="left">default</td>
+<td align="left">0.996331</td>
+<td align="left">0.025641</td>
+<td align="left">0.030612</td>
+<td align="left">0.996493</td>
 </tr>
 </tbody>
 </table>
@@ -115,108 +125,108 @@ Anomaly Detection Methods
 <h1 style="background-color:tomato;">
 Gradient Boosting Modelling
 </h1>
-<table style="width:100%;">
+<table style="width:49%;">
 <colgroup>
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
-<col style="width: 14%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Model</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: left;">Accuracy</th>
-<th style="text-align: left;">Precision</th>
-<th style="text-align: left;">Recall</th>
-<th style="text-align: left;">F1</th>
-<th style="text-align: left;">AUC</th>
+<th align="left">Model</th>
+<th align="left">Description</th>
+<th align="left">Accuracy</th>
+<th align="left">Precision</th>
+<th align="left">Recall</th>
+<th align="left">F1</th>
+<th align="left">AUC</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">lightgbm</td>
-<td style="text-align: left;">grid search optuna</td>
-<td style="text-align: left;">0.999315</td>
-<td style="text-align: left;">0.873418</td>
-<td style="text-align: left;">0.704082</td>
-<td style="text-align: left;">0.779661</td>
-<td style="text-align: left;">0.851953</td>
+<td align="left">lightgbm</td>
+<td align="left">grid search optuna</td>
+<td align="left">0.999315</td>
+<td align="left">0.873418</td>
+<td align="left">0.704082</td>
+<td align="left">0.779661</td>
+<td align="left">0.851953</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">lightgbm</td>
-<td style="text-align: left;">default</td>
-<td style="text-align: left;">0.997367</td>
-<td style="text-align: left;">0.275862</td>
-<td style="text-align: left;">0.326531</td>
-<td style="text-align: left;">0.299065</td>
-<td style="text-align: left;">0.662527</td>
+<td align="left">lightgbm</td>
+<td align="left">default</td>
+<td align="left">0.997367</td>
+<td align="left">0.275862</td>
+<td align="left">0.326531</td>
+<td align="left">0.299065</td>
+<td align="left">0.662527</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Xgboost</td>
-<td style="text-align: left;">default, imbalanced</td>
-<td style="text-align: left;">0.999263</td>
-<td style="text-align: left;">0.850000</td>
-<td style="text-align: left;">0.693878</td>
-<td style="text-align: left;">0.764045</td>
-<td style="text-align: left;">0.846833</td>
+<td align="left">Xgboost</td>
+<td align="left">default, imbalanced</td>
+<td align="left">0.999263</td>
+<td align="left">0.850000</td>
+<td align="left">0.693878</td>
+<td align="left">0.764045</td>
+<td align="left">0.846833</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Xgboost</td>
-<td style="text-align: left;">default, undersampling</td>
-<td style="text-align: left;">0.999263</td>
-<td style="text-align: left;">0.850000</td>
-<td style="text-align: left;">0.693878</td>
-<td style="text-align: left;">0.764045</td>
-<td style="text-align: left;">0.846833</td>
+<td align="left">Xgboost</td>
+<td align="left">default, undersampling</td>
+<td align="left">0.999263</td>
+<td align="left">0.850000</td>
+<td align="left">0.693878</td>
+<td align="left">0.764045</td>
+<td align="left">0.846833</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Xgboost</td>
-<td style="text-align: left;">n_estimators=150, imbalanced</td>
-<td style="text-align: left;">0.999263</td>
-<td style="text-align: left;">0.850000</td>
-<td style="text-align: left;">0.693878</td>
-<td style="text-align: left;">0.764045</td>
-<td style="text-align: left;">0.846833</td>
+<td align="left">Xgboost</td>
+<td align="left">n_estimators=150, imbalanced</td>
+<td align="left">0.999263</td>
+<td align="left">0.850000</td>
+<td align="left">0.693878</td>
+<td align="left">0.764045</td>
+<td align="left">0.846833</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Xgboost</td>
-<td style="text-align: left;">undersample, hpo1</td>
-<td style="text-align: left;">0.999298</td>
-<td style="text-align: left;">0.881579</td>
-<td style="text-align: left;">0.683673</td>
-<td style="text-align: left;">0.770115</td>
-<td style="text-align: left;">0.841758</td>
+<td align="left">Xgboost</td>
+<td align="left">undersample, hpo1</td>
+<td align="left">0.999298</td>
+<td align="left">0.881579</td>
+<td align="left">0.683673</td>
+<td align="left">0.770115</td>
+<td align="left">0.841758</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Xgboost</td>
-<td style="text-align: left;">imbalanced, hpo</td>
-<td style="text-align: left;">0.999245</td>
-<td style="text-align: left;">0.898551</td>
-<td style="text-align: left;">0.632653</td>
-<td style="text-align: left;">0.742515</td>
-<td style="text-align: left;">0.816265</td>
+<td align="left">Xgboost</td>
+<td align="left">imbalanced, hpo</td>
+<td align="left">0.999245</td>
+<td align="left">0.898551</td>
+<td align="left">0.632653</td>
+<td align="left">0.742515</td>
+<td align="left">0.816265</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">xgboost</td>
-<td style="text-align: left;">grid search optuna</td>
-<td style="text-align: left;">0.999333</td>
-<td style="text-align: left;">0.875000</td>
-<td style="text-align: left;">0.714286</td>
-<td style="text-align: left;">0.786517</td>
-<td style="text-align: left;">0.857055</td>
+<td align="left">xgboost</td>
+<td align="left">grid search optuna</td>
+<td align="left">0.999333</td>
+<td align="left">0.875000</td>
+<td align="left">0.714286</td>
+<td align="left">0.786517</td>
+<td align="left">0.857055</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">catboost</td>
-<td style="text-align: left;">seed=100,depth=6,iter=1k</td>
-<td style="text-align: left;">0.999631</td>
-<td style="text-align: left;">1.000000</td>
-<td style="text-align: left;">0.785714</td>
-<td style="text-align: left;">0.880000</td>
-<td style="text-align: left;">0.892857</td>
+<td align="left">catboost</td>
+<td align="left">seed=100,depth=6,iter=1k</td>
+<td align="left">0.999631</td>
+<td align="left">1.000000</td>
+<td align="left">0.785714</td>
+<td align="left">0.880000</td>
+<td align="left">0.892857</td>
 </tr>
 </tbody>
 </table>
@@ -227,86 +237,86 @@ Automatic Modelling: pycaret
 <table>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Model</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: left;">Accuracy</th>
-<th style="text-align: left;">AUC</th>
-<th style="text-align: left;">Recall</th>
-<th style="text-align: left;">Precision</th>
-<th style="text-align: left;">F1</th>
-<th style="text-align: left;">Kappa</th>
+<th align="left">Model</th>
+<th align="left">Description</th>
+<th align="left">Accuracy</th>
+<th align="left">AUC</th>
+<th align="left">Recall</th>
+<th align="left">Precision</th>
+<th align="left">F1</th>
+<th align="left">Kappa</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">cb_tuned</td>
-<td style="text-align: left;">fold=5</td>
-<td style="text-align: left;">0.9996</td>
-<td style="text-align: left;">0.9659</td>
-<td style="text-align: left;">0.7865</td>
-<td style="text-align: left;">0.9667</td>
-<td style="text-align: left;">0.8642</td>
-<td style="text-align: left;">0.8639</td>
+<td align="left">cb_tuned</td>
+<td align="left">fold=5</td>
+<td align="left">0.9996</td>
+<td align="left">0.9659</td>
+<td align="left">0.7865</td>
+<td align="left">0.9667</td>
+<td align="left">0.8642</td>
+<td align="left">0.8639</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">lda_tuned</td>
-<td style="text-align: left;">fold=5</td>
-<td style="text-align: left;">0.9995</td>
-<td style="text-align: left;">0.9833</td>
-<td style="text-align: left;">0.7760</td>
-<td style="text-align: left;">0.9217</td>
-<td style="text-align: left;">0.8423</td>
-<td style="text-align: left;">0.8420</td>
+<td align="left">lda_tuned</td>
+<td align="left">fold=5</td>
+<td align="left">0.9995</td>
+<td align="left">0.9833</td>
+<td align="left">0.7760</td>
+<td align="left">0.9217</td>
+<td align="left">0.8423</td>
+<td align="left">0.8420</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">xgb</td>
-<td style="text-align: left;">default</td>
-<td style="text-align: left;">0.9994</td>
-<td style="text-align: left;">0.9585</td>
-<td style="text-align: left;">0.7345</td>
-<td style="text-align: left;">0.9102</td>
-<td style="text-align: left;">0.8047</td>
-<td style="text-align: left;">0.8044</td>
+<td align="left">xgb</td>
+<td align="left">default</td>
+<td align="left">0.9994</td>
+<td align="left">0.9585</td>
+<td align="left">0.7345</td>
+<td align="left">0.9102</td>
+<td align="left">0.8047</td>
+<td align="left">0.8044</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">cb</td>
-<td style="text-align: left;">default</td>
-<td style="text-align: left;">0.9995</td>
-<td style="text-align: left;">0.9554</td>
-<td style="text-align: left;">0.7345</td>
-<td style="text-align: left;">0.9548</td>
-<td style="text-align: left;">0.8215</td>
-<td style="text-align: left;">0.8212</td>
+<td align="left">cb</td>
+<td align="left">default</td>
+<td align="left">0.9995</td>
+<td align="left">0.9554</td>
+<td align="left">0.7345</td>
+<td align="left">0.9548</td>
+<td align="left">0.8215</td>
+<td align="left">0.8212</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">lda</td>
-<td style="text-align: left;">default</td>
-<td style="text-align: left;">0.9992</td>
-<td style="text-align: left;">0.9677</td>
-<td style="text-align: left;">0.7255</td>
-<td style="text-align: left;">0.8340</td>
-<td style="text-align: left;">0.7661</td>
-<td style="text-align: left;">0.7657</td>
+<td align="left">lda</td>
+<td align="left">default</td>
+<td align="left">0.9992</td>
+<td align="left">0.9677</td>
+<td align="left">0.7255</td>
+<td align="left">0.8340</td>
+<td align="left">0.7661</td>
+<td align="left">0.7657</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">xgb_tuned</td>
-<td style="text-align: left;">tuned</td>
-<td style="text-align: left;">0.9992</td>
-<td style="text-align: left;">0.9677</td>
-<td style="text-align: left;">0.7255</td>
-<td style="text-align: left;">0.8340</td>
-<td style="text-align: left;">0.7661</td>
-<td style="text-align: left;">0.7657</td>
+<td align="left">xgb_tuned</td>
+<td align="left">tuned</td>
+<td align="left">0.9992</td>
+<td align="left">0.9677</td>
+<td align="left">0.7255</td>
+<td align="left">0.8340</td>
+<td align="left">0.7661</td>
+<td align="left">0.7657</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">lda_tuned</td>
-<td style="text-align: left;">n_iter=100,fold=10</td>
-<td style="text-align: left;">0.9992</td>
-<td style="text-align: left;">0.9677</td>
-<td style="text-align: left;">0.7255</td>
-<td style="text-align: left;">0.8340</td>
-<td style="text-align: left;">0.7661</td>
-<td style="text-align: left;">0.7657</td>
+<td align="left">lda_tuned</td>
+<td align="left">n_iter=100,fold=10</td>
+<td align="left">0.9992</td>
+<td align="left">0.9677</td>
+<td align="left">0.7255</td>
+<td align="left">0.8340</td>
+<td align="left">0.7661</td>
+<td align="left">0.7657</td>
 </tr>
 </tbody>
 </table>
@@ -314,80 +324,83 @@ Automatic Modelling: pycaret
 <h1 style="background-color:tomato;">
 Big Data Modelling: PySpark
 </h1>
-<p><img src="reports/screenshots/pyspark_clf_results.png" /></p>
+<div class="figure">
+<img src="reports/screenshots/pyspark_clf_results.png" />
+
+</div>
 <p></br></p>
 <h1 style="background-color:tomato;">
 Deep Learning Models
 </h1>
-<table style="width:100%;">
+<table style="width:62%;">
 <colgroup>
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
-<col style="width: 11%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Model</th>
-<th style="text-align: left;">Description</th>
-<th style="text-align: left;">Accuracy</th>
-<th style="text-align: left;">Precision</th>
-<th style="text-align: left;">Recall</th>
-<th style="text-align: left;">F1</th>
-<th style="text-align: left;">AUC</th>
-<th style="text-align: left;">Missed Frauds</th>
-<th style="text-align: left;">Untrue Frauds</th>
+<th align="left">Model</th>
+<th align="left">Description</th>
+<th align="left">Accuracy</th>
+<th align="left">Precision</th>
+<th align="left">Recall</th>
+<th align="left">F1</th>
+<th align="left">AUC</th>
+<th align="left">Missed Frauds</th>
+<th align="left">Untrue Frauds</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">keras</td>
-<td style="text-align: left;">3 layers, 2 dropouts, class_weight</td>
-<td style="text-align: left;">0.983744</td>
-<td style="text-align: left;">0.081818</td>
-<td style="text-align: left;">0.826531</td>
-<td style="text-align: left;">0.148897</td>
-<td style="text-align: left;">0.905273</td>
-<td style="text-align: left;">17</td>
-<td style="text-align: left;">909</td>
+<td align="left">keras</td>
+<td align="left">3 layers, 2 dropouts, class_weight</td>
+<td align="left">0.983744</td>
+<td align="left">0.081818</td>
+<td align="left">0.826531</td>
+<td align="left">0.148897</td>
+<td align="left">0.905273</td>
+<td align="left">17</td>
+<td align="left">909</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">keras</td>
-<td style="text-align: left;">1 layer, dropout, early_stopping</td>
-<td style="text-align: left;">0.984990</td>
-<td style="text-align: left;">0.090811</td>
-<td style="text-align: left;">0.857143</td>
-<td style="text-align: left;">0.164223</td>
-<td style="text-align: left;">0.921177</td>
-<td style="text-align: left;">14</td>
-<td style="text-align: left;">841</td>
+<td align="left">keras</td>
+<td align="left">1 layer, dropout, early_stopping</td>
+<td align="left">0.984990</td>
+<td align="left">0.090811</td>
+<td align="left">0.857143</td>
+<td align="left">0.164223</td>
+<td align="left">0.921177</td>
+<td align="left">14</td>
+<td align="left">841</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">keras</td>
-<td style="text-align: left;">1 layer, dropout, steps_per_epoch, oversampling</td>
-<td style="text-align: left;">0.982796</td>
-<td style="text-align: left;">0.080000</td>
-<td style="text-align: left;">0.857143</td>
-<td style="text-align: left;">0.146341</td>
-<td style="text-align: left;">0.920077</td>
-<td style="text-align: left;">14</td>
-<td style="text-align: left;">966</td>
+<td align="left">keras</td>
+<td align="left">1 layer, dropout, steps_per_epoch, oversampling</td>
+<td align="left">0.982796</td>
+<td align="left">0.080000</td>
+<td align="left">0.857143</td>
+<td align="left">0.146341</td>
+<td align="left">0.920077</td>
+<td align="left">14</td>
+<td align="left">966</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">keras</td>
-<td style="text-align: left;">1 layer, class_weight, early_stopping, scikit api</td>
-<td style="text-align: left;">0.987939</td>
-<td style="text-align: left;">0.111989</td>
-<td style="text-align: left;">0.867347</td>
-<td style="text-align: left;">0.198366</td>
-<td style="text-align: left;">0.927747</td>
-<td style="text-align: left;">13</td>
-<td style="text-align: left;">674</td>
+<td align="left">keras</td>
+<td align="left">1 layer, class_weight, early_stopping, scikit api</td>
+<td align="left">0.987939</td>
+<td align="left">0.111989</td>
+<td align="left">0.867347</td>
+<td align="left">0.198366</td>
+<td align="left">0.927747</td>
+<td align="left">13</td>
+<td align="left">674</td>
 </tr>
 </tbody>
 </table>
@@ -398,3 +411,5 @@ Deep Learning Models
 <li>https://www.kaggle.com/residentmario/using-keras-models-with-scikit-learn-pipelines#</li>
 <li>https://machinelearningmastery.com/grid-search-hyperparameters-deep-learning-models-python-keras/</li>
 </ul>
+</body>
+</html>
