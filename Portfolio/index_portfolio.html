@@ -102,9 +102,24 @@
           Name: Bhishan Poudel <br>
           Email: bhishanpdl@gmail.com <br>
           Github: https://github.com/bhishanpdl <br>
+          Note: Please click on the triangle button to see the project (gif) <br>
 
         </br>
           <h2 class="mysub" style="text-decoration:none;color:green" <strong> Section A: Regression </strong></h2>
+
+      <hr style="height:2px;border-width:0;color:gray;margin-left:0;background-color:gray">
+      <p style="color:rgb(112, 91, 91)">King County House Price:</p>
+
+      This is a famous regression problem for predicting the house price. The dataset is taken from Kaggle project <a href="https://www.kaggle.com/harlfoxem/housesalesprediction">House Sales in King County</a>.
+      The dataset contains the house price of King County of Washington state including the city Seattle.
+      There is one index column `id` and one target column `price` and 19 house features such as `date, bedrooms, bathrooms, sqft_living, lat, long, etc`.<br></br>
+
+      I did detailed feature analysis and created features such as age, age_after_renovation and so on. Also did log transformation of large numeric features and created dummy variables from categorical features. After doing feature selection and trying various machine learning methods, I found Random Forest works the best.
+
+      In the end I found rmse of 26k, and r-squared and adjusted r-squared value of order 0.994.
+
+      I have tried various models such as Random Forest, LightGBM, Xgboost,
+      RidgeCV, SVR, HistGBR and Stacking Regressor and below have the video of all the notebooks.
 
       <details><summary>
                           <a class="mysub" style="text-decoration:none;color:blueviolet"
@@ -118,6 +133,20 @@
     </br>
       <h2 class="mysub" style="text-decoration:none;color:green" <strong> Section B: Classification </strong></h2>
 
+  </br>
+  <hr style="height:2px;border-width:0;color:gray; margin-left:0;background-color:gray">
+  <p style="color:rgb(112, 91, 91)">Fraud Detection:</p>
+
+  In this project I used the <a href="https://www.kaggle.com/mlg-ulb/creditcardfraud">Kaggle Creditcard Fraud data</a>  to determine whether the transaction is fraud or not. The dataset features already scaled, reduced dimension using PCA and anonimized with names `v1,v2,...,v28`.
+  Our aim is to predict whether a transaction is fraud or not.</br>
+
+  The dataset is heavily imbalanced so I used the metric Recall to evalute the performance of the model.</br>
+
+  I tried various sampling methods such as undersampling and over-sampling (SMOTE) and tested various machine learning algorithms as well as deep learning architectures. In the end,  I found catboost performed the best with Recall of 0.785 and 0 Untrue-Frauds and 21 Missed Frauds.
+
+  Detailed video of jupyter notebooks is shown below.
+
+
     <details><summary>
                         <a class="mysub" style="text-decoration:none;color:blueviolet"
                         <strong> Fraud Detection </strong>
@@ -126,6 +155,18 @@
       <img src="gif/fraud.gif" alt="fraud.gif">
     </details>
 
+  </br>
+  <hr style="height:2px;border-width:0;color:gray;margin-left:0;background-color:gray">
+  <p style="color:rgb(112, 91, 91)">Porto Seguro Auto Insurance: </p>
+
+  In this project I took the data from the kaggle project <a href="https://www.portoseguro.com.br/en/institutional"> Porto Seguro</a>. The aim of the project is to determine wheter the insurance client will file the claim next year or not. This is binary classification problem and the chosen metric of evaluation is normalized gini index (`2*auc-1`).</br>
+
+  The dataset has more 59 features such as binary features `_bin`, categorical features `_cat` and other features such as `ind, reg, car, and calc`.</br>
+
+  An example may have many missing features, I intelligently dealt with missing values and created dummy varialbles as need be and discarded unuseful features.</br>
+
+  After trying various different machine learning algorithms, I found
+  lightgbm stood best with NormalizedGini 0.2 and AUC 0.6.</br>
   <details><summary>
                       <a class="mysub" style="text-decoration:none;color:blueviolet"
                       <strong> Porto Seguro Auto Insurance (Binary Classification) </strong>
@@ -133,6 +174,16 @@
           </summary>
     <img src="gif/porto.gif" alt="porto.gif">
   </details>
+
+</br>
+<hr style="height:2px;border-width:0;color:gray;margin-left:0;background-color:gray">
+<p style="color:rgb(112, 91, 91)">Prudential Life Insurance: </p>
+
+In this project I took the data from kaggle project <a href="https://www.kaggle.com/c/prudential-life-insurance-assessment"> Prudential Life Insurance</a>. This is multi-class classification problem with the task of classifying given insurancy policy belongs to one of 8 responses 1 to 8. The metric of evaluation is Quadratic Weighted Kappa.</br>
+
+The dataset has 127 features and 60k records. The features are like `Product_Info, Employment_Info, InsuredInfo` and so on.
+
+After assessing the performance of various models, I found Xgboost with Poisson objective gives the best results. (TestKappa = 0.6556).
 
   <details><summary>
                       <a class="mysub" style="text-decoration:none;color:blueviolet"
@@ -146,7 +197,16 @@
     </br>
       <h2 class="mysub" style="text-decoration:none;color:green" <strong> Section C: Timeseries Analysis </strong></h2>
 
-    <details><summary>
+      <hr style="height:2px;border-width:0;color:gray;margin-left:0;background-color:gray">
+      <p style="color:rgb(112, 91, 91)">Timeseries Analysis for Web Traffic Data: </p>
+
+      In this project I took the data from kaggle project <a href="https://www.kaggle.com/c/web-traffic-time-series-forecasting/data"> Web Traffic Time Series Forecasting</a>.
+      The dataset contains 145k samples and has first column as wikipedia page name and other 550 columns are the date the page was visited. In this project I used the data of year 2016 for the American Musician "Prince".
+
+      The evaluation metric is sMAPE (symmetric Mean Absolute Error) and after trying
+      various experiments, I found xgboost with features extracted from tsfresh gave me the best results. (sMAPE = 0.6356).
+
+      <details><summary>
                         <a class="mysub" style="text-decoration:none;color:blueviolet"
                         <strong> Timeseries Analysis for Web Traffic Data </strong>
                         </a>
@@ -157,9 +217,21 @@
     </br>
     <h2 class="mysub" style="text-decoration:none;color:green" <strong> Section D: Natural Language Processing (NLP) </strong></h2>
 
+    <hr style="height:2px;border-width:0;color:gray;margin-left:0;background-color:gray">
+    <p style="color:rgb(112, 91, 91)">Consumer Complaints: </p>
+
+    In this project I took the data from government catalog data 
+    <a href="https://catalog.data.gov/dataset/consumer-complaint-database"> Consumer Complaint Database </a>. The aim of the project is to classsify the complaint to one 
+    of the 11 different categories such as `Debt Collection, Mortgage, Student loan, etc`.
+    The dataset has millions of rows and for this project I used 200,000 samples.
+    I did various text processing steps such as lowercase, remove punctuations, remove digits, remove stopwords, lemmatization and so on.</br>
+
+    This is text data modelling project, ML algorithms can not work with text data directly. We need to vectorize the data. Here, I used TfidfVectorizer with ngram of (1,2) and removed english stopwords.
+    I tried various machine learning models such as Linear Regression, Linear SVC, Random Forest and so on, however, in the end the tuned Linear SVC gave me the best accuracy of 0.7222.
+
   <details><summary>
                       <a class="mysub" style="text-decoration:none;color:blueviolet"
-                      <strong> Consumer Complaints (Text Data Analysis) </strong>
+                      <strong> Consumer Complaints (Multiclass Classification) </strong>
                       </a>
           </summary>
     <img src="gif/consumer.gif" alt="consumer.gif">
