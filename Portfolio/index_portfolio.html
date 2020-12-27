@@ -104,6 +104,7 @@
           Github: https://github.com/bhishanpdl <br>
           Note: Please click on the triangle button to see the project (gif) <br>
 
+<!-- ================ -->
         </br>
           <h2 class="mysub" style="text-decoration:none;color:green" <strong> Section A: Regression </strong></h2>
 
@@ -129,7 +130,7 @@
         <img src="gif/house.gif" alt="house.gif">
       </details>
 
-
+<!-- ================ -->
     </br>
       <h2 class="mysub" style="text-decoration:none;color:green" <strong> Section B: Classification </strong></h2>
 
@@ -155,13 +156,14 @@
       <img src="gif/fraud.gif" alt="fraud.gif">
     </details>
 
+<!-- ================ -->
   </br>
   <hr style="height:2px;border-width:0;color:gray;margin-left:0;background-color:gray">
   <p style="color:rgb(112, 91, 91)">Porto Seguro Auto Insurance: </p>
 
-  In this project I took the data from the kaggle project <a href="https://www.portoseguro.com.br/en/institutional"> Porto Seguro</a>. The aim of the project is to determine wheter the insurance client will file the claim next year or not. This is binary classification problem and the chosen metric of evaluation is normalized gini index (`2*auc-1`).</br>
+  In this project I took the data from the kaggle project <a href="https://www.portoseguro.com.br/en/institutional"> Porto Seguro</a>. The aim of the project is to determine wheter the insurance client will file the claim next year or not. This is binary classification problem and the chosen metric of evaluation is normalized gini index (2*auc-1).</br>
 
-  The dataset has more 59 features such as binary features `_bin`, categorical features `_cat` and other features such as `ind, reg, car, and calc`.</br>
+  The dataset has more 59 features such as binary features _bin, categorical features _cat and other features such as ind, reg, car, and calc.</br>
 
   An example may have many missing features, I intelligently dealt with missing values and created dummy varialbles as need be and discarded unuseful features.</br>
 
@@ -175,6 +177,53 @@
     <img src="gif/porto.gif" alt="porto.gif">
   </details>
 
+
+<!-- ================ -->
+</br>
+<hr style="height:2px;border-width:0;color:gray;margin-left:0;background-color:gray">
+<p style="color:rgb(112, 91, 91)">Telecom Customer Churn: </p>
+
+In this project I took the data from the kaggle project <a href="https://www.kaggle.com/blastchar/telco-customer-churn"> Telco Customer Churn</a>. The aim of the project is to determine wheter the telecom client will churn next month or not based on their history upto now. This is a binary classification problem and I have created new custom metric for the project evaluation.
+
+In real life the cost of misclassifying leaving customer and not-leaving customer is different.
+For this project I defined a metric called "PROFIT" as following:</br>
+
+profit = $400  for TP(truepositive)</br>
+profit = 0     for TN(truenegative)</br>
+profit = −$100  for FP (false positive) </br>
+profit = -$200 for FN (false negative) </br>
+
+</br>
+
+The dataset has 19 features such gender, age, partners, etc. and target feature is "Churn".</br>
+The dataset is relatively clean there are not much missing values. However,
+I did elaborate feature creation and feature selection so as to get the higher performance.</br></br>
+
+In this project I did and extensive use of semi-automatic machine learning module "pycaret"
+and looked at various models. Among the pycaret models, the LDA gave me the best performance with profit of $80,200. Then I tested boosting module "xgboost" with extensive hyperparameter tuning using <a href="https://github.com/thuijskens/scikit-hyperband" >hyperband</a> and <a href="https://github.com/fmfn/BayesianOptimization" > bayesian-optimization</a> which gave me the profit of $87,200. Also the plain simple logistic regression with cv was second in the line with profit of $82,500 (after hyperband HPO).</br></br>
+
+Highlights:
+<ul>
+  <li> XGBoost slightly beat the LogisticRegressionCV with hyperband parameter tuning.</li>
+  <li> Pycaret gives very high performance with little effort and less run time.</li>
+  <li> Despite expectations, SMOTE oversampling gave much worse results than without upsampling.</li>
+  <li> Used xgboost parameter "scale_pos_weight" to handle class imbalance.</li>
+  <li> Used custom scoring function "get_profit" instead of popular metric "auc" or "auprc".</li>
+  <li> XGBoost has large number of hyperparameters to tune, among the hyperparameter tuning libraries, hyperband was the best. bayes_opt and scikit-learn (GridSearchCV, RandomSearchCV) were inferior and/or more time-consuming in comparison to hyperband.</li>
+  <li> Feature selection plays great role in metric performance, simply using one hot encoding gives much worse result even after extensive hyperparameter search.</li>
+</ul>
+
+
+</br>
+<details><summary>
+                    <a class="mysub" style="text-decoration:none;color:blueviolet"
+                    <strong> Telco Customer Churn (Binary Classification) </strong>
+                    </a>
+        </summary>
+  <img src="gif/churn.gif" alt="churn.gif">
+</details>
+
+<!-- ================ -->
 </br>
 <hr style="height:2px;border-width:0;color:gray;margin-left:0;background-color:gray">
 <p style="color:rgb(112, 91, 91)">Prudential Life Insurance: </p>
@@ -193,7 +242,7 @@ After assessing the performance of various models, I found Xgboost with Poisson 
     <img src="gif/prudential.gif" alt="prudential.gif">
   </details>
 
-
+<!-- ================ -->
     </br>
       <h2 class="mysub" style="text-decoration:none;color:green" <strong> Section C: Timeseries Analysis </strong></h2>
 
@@ -214,6 +263,7 @@ After assessing the performance of various models, I found Xgboost with Poisson 
       <img src="gif/web.gif" alt="web.gif">
     </details>
 
+<!-- ================ -->
     </br>
     <h2 class="mysub" style="text-decoration:none;color:green" <strong> Section D: Natural Language Processing (NLP) </strong></h2>
 
