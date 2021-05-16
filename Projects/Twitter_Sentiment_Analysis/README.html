@@ -580,7 +580,14 @@ train_args[<span class="hljs-string">"wandb_kwargs"</span>]  =  {<span class="hl
     train_args[<span class="hljs-string">"train_batch_size"</span>] = <span class="hljs-number">64</span>
     train_args[<span class="hljs-string">"gradient_accumulation_steps"</span>] = <span class="hljs-number">2</span>
 </div></code></pre>
-<h1 id="lstm-modelling">LSTM Modelling</h1>
+<h1 id="text-modelling-using-gru">Text Modelling Using GRU</h1>
+<ul>
+<li><code>string column =&gt; list column =&gt; unq words, max len</code></li>
+<li><code>tokenizer =&gt; texts_to_sequences =&gt; pad_sequences</code></li>
+<li><code>params and callbacks</code></li>
+<li><code>Sequential =&gt; Embedding,GRU,GRU,Dense,Dropout,Dense =&gt; compile =&gt; summary</code></li>
+<li><code>fit =&gt; predict_classes</code></li>
+</ul>
 <pre class="hljs"><code><div><span class="hljs-comment"># data</span>
 mycol = <span class="hljs-string">'tweet_clean'</span>
 mylstcol = <span class="hljs-string">'tweet_lst_clean'</span>
@@ -668,7 +675,8 @@ history = model.fit(X_train, y_train,
                     callbacks=callbacks
                     )
 
-
+valid_preds = model.predict_classes(X_valid)
+valid_preds = valid_preds.squeeze().tolist()
 </div></code></pre>
 
 </body>
