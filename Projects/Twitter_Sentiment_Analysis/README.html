@@ -591,13 +591,13 @@ train_args[<span class="hljs-string">"wandb_kwargs"</span>]  =  {<span class="hl
 <pre class="hljs"><code><div><span class="hljs-comment"># data</span>
 mycol = <span class="hljs-string">'tweet_clean'</span>
 mylstcol = <span class="hljs-string">'tweet_lst_clean'</span>
-X_train = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> df_Xtrain[mylstcol]]
-X_valid = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> df_Xvalid[mylstcol]]
-X_test = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> df_test[mylstcol]]
+X_train  = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> df_Xtrain[mylstcol]] <span class="hljs-comment"># list of list</span>
+X_valid  = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> df_Xvalid[mylstcol]]
+X_test   = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> df_test[mylstcol]]
 
 <span class="hljs-comment"># get unique words</span>
 unq_words = set()
-maxlen = <span class="hljs-number">0</span>
+maxlen    = <span class="hljs-number">0</span>
 
 <span class="hljs-keyword">for</span> lst <span class="hljs-keyword">in</span> tqdm(X_train):
     unq_words.update(lst)
@@ -606,19 +606,19 @@ maxlen = <span class="hljs-number">0</span>
 <span class="hljs-comment"># tokenization</span>
 <span class="hljs-keyword">from</span> keras.preprocessing.text <span class="hljs-keyword">import</span> Tokenizer
 
-num_words = len(list(unq_words))
+num_words = len(unq_words)
 tokenizer = Tokenizer(num_words=num_words)
 tokenizer.fit_on_texts(X_train)
-X_train = tokenizer.texts_to_sequences(X_train)
-X_valid = tokenizer.texts_to_sequences(X_valid)
-X_test = tokenizer.texts_to_sequences(X_test)
+X_train   = tokenizer.texts_to_sequences(X_train)
+X_valid   = tokenizer.texts_to_sequences(X_valid)
+X_test    = tokenizer.texts_to_sequences(X_test)
 
 <span class="hljs-comment"># sequence</span>
 <span class="hljs-keyword">from</span> keras.preprocessing <span class="hljs-keyword">import</span> sequence
 
 X_train = sequence.pad_sequences(X_train, maxlen=maxlen)
 X_valid = sequence.pad_sequences(X_valid, maxlen=maxlen)
-X_test = sequence.pad_sequences(X_test, maxlen=maxlen)
+X_test  = sequence.pad_sequences(X_test, maxlen=maxlen)
 
 <span class="hljs-comment"># modelling</span>
 <span class="hljs-keyword">from</span> keras.callbacks <span class="hljs-keyword">import</span> EarlyStopping
