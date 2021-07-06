@@ -365,382 +365,168 @@ code {
           : 'default'
     });
   </script>
-<h1 id="project-description">Project Description</h1>
-<p>In this project I used the <a href="https://www.kaggle.com/mlg-ulb/creditcardfraud">Kaggle Creditcard Fraud</a>
-data to determine whether the transaction is fraud or not.</p>
-<p><strong>Assumptions</strong>:</p>
+<h1 style="background-color:tomato;">Project Introduction </h1>
+<p>Project : French Motor Claims<br>
+Author  : Bhishan Poudel, Ph.D Physics<br>
+Goal    : Implement Frequency modelling, Severity modelling and Pure Premium Modelling<br>
+Tools   : pandas, scikit-learn, xgboost,pygam</p>
+<p>References:</p>
 <ul>
-<li>Here we have data for just two days, but we assume the data is representative
-of the whole population of credit card transactions.</li>
-<li>We assume the 28 variables V1-V28 are
-obtained from correct method of PCA and are scaled properly.</li>
+<li>https://www.kaggle.com/floser/french-motor-claims-datasets-fremtpl2freq</li>
+<li>https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.TweedieRegressor.html</li>
 </ul>
-<p><strong>Metric Used</strong></p>
-<ul>
-<li>Here 1 means fraud and 0 means no fraud.</li>
-<li>For this imbalanced dataset, false negative (fraud classified as not fraud) is more important than false negative, so we use <code>Recall</code> as the metric of evaluation. (<code>Recall = TP / (TP + FN)</code>).</li>
-<li>For the imbalanced dataset, AUCROC gives overly optimistic metric, instead we should use <code>precision_recall_curve</code> and after looking at the curve we should choose the value that we want for precision and recall.</li>
-<li>We should also note that precision and recall does not involve TN, so we should use them only when specificity (TNR = TN/(TN+FP)) is not important.</li>
-<li>For imbalanced dataset, we can use F_beta metric. If both precision and recall are equally important, we can use F1-score. If we consider recall beta times more important than precision, we can use <code>F_beta = (1+beta^2) PR/(beta^P + R)</code> where P is precision and R is recall. (Mnemonic: Look at the denominator and remember that Recall is beta^2 time important than Precision). (Common values are 2 and 0.5. If beta is 2, recall is twice important than precision.)</li>
-<li>We should also note that F_beta depends on Precision and Recall only. It does not depend on TN (true negative), so for imbalanced classification, better metric could be MCC (Mathew's Correlation Coefficient.)</li>
-</ul>
-<p><strong>Resampling Techniques</strong></p>
-<ul>
-<li>Our dataset is imbalanced, we can try two sampling: undersampling and oversampling.</li>
-<li>Under-sampling. (We have low number of frauds, choose randomly same number of non-frauds.)</li>
-<li>Oversampling <code>SMOTE</code> method. Used external library <code>imblearn</code>.</li>
-</ul>
-<h1 style="background-color:tomato;">Best Model So Far</h1>
+<h1 style="background-color:tomato;">Project Notebooks </h1>
 <table>
 <thead>
 <tr>
-<th style="text-align:left">Model</th>
-<th style="text-align:left">Description</th>
-<th style="text-align:left">Accuracy</th>
-<th style="text-align:left">Precision</th>
-<th style="text-align:left">Recall</th>
-<th style="text-align:left">F1</th>
-<th style="text-align:left">AUC</th>
-<th style="text-align:left">Untrue Frauds</th>
-<th style="text-align:left">Missed Frauds</th>
+<th>Notebook</th>
+<th>Rendered</th>
+<th>Description</th>
+<th>Author</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">keras</td>
-<td style="text-align:left">1 layer, class_weight, early_stopping, scikit api</td>
-<td style="text-align:left">0.987939</td>
-<td style="text-align:left">0.111989</td>
-<td style="text-align:left">0.867347</td>
-<td style="text-align:left">0.198366</td>
-<td style="text-align:left">0.927747</td>
-<td style="text-align:left">674</td>
-<td style="text-align:left">13</td>
+<td>a01_data_cleaning.ipynb</td>
+<td><a href="https://github.com/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/a01_data_cleaning.ipynb">ipynb</a>, <a href="https://nbviewer.jupyter.org/github/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/a01_data_cleaning.ipynb">rendered</a></td>
+<td>ohe, kbin, logscaling</td>
+<td><a href="https://bhishanpdl.github.io/">Bhishan Poudel</a></td>
 </tr>
 <tr>
-<td style="text-align:left">cb_tuned pycaret</td>
-<td style="text-align:left">fold=5</td>
-<td style="text-align:left">0.9996</td>
-<td style="text-align:left">0.9659</td>
-<td style="text-align:left">0.7865</td>
-<td style="text-align:left">0.9667</td>
-<td style="text-align:left">0.8642</td>
-<td style="text-align:left"></td>
-<td style="text-align:left"></td>
+<td>b01_freq_modelling.ipynb</td>
+<td><a href="https://github.com/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/b01_freq_modelling.ipynb">ipynb</a>, <a href="https://nbviewer.jupyter.org/github/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/b01_freq_modelling.ipynb">rendered</a></td>
+<td>Poisson</td>
+<td><a href="https://bhishanpdl.github.io/">Bhishan Poudel</a></td>
 </tr>
 <tr>
-<td style="text-align:left">catboost</td>
-<td style="text-align:left">seed=100,depth=6,iter=1k</td>
-<td style="text-align:left">0.999631</td>
-<td style="text-align:left">1.000000</td>
-<td style="text-align:left">0.785714</td>
-<td style="text-align:left">0.880000</td>
-<td style="text-align:left">0.892857</td>
-<td style="text-align:left">0</td>
-<td style="text-align:left">21</td>
+<td>b02_severity_modelling.ipynb</td>
+<td><a href="https://github.com/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/b02_severity_modelling.ipynb">ipynb</a>, <a href="https://nbviewer.jupyter.org/github/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/b02_severity_modelling.ipynb">rendered</a></td>
+<td>Gamma</td>
+<td><a href="https://bhishanpdl.github.io/">Bhishan Poudel</a></td>
+</tr>
+<tr>
+<td>b03_pure_premium_modelling.ipynb</td>
+<td><a href="https://github.com/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/b03_pure_premium_modelling.ipynb">ipynb</a>, <a href="https://nbviewer.jupyter.org/github/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/b03_pure_premium_modelling.ipynb">rendered</a></td>
+<td>Poisson*Gamma and Tweedie</td>
+<td><a href="https://bhishanpdl.github.io/">Bhishan Poudel</a></td>
+</tr>
+<tr>
+<td>b04_tweedie_vs_freqSev.ipynb</td>
+<td><a href="https://github.com/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/b04_tweedie_vs_freqSev.ipynb">ipynb</a>, <a href="https://nbviewer.jupyter.org/github/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/b04_tweedie_vs_freqSev.ipynb">rendered</a></td>
+<td>comparison</td>
+<td><a href="https://bhishanpdl.github.io/">Bhishan Poudel</a></td>
+</tr>
+<tr>
+<td>b05_lorentz_curves_comparison.ipynb</td>
+<td><a href="https://github.com/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/b05_lorentz_curves_comparison.ipynb">ipynb</a>, <a href="https://nbviewer.jupyter.org/github/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/b05_lorentz_curves_comparison.ipynb">rendered</a></td>
+<td>Lorentz Curve</td>
+<td><a href="https://bhishanpdl.github.io/">Bhishan Poudel</a></td>
+</tr>
+<tr>
+<td>c01_xgboost_tweedie.ipynb</td>
+<td><a href="https://github.com/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/c01_xgboost_tweedie.ipynb">ipynb</a>, <a href="https://nbviewer.jupyter.org/github/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/c01_xgboost_tweedie.ipynb">rendered</a></td>
+<td>'objective':'reg:tweedie'</td>
+<td><a href="https://bhishanpdl.github.io/">Bhishan Poudel</a></td>
+</tr>
+<tr>
+<td>d01_gam_linear.ipynb</td>
+<td><a href="https://github.com/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/d01_gam_linear.ipynb">ipynb</a>, <a href="https://nbviewer.jupyter.org/github/bhishanpdl/Project_French_Motor_Claims/blob/master/notebooks/d01_gam_linear.ipynb">rendered</a></td>
+<td>n_splies=10, grid_search</td>
+<td><a href="https://bhishanpdl.github.io/">Bhishan Poudel</a></td>
 </tr>
 </tbody>
 </table>
-</br>
-<h1 style="background-color:tomato;">Undersampling</h1>
-<p><strong>Recall for all Classifiers with Grid Search for Undersampled Data</strong>
-<img src="reports/screenshots/recall_all_models_undersample_grid.png" alt="">
-<img src="reports/screenshots/cm_lr_undersample_grid.png" alt=""></p>
-</br>
-<h1 style="background-color:tomato;">SMOTE Oversampling: Logistic Regression</h1>
-<p><img src="reports/screenshots/lr_model_evaluation_scalar_metrics.png" alt="">
-<img src="reports/screenshots/cm_lr_smote_grid.png" alt=""></p>
-</br>
-<h1 style="background-color:tomato;">Anomaly Detection Methods</h1>
+<h1 style="background-color:tomato;">Data</h1>
+<ul>
+<li><a href="https://www.openml.org/d/41214">openml french motor freq</a> (Multiple features.)</li>
+<li><a href="https://www.openml.org/d/41215">openml french motor severity</a> (Two features Id policy and Claim Amount.)</li>
+</ul>
+<h1 style="background-color:tomato;">Data Cleaning</h1>
+<p>Some of the features are chosen for modelling.</p>
+<pre class="hljs"><code><div>one hot encoding = [&quot;VehBrand&quot;, &quot;VehPower&quot;, &quot;VehGas&quot;, &quot;Region&quot;, &quot;Area&quot;]
+kbins discretizer = [&quot;VehAge&quot;, &quot;DrivAge&quot;]
+log and scaling = [&quot;Density&quot;]
+pass through =  [&quot;BonusMalus&quot;]
+</div></code></pre>
+<h1 style="background-color:tomato;">Results</h1>
 <table>
 <thead>
 <tr>
-<th style="text-align:left">Model</th>
-<th style="text-align:left">Description</th>
-<th style="text-align:left">Accuracy</th>
-<th style="text-align:left">Precision</th>
-<th style="text-align:left">Recall</th>
-<th style="text-align:left">F1(Weighted)</th>
+<th style="text-align:left">Module</th>
+<th style="text-align:left">Distribution</th>
+<th style="text-align:left">y_train</th>
+<th style="text-align:left">sample_weight</th>
+<th style="text-align:left">train D2</th>
+<th style="text-align:left">test D2</th>
+<th style="text-align:left">train MAE</th>
+<th style="text-align:left">test MAE</th>
+<th style="text-align:left">train MSE</th>
+<th style="text-align:left">test MSE</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">Isolation Forest</td>
-<td style="text-align:left">default</td>
-<td style="text-align:left">0.997384</td>
-<td style="text-align:left">0.261682</td>
-<td style="text-align:left">0.285714</td>
-<td style="text-align:left">0.997442</td>
+<td style="text-align:left">sklearn</td>
+<td style="text-align:left">Frequency Modelling (Poisson Distribution)</td>
+<td style="text-align:left">df_train['Frequency']</td>
+<td style="text-align:left">df_train['Exposure']</td>
+<td style="text-align:left">0.051384</td>
+<td style="text-align:left">0.048138</td>
+<td style="text-align:left">0.232085</td>
+<td style="text-align:left">0.224547</td>
+<td style="text-align:left">4.738399</td>
+<td style="text-align:left">2.407906</td>
 </tr>
 <tr>
-<td style="text-align:left">Local Outlier Factor</td>
-<td style="text-align:left">default</td>
-<td style="text-align:left">0.996331</td>
-<td style="text-align:left">0.025641</td>
-<td style="text-align:left">0.030612</td>
-<td style="text-align:left">0.996493</td>
-</tr>
-</tbody>
-</table>
-</br>
-<h1 style="background-color:tomato;">Gradient Boosting Modelling</h1>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">Model</th>
-<th style="text-align:left">Description</th>
-<th style="text-align:left">Accuracy</th>
-<th style="text-align:left">Precision</th>
-<th style="text-align:left">Recall</th>
-<th style="text-align:left">F1</th>
-<th style="text-align:left">AUC</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">lightgbm</td>
-<td style="text-align:left">grid search optuna</td>
-<td style="text-align:left">0.999315</td>
-<td style="text-align:left">0.873418</td>
-<td style="text-align:left">0.704082</td>
-<td style="text-align:left">0.779661</td>
-<td style="text-align:left">0.851953</td>
+<td style="text-align:left">sklearn</td>
+<td style="text-align:left">Severity Modelling (Gamma Distribution)</td>
+<td style="text-align:left">df_train.loc[mask_train, 'AvgClaimAmount']</td>
+<td style="text-align:left">df_train.loc[mask_train, 'ClaimNb']</td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">3.638157e-03</td>
+<td style="text-align:left">-4.747382e-04</td>
+<td style="text-align:left">1.859814e+03</td>
+<td style="text-align:left">1.856312e+03</td>
+<td style="text-align:left">4.959565e+06</td>
 </tr>
 <tr>
-<td style="text-align:left">lightgbm</td>
-<td style="text-align:left">default</td>
-<td style="text-align:left">0.997367</td>
-<td style="text-align:left">0.275862</td>
-<td style="text-align:left">0.326531</td>
-<td style="text-align:left">0.299065</td>
-<td style="text-align:left">0.662527</td>
-</tr>
-<tr>
-<td style="text-align:left">Xgboost</td>
-<td style="text-align:left">default, imbalanced</td>
-<td style="text-align:left">0.999263</td>
-<td style="text-align:left">0.850000</td>
-<td style="text-align:left">0.693878</td>
-<td style="text-align:left">0.764045</td>
-<td style="text-align:left">0.846833</td>
-</tr>
-<tr>
-<td style="text-align:left">Xgboost</td>
-<td style="text-align:left">default, undersampling</td>
-<td style="text-align:left">0.999263</td>
-<td style="text-align:left">0.850000</td>
-<td style="text-align:left">0.693878</td>
-<td style="text-align:left">0.764045</td>
-<td style="text-align:left">0.846833</td>
-</tr>
-<tr>
-<td style="text-align:left">Xgboost</td>
-<td style="text-align:left">n_estimators=150, imbalanced</td>
-<td style="text-align:left">0.999263</td>
-<td style="text-align:left">0.850000</td>
-<td style="text-align:left">0.693878</td>
-<td style="text-align:left">0.764045</td>
-<td style="text-align:left">0.846833</td>
-</tr>
-<tr>
-<td style="text-align:left">Xgboost</td>
-<td style="text-align:left">undersample, hpo1</td>
-<td style="text-align:left">0.999298</td>
-<td style="text-align:left">0.881579</td>
-<td style="text-align:left">0.683673</td>
-<td style="text-align:left">0.770115</td>
-<td style="text-align:left">0.841758</td>
-</tr>
-<tr>
-<td style="text-align:left">Xgboost</td>
-<td style="text-align:left">imbalanced, hpo</td>
-<td style="text-align:left">0.999245</td>
-<td style="text-align:left">0.898551</td>
-<td style="text-align:left">0.632653</td>
-<td style="text-align:left">0.742515</td>
-<td style="text-align:left">0.816265</td>
+<td style="text-align:left">sklearn</td>
+<td style="text-align:left">Pure Premium Modelling (TweedieRegressor)</td>
+<td style="text-align:left">df_train['PurePremium']</td>
+<td style="text-align:left">df_train['Exposure']</td>
+<td style="text-align:left">2.018645e-02</td>
+<td style="text-align:left">1.353285e-02</td>
+<td style="text-align:left">6.580440e+02</td>
+<td style="text-align:left">4.927505e+02</td>
+<td style="text-align:left">1.478259e+09</td>
+<td style="text-align:left">1.622053e+08</td>
 </tr>
 <tr>
 <td style="text-align:left">xgboost</td>
-<td style="text-align:left">grid search optuna</td>
-<td style="text-align:left">0.999333</td>
-<td style="text-align:left">0.875000</td>
-<td style="text-align:left">0.714286</td>
-<td style="text-align:left">0.786517</td>
-<td style="text-align:left">0.857055</td>
+<td style="text-align:left">Xgboost Tweedie Regression</td>
+<td style="text-align:left">dtrain.set_base_margin(np.log(df_train['Exposure'].to_numpy())</td>
+<td style="text-align:left">dtest.set_base_margin(np.log(df_test['Exposure'].to_numpy()))</td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">1.760538e+03</td>
+<td style="text-align:left">1.588351e+03</td>
+<td style="text-align:left">1.481952e+09</td>
+<td style="text-align:left">1.659363e+08</td>
 </tr>
 <tr>
-<td style="text-align:left">catboost</td>
-<td style="text-align:left">seed=100,depth=6,iter=1k</td>
-<td style="text-align:left">0.999631</td>
-<td style="text-align:left">1.000000</td>
-<td style="text-align:left">0.785714</td>
-<td style="text-align:left">0.880000</td>
-<td style="text-align:left">0.892857</td>
+<td style="text-align:left">pygam</td>
+<td style="text-align:left">GAM Linear Model</td>
+<td style="text-align:left">df_train[&quot;AvgClaimAmount&quot;].values</td>
+<td style="text-align:left">N/A</td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">1.686438e+02</td>
+<td style="text-align:left">1.655408e+02</td>
+<td style="text-align:left">1.785332e+06</td>
+<td style="text-align:left">1.647533e+06</td>
 </tr>
 </tbody>
 </table>
-</br>
-<h1 style="background-color:tomato;">Automatic Modelling: pycaret</h1>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">Model</th>
-<th style="text-align:left">Description</th>
-<th style="text-align:left">Accuracy</th>
-<th style="text-align:left">AUC</th>
-<th style="text-align:left">Recall</th>
-<th style="text-align:left">Precision</th>
-<th style="text-align:left">F1</th>
-<th style="text-align:left">Kappa</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">cb_tuned</td>
-<td style="text-align:left">fold=5</td>
-<td style="text-align:left">0.9996</td>
-<td style="text-align:left">0.9659</td>
-<td style="text-align:left">0.7865</td>
-<td style="text-align:left">0.9667</td>
-<td style="text-align:left">0.8642</td>
-<td style="text-align:left">0.8639</td>
-</tr>
-<tr>
-<td style="text-align:left">lda_tuned</td>
-<td style="text-align:left">fold=5</td>
-<td style="text-align:left">0.9995</td>
-<td style="text-align:left">0.9833</td>
-<td style="text-align:left">0.7760</td>
-<td style="text-align:left">0.9217</td>
-<td style="text-align:left">0.8423</td>
-<td style="text-align:left">0.8420</td>
-</tr>
-<tr>
-<td style="text-align:left">xgb</td>
-<td style="text-align:left">default</td>
-<td style="text-align:left">0.9994</td>
-<td style="text-align:left">0.9585</td>
-<td style="text-align:left">0.7345</td>
-<td style="text-align:left">0.9102</td>
-<td style="text-align:left">0.8047</td>
-<td style="text-align:left">0.8044</td>
-</tr>
-<tr>
-<td style="text-align:left">cb</td>
-<td style="text-align:left">default</td>
-<td style="text-align:left">0.9995</td>
-<td style="text-align:left">0.9554</td>
-<td style="text-align:left">0.7345</td>
-<td style="text-align:left">0.9548</td>
-<td style="text-align:left">0.8215</td>
-<td style="text-align:left">0.8212</td>
-</tr>
-<tr>
-<td style="text-align:left">lda</td>
-<td style="text-align:left">default</td>
-<td style="text-align:left">0.9992</td>
-<td style="text-align:left">0.9677</td>
-<td style="text-align:left">0.7255</td>
-<td style="text-align:left">0.8340</td>
-<td style="text-align:left">0.7661</td>
-<td style="text-align:left">0.7657</td>
-</tr>
-<tr>
-<td style="text-align:left">xgb_tuned</td>
-<td style="text-align:left">tuned</td>
-<td style="text-align:left">0.9992</td>
-<td style="text-align:left">0.9677</td>
-<td style="text-align:left">0.7255</td>
-<td style="text-align:left">0.8340</td>
-<td style="text-align:left">0.7661</td>
-<td style="text-align:left">0.7657</td>
-</tr>
-<tr>
-<td style="text-align:left">lda_tuned</td>
-<td style="text-align:left">n_iter=100,fold=10</td>
-<td style="text-align:left">0.9992</td>
-<td style="text-align:left">0.9677</td>
-<td style="text-align:left">0.7255</td>
-<td style="text-align:left">0.8340</td>
-<td style="text-align:left">0.7661</td>
-<td style="text-align:left">0.7657</td>
-</tr>
-</tbody>
-</table>
-</br>
-<h1 style="background-color:tomato;">Big Data Modelling: PySpark</h1>
-<p><img src="reports/screenshots/pyspark_clf_results.png" alt=""></p>
-</br>
-<h1 style="background-color:tomato;">Deep Learning Models</h1>
-<table>
-<thead>
-<tr>
-<th style="text-align:left">Model</th>
-<th style="text-align:left">Description</th>
-<th style="text-align:left">Accuracy</th>
-<th style="text-align:left">Precision</th>
-<th style="text-align:left">Recall</th>
-<th style="text-align:left">F1</th>
-<th style="text-align:left">AUC</th>
-<th style="text-align:left">Missed Frauds</th>
-<th style="text-align:left">Untrue Frauds</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">keras</td>
-<td style="text-align:left">3 layers, 2 dropouts, class_weight</td>
-<td style="text-align:left">0.983744</td>
-<td style="text-align:left">0.081818</td>
-<td style="text-align:left">0.826531</td>
-<td style="text-align:left">0.148897</td>
-<td style="text-align:left">0.905273</td>
-<td style="text-align:left">17</td>
-<td style="text-align:left">909</td>
-</tr>
-<tr>
-<td style="text-align:left">keras</td>
-<td style="text-align:left">1 layer, dropout, early_stopping</td>
-<td style="text-align:left">0.984990</td>
-<td style="text-align:left">0.090811</td>
-<td style="text-align:left">0.857143</td>
-<td style="text-align:left">0.164223</td>
-<td style="text-align:left">0.921177</td>
-<td style="text-align:left">14</td>
-<td style="text-align:left">841</td>
-</tr>
-<tr>
-<td style="text-align:left">keras</td>
-<td style="text-align:left">1 layer, dropout, steps_per_epoch, oversampling</td>
-<td style="text-align:left">0.982796</td>
-<td style="text-align:left">0.080000</td>
-<td style="text-align:left">0.857143</td>
-<td style="text-align:left">0.146341</td>
-<td style="text-align:left">0.920077</td>
-<td style="text-align:left">14</td>
-<td style="text-align:left">966</td>
-</tr>
-<tr>
-<td style="text-align:left">keras</td>
-<td style="text-align:left">1 layer, class_weight, early_stopping, scikit api</td>
-<td style="text-align:left">0.987939</td>
-<td style="text-align:left">0.111989</td>
-<td style="text-align:left">0.867347</td>
-<td style="text-align:left">0.198366</td>
-<td style="text-align:left">0.927747</td>
-<td style="text-align:left">13</td>
-<td style="text-align:left">674</td>
-</tr>
-</tbody>
-</table>
-<h1 id="references">References</h1>
-<ul>
-<li>https://www.tensorflow.org/tutorials/structured_data/imbalanced_data</li>
-<li>https://keras.io/examples/structured_data/imbalanced_classification/</li>
-<li>https://www.kaggle.com/residentmario/using-keras-models-with-scikit-learn-pipelines#</li>
-<li>https://machinelearningmastery.com/grid-search-hyperparameters-deep-learning-models-python-keras/</li>
-</ul>
 
 </body>
 </html>
