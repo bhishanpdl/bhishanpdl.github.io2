@@ -13714,6 +13714,7 @@
 
   </head>
 
+<!-- ====================================================================== -->
 <h3> Most popular html tags </h3>
 
 <pre><code class="plaintext">
@@ -13739,6 +13740,9 @@
 20 ul is unordered list
 21. video embeds a video
 
+
+
+<!-- ======================= Code ================================ -->
 </code></pre>
 
 
@@ -13752,10 +13756,13 @@
   import numpy as np
   </code></pre>
 
+
+
+
+<!-- ========================== Colors ============================== -->
 </br>
 </br>
 <h3> Using Some colors </h3>
-
 
 <h5 class="color1">This heading will have color1</h5>
 
@@ -13784,6 +13791,11 @@ Here is full width colorful horizontal line:
 <p > This <mark>word</mark> is made colorful yellow using mark tag.</p>
 
 
+
+
+
+
+<!-- ====================== Hyperlinks ================================= -->
 <br>
 <h3> Hyperlinks </h3>
 <ul>
@@ -13792,6 +13804,10 @@ Here is full width colorful horizontal line:
   <li><a href="https://twitter.com">Twitter</a></li>
 </ul>
 
+
+
+
+<!-- ====================== Unordered List ================================ -->
 </br>
 <h3> Unordered list is left aligned</h3>
 <ul>
@@ -13801,6 +13817,10 @@ Here is full width colorful horizontal line:
 </ul>
 
 
+
+
+
+<!-- ==================== Ordered List =================================== -->
 <br>
 <h3> Ordered list is good aligned </h3>
 <ol>
@@ -13809,6 +13829,10 @@ Here is full width colorful horizontal line:
   <li>Milk</li>
 </ol>
 
+
+
+
+<!-- ====================== Description List ============================= -->
 </br>
 <h3> Description Lists </h3>
 <dl>
@@ -13819,6 +13843,8 @@ Here is full width colorful horizontal line:
 </dl>
 
 
+
+<!-- ===================== Table ============================ -->
 </br>
 <h3> Table Example </h3>
 <table style="width:100%;border-collapse: collapse;">
@@ -13837,8 +13863,12 @@ Here is full width colorful horizontal line:
   </tr>
 </table>
 
+
+
+
+<!-- ================= Collapsible header for Safari ===================== -->
 </br>
-<h3> Collapsible Header </h3>
+<h3> Collapsible Header Only works for Safari NOT Chrome </h3>
 <details><summary>Show Answer</summary>
   <p>
 
@@ -13851,6 +13881,11 @@ Here is full width colorful horizontal line:
   </p>
   </details>
 
+
+
+
+
+<!-- ========================= Blockquote ============================== -->
 </br>
 <h3> Using blockquote </h3>
 <blockquote>
@@ -13858,14 +13893,28 @@ Here is full width colorful horizontal line:
   line 2.
 </blockquote>
 
+
+
+
+
+<!-- ======================= Marquee ========================== -->
 </br>
 <h3> Using marquee </h3>
 <marquee style='width: 30%; color: blue;'><b>Left moving marquee</b></marquee>
 
+
+
+
+
+<!-- ========================== Images =========================== -->
 </br>
 <h3> Using images </h3>
 <img src="assets/images/example.png" alt="assets/images/example.png">
 
+
+
+
+<!-- ======================= Progress bar =========================== -->
 </br>
 <h3> Using progress bar </h3>
 <progress value="33" max="100"></progress>
@@ -13897,11 +13946,9 @@ Here is full width colorful horizontal line:
 </div>
 
 
-</br>
-</br>
-<h3> Using Buttons Clicks </h3>
-<input type="button" class="button" onclick="window.open('http://stackoverflow.com','_blank');" value="Go to stackoverflow" />
 
+
+<!-- ========================== Dropdown ============================ -->
 <br>
 <br>
 <h3> Create drop down menu for hyper links </h3>
@@ -13916,6 +13963,39 @@ Here is full width colorful horizontal line:
   </form>
 
 
+
+<!-- ============================= Button Clicks ================== -->
+</br>
+</br>
+<h3> Using Buttons Clicks </h3>
+<input type="button" class="button" onclick="window.open('http://stackoverflow.com','_blank');" value="Go to stackoverflow" />
+
+
+</br>
+
+
+<div id="myimageDiv" style="display:none;"><img src='Projects/bp/gif/api.gif'></div>
+<button onclick="showHide()" id="myBtn" >Show/Hide GIF</button>
+
+
+</br>
+<script type="text/javascript">
+        function showHide(){
+                var oImageDiv=document.getElementById("show_api");
+                oImageDiv.style.display=(oImageDiv.style.display=='none')?'inline':'none';
+        }
+</script>
+<div id="show_api" style="display:none;">
+        <img src="Projects/bp/gif/api.gif" alt="api.gif">
+</div>
+<input type="button" style="background-color:rgb(207, 182, 182);color:rgb(173, 102, 55);width:600px;height:40px;"
+value="API of My Private Module bp (Click to Show/Hide)" onclick="showHide()">
+
+
+
+<!-- ===================END OF Examples ============================ -->
+
+<!-- =====================Some Scripts ================================ -->
 <script>
   function go(href){
     window.open(href,'_blank');
