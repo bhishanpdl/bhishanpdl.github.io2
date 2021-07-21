@@ -3,16 +3,16 @@
 <head><meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>hospital_management_postgresql_sqlalchemy_pandas_read_sql</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>a04_movie_theaters_pyspark_sqlite3</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 
 
 
 
 <style type="text/css">
-    pre { line-height: 125%; margin: 0; }
-td.linenos pre { color: #000000; background-color: #f0f0f0; padding-left: 5px; padding-right: 5px; }
-span.linenos { color: #000000; background-color: #f0f0f0; padding-left: 5px; padding-right: 5px; }
-td.linenos pre.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+    pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
 span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
 .highlight .hll { background-color: var(--jp-cell-editor-active-background) }
 .highlight { background: var(--jp-cell-editor-background); color: var(--jp-mirror-editor-variable-color) }
@@ -14260,29 +14260,17 @@ a.anchor-link {
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p><h1>Table of Contents<span class="tocSkip"></span></h1></p>
-<div class="toc"><ul class="toc-item"><li><span><a href="#Introduction" data-toc-modified-id="Introduction-1"><span class="toc-item-num">1&nbsp;&nbsp;</span>Introduction</a></span></li><li><span><a href="#Imports" data-toc-modified-id="Imports-2"><span class="toc-item-num">2&nbsp;&nbsp;</span>Imports</a></span></li><li><span><a href="#Load-the-Database-and-Tables" data-toc-modified-id="Load-the-Database-and-Tables-3"><span class="toc-item-num">3&nbsp;&nbsp;</span>Load the Database and Tables</a></span></li><li><span><a href="#Exercise-Questions" data-toc-modified-id="Exercise-Questions-4"><span class="toc-item-num">4&nbsp;&nbsp;</span>Exercise Questions</a></span><ul class="toc-item"><li><span><a href="#Obtain-the-names-of-all-physicians-that-have-performed-a-medical-procedure-they-have-never-been-certified-to-perform." data-toc-modified-id="Obtain-the-names-of-all-physicians-that-have-performed-a-medical-procedure-they-have-never-been-certified-to-perform.-4.1"><span class="toc-item-num">4.1&nbsp;&nbsp;</span>Obtain the names of all physicians that have performed a medical procedure they have never been certified to perform.</a></span></li><li><span><a href="#Same-as-the-previous-query,-but-include-the-following-information-in-the-results:-Physician-name,-name-of-procedure,-date-when-the-procedure-was-carried-out,-name-of-the-patient-the-procedure-was-carried-out-on." data-toc-modified-id="Same-as-the-previous-query,-but-include-the-following-information-in-the-results:-Physician-name,-name-of-procedure,-date-when-the-procedure-was-carried-out,-name-of-the-patient-the-procedure-was-carried-out-on.-4.2"><span class="toc-item-num">4.2&nbsp;&nbsp;</span>Same as the previous query, but include the following information in the results: Physician name, name of procedure, date when the procedure was carried out, name of the patient the procedure was carried out on.</a></span></li><li><span><a href="#Obtain-the-names-of-all-physicians-that-have-performed-a-medical-procedure-that-they-are-certified-to-perform,-but-such-that-the-procedure-was-done-at-a-date-(Undergoes.Date)-after-the-physician's-certification-expired-(Trained_In.CertificationExpires)." data-toc-modified-id="Obtain-the-names-of-all-physicians-that-have-performed-a-medical-procedure-that-they-are-certified-to-perform,-but-such-that-the-procedure-was-done-at-a-date-(Undergoes.Date)-after-the-physician's-certification-expired-(Trained_In.CertificationExpires).-4.3"><span class="toc-item-num">4.3&nbsp;&nbsp;</span>Obtain the names of all physicians that have performed a medical procedure that they are certified to perform, but such that the procedure was done at a date (Undergoes.Date) after the physician's certification expired (Trained_In.CertificationExpires).</a></span></li><li><span><a href="#Same-as-the-previous-query,-but-include-the-following-information-in-the-results:-Physician-name,-name-of-procedure,-date-when-the-procedure-was-carried-out,-name-of-the-patient-the-procedure-was-carried-out-on,-and-date-when-the-certification-expired." data-toc-modified-id="Same-as-the-previous-query,-but-include-the-following-information-in-the-results:-Physician-name,-name-of-procedure,-date-when-the-procedure-was-carried-out,-name-of-the-patient-the-procedure-was-carried-out-on,-and-date-when-the-certification-expired.-4.4"><span class="toc-item-num">4.4&nbsp;&nbsp;</span>Same as the previous query, but include the following information in the results: Physician name, name of procedure, date when the procedure was carried out, name of the patient the procedure was carried out on, and date when the certification expired.</a></span></li><li><span><a href="#Obtain-the-information-for-appointments-where-a-patient-met-with-a-physician-other-than-his/her-primary-care-physician.-Show-the-following-information:-Patient-name,-physician-name,-nurse-name-(if-any),-start-and-end-time-of-appointment,-examination-room,-and-the-name-of-the-patient's-primary-care-physician." data-toc-modified-id="Obtain-the-information-for-appointments-where-a-patient-met-with-a-physician-other-than-his/her-primary-care-physician.-Show-the-following-information:-Patient-name,-physician-name,-nurse-name-(if-any),-start-and-end-time-of-appointment,-examination-room,-and-the-name-of-the-patient's-primary-care-physician.-4.5"><span class="toc-item-num">4.5&nbsp;&nbsp;</span>Obtain the information for appointments where a patient met with a physician other than his/her primary care physician. Show the following information: Patient name, physician name, nurse name (if any), start and end time of appointment, examination room, and the name of the patient's primary care physician.</a></span></li><li><span><a href="#The-Patient-field-in-Undergoes-is-redundant,-since-we-can-obtain-it-from-the-Stay-table.-There-are-no-constraints-in-force-to-prevent-inconsistencies-between-these-two-tables.-More-specifically,-the-Undergoes-table-may-include-a-row-where-the-patient-ID-does-not-match-the-one-we-would-obtain-from-the-Stay-table-through-the-Undergoes.Stay-foreign-key.-Select-all-rows-from-Undergoes-that-exhibit-this-inconsistency." data-toc-modified-id="The-Patient-field-in-Undergoes-is-redundant,-since-we-can-obtain-it-from-the-Stay-table.-There-are-no-constraints-in-force-to-prevent-inconsistencies-between-these-two-tables.-More-specifically,-the-Undergoes-table-may-include-a-row-where-the-patient-ID-does-not-match-the-one-we-would-obtain-from-the-Stay-table-through-the-Undergoes.Stay-foreign-key.-Select-all-rows-from-Undergoes-that-exhibit-this-inconsistency.-4.6"><span class="toc-item-num">4.6&nbsp;&nbsp;</span>The Patient field in Undergoes is redundant, since we can obtain it from the Stay table. There are no constraints in force to prevent inconsistencies between these two tables. More specifically, the Undergoes table may include a row where the patient ID does not match the one we would obtain from the Stay table through the Undergoes.Stay foreign key. Select all rows from Undergoes that exhibit this inconsistency.</a></span></li><li><span><a href="#Obtain-the-names-of-all-the-nurses-who-have-ever-been-on-call-for-room-123." data-toc-modified-id="Obtain-the-names-of-all-the-nurses-who-have-ever-been-on-call-for-room-123.-4.7"><span class="toc-item-num">4.7&nbsp;&nbsp;</span>Obtain the names of all the nurses who have ever been on call for room 123.</a></span></li><li><span><a href="#The-hospital-has-several-examination-rooms-where-appointments-take-place.-Obtain-the-number-of-appointments-that-have-taken-place-in-each-examination-room." data-toc-modified-id="The-hospital-has-several-examination-rooms-where-appointments-take-place.-Obtain-the-number-of-appointments-that-have-taken-place-in-each-examination-room.-4.8"><span class="toc-item-num">4.8&nbsp;&nbsp;</span>The hospital has several examination rooms where appointments take place. Obtain the number of appointments that have taken place in each examination room.</a></span></li><li><span><a href="#Obtain-the-names-of-all-patients-(also-include,-for-each-patient,-the-name-of-the-patient's-primary-care-physician),-such-that-\emph{all}-the-following-are-true:" data-toc-modified-id="Obtain-the-names-of-all-patients-(also-include,-for-each-patient,-the-name-of-the-patient's-primary-care-physician),-such-that-\emph{all}-the-following-are-true:-4.9"><span class="toc-item-num">4.9&nbsp;&nbsp;</span>Obtain the names of all patients (also include, for each patient, the name of the patient's primary care physician), such that \emph{all} the following are true:</a></span></li></ul></li></ul></div>
+<div class="toc"><ul class="toc-item"><li><span><a href="#Wikibooks-SQL-Exercise:-Movie-Theaters" data-toc-modified-id="Wikibooks-SQL-Exercise:-Movie-Theaters-1"><span class="toc-item-num">1&nbsp;&nbsp;</span>Wikibooks SQL Exercise: Movie Theaters</a></span></li><li><span><a href="#Utility-Functions" data-toc-modified-id="Utility-Functions-2"><span class="toc-item-num">2&nbsp;&nbsp;</span>Utility Functions</a></span></li><li><span><a href="#Create-Tables" data-toc-modified-id="Create-Tables-3"><span class="toc-item-num">3&nbsp;&nbsp;</span>Create Tables</a></span><ul class="toc-item"><li><span><a href="#data:-Movies" data-toc-modified-id="data:-Movies-3.1"><span class="toc-item-num">3.1&nbsp;&nbsp;</span>data: Movies</a></span></li><li><span><a href="#data:-MovieTheaters" data-toc-modified-id="data:-MovieTheaters-3.2"><span class="toc-item-num">3.2&nbsp;&nbsp;</span>data: MovieTheaters</a></span></li><li><span><a href="#data:-combined-data" data-toc-modified-id="data:-combined-data-3.3"><span class="toc-item-num">3.3&nbsp;&nbsp;</span>data: combined data</a></span></li><li><span><a href="#merge-two-dataframes-using-pyspark" data-toc-modified-id="merge-two-dataframes-using-pyspark-3.4"><span class="toc-item-num">3.4&nbsp;&nbsp;</span>merge two dataframes using pyspark</a></span></li><li><span><a href="#spark-dataframe-attributes" data-toc-modified-id="spark-dataframe-attributes-3.5"><span class="toc-item-num">3.5&nbsp;&nbsp;</span>spark dataframe attributes</a></span></li></ul></li><li><span><a href="#Create-SQL-table-from-spark-dataframes" data-toc-modified-id="Create-SQL-table-from-spark-dataframes-4"><span class="toc-item-num">4&nbsp;&nbsp;</span>Create SQL table from spark dataframes</a></span></li><li><span><a href="#Exercise-Questions" data-toc-modified-id="Exercise-Questions-5"><span class="toc-item-num">5&nbsp;&nbsp;</span>Exercise Questions</a></span><ul class="toc-item"><li><span><a href="#1.-Select-the-title-of-all-movies." data-toc-modified-id="1.-Select-the-title-of-all-movies.-5.1"><span class="toc-item-num">5.1&nbsp;&nbsp;</span>1. Select the title of all movies.</a></span></li><li><span><a href="#2.-Show-all-the-distinct-ratings-in-the-database." data-toc-modified-id="2.-Show-all-the-distinct-ratings-in-the-database.-5.2"><span class="toc-item-num">5.2&nbsp;&nbsp;</span>2. Show all the distinct ratings in the database.</a></span></li><li><span><a href="#3.-Show-all-unrated-movies." data-toc-modified-id="3.-Show-all-unrated-movies.-5.3"><span class="toc-item-num">5.3&nbsp;&nbsp;</span>3. Show all unrated movies.</a></span></li><li><span><a href="#4.-Select-all-movie-theaters-that-are-not-currently-showing-a-movie." data-toc-modified-id="4.-Select-all-movie-theaters-that-are-not-currently-showing-a-movie.-5.4"><span class="toc-item-num">5.4&nbsp;&nbsp;</span>4. Select all movie theaters that are not currently showing a movie.</a></span></li><li><span><a href="#5.-Select-all-data-from-all-movie-theaters-and,-additionally,-the-data-from-the-movie-that-is-being-shown-in-the-theater-(if-one-is-being-shown)." data-toc-modified-id="5.-Select-all-data-from-all-movie-theaters-and,-additionally,-the-data-from-the-movie-that-is-being-shown-in-the-theater-(if-one-is-being-shown).-5.5"><span class="toc-item-num">5.5&nbsp;&nbsp;</span>5. Select all data from all movie theaters and, additionally, the data from the movie that is being shown in the theater (if one is being shown).</a></span></li><li><span><a href="#6.-Select-all-data-from-all-movies-and,-if-that-movie-is-being-shown-in-a-theater,-show-the-data-from-the-theater." data-toc-modified-id="6.-Select-all-data-from-all-movies-and,-if-that-movie-is-being-shown-in-a-theater,-show-the-data-from-the-theater.-5.6"><span class="toc-item-num">5.6&nbsp;&nbsp;</span>6. Select all data from all movies and, if that movie is being shown in a theater, show the data from the theater.</a></span></li><li><span><a href="#7.-Show-the-titles-of-movies-not-currently-being-shown-in-any-theaters." data-toc-modified-id="7.-Show-the-titles-of-movies-not-currently-being-shown-in-any-theaters.-5.7"><span class="toc-item-num">5.7&nbsp;&nbsp;</span>7. Show the titles of movies not currently being shown in any theaters.</a></span></li><li><span><a href="#8.-Add-the-unrated-movie-&quot;One,-Two,-Three&quot;." data-toc-modified-id="8.-Add-the-unrated-movie-&quot;One,-Two,-Three&quot;.-5.8"><span class="toc-item-num">5.8&nbsp;&nbsp;</span>8. Add the unrated movie "One, Two, Three".</a></span></li><li><span><a href="#9.-Set-the-rating-of-all-unrated-movies-to-&quot;G&quot;." data-toc-modified-id="9.-Set-the-rating-of-all-unrated-movies-to-&quot;G&quot;.-5.9"><span class="toc-item-num">5.9&nbsp;&nbsp;</span>9. Set the rating of all unrated movies to "G".</a></span></li><li><span><a href="#10.-Remove-movie-theaters-projecting-movies-rated-&quot;NC-17&quot;." data-toc-modified-id="10.-Remove-movie-theaters-projecting-movies-rated-&quot;NC-17&quot;.-5.10"><span class="toc-item-num">5.10&nbsp;&nbsp;</span>10. Remove movie theaters projecting movies rated "NC-17".</a></span></li></ul></li><li><span><a href="#Time-Taken" data-toc-modified-id="Time-Taken-6"><span class="toc-item-num">6&nbsp;&nbsp;</span>Time Taken</a></span></li></ul></div>
 </div>
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h1><ul>
-<li>To run the postgresql commands in jupyter notebook, first we need to use the correct conda environment. Using command <code>conda env list</code>, I chose environment <code>spk</code> since it has required modules: <code>sqlalchemy, pandas</code></li>
-<li>To use postgresql commands, we also should have the app <code>pgAdmin</code> running. We need to install the app if it was not installed already.</li>
-<li>Here, I have saved my postgres credentials at the folder <code>~/.config/postgres</code> and given that path in jupyter magic. This credential must exist and pgAdmin should run using those credentials.</li>
-<li>I have already created postgres database called <code>wbhospital</code> and I can see that database in pgAdmin app.</li>
-<li>To run the SQL queries to this database, we can either use pgAdmin script editor, or simply use <code>pandas.read_sql</code> command. Here, in this project I have opted to use pandas method.</li>
-</ul>
-<p>References:</p>
-<ul>
+<h1 id="Wikibooks-SQL-Exercise:-Movie-Theaters">Wikibooks SQL Exercise: Movie Theaters<a class="anchor-link" href="#Wikibooks-SQL-Exercise:-Movie-Theaters">&#182;</a></h1><ul>
 <li><a href="https://en.wikibooks.org/wiki/SQL_Exercises">https://en.wikibooks.org/wiki/SQL_Exercises</a></li>
-<li><a href="https://en.wikibooks.org/wiki/SQL_Exercises/The_Hospital">https://en.wikibooks.org/wiki/SQL_Exercises/The_Hospital</a></li>
+<li><a href="https://en.wikibooks.org/wiki/SQL_Exercises/Movie_theatres">https://en.wikibooks.org/wiki/SQL_Exercises/Movie_theatres</a></li>
 </ul>
+<p><img src="images/relational_schema_wbmovie.png" alt=""></p>
 
-</div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Imports">Imports<a class="anchor-link" href="#Imports">&#182;</a></h1>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
@@ -14292,19 +14280,7 @@ a.anchor-link {
      <div class="CodeMirror cm-s-jupyter">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">json</span>
 <span class="n">time_start_notebook</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-
-<span class="c1"># Jupyter notebook settings for pandas</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_rows&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
-<span class="c1"># last_year = datetime.now() - relativedelta(years=1)</span>
 </pre></div>
 
      </div>
@@ -14318,7 +14294,11 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># my local library</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/Users/poudel/Dropbox/a00_Bhishan_Modules/&quot;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/Users/poudel/Dropbox/a00_Bhishan_Modules/bhishan&quot;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">bhishan</span> <span class="kn">import</span> <span class="n">bp</span>
 </pre></div>
 
      </div>
@@ -14326,40 +14306,18 @@ a.anchor-link {
 </div>
 </div>
 
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Load-the-Database-and-Tables">Load the Database and Tables<a class="anchor-link" href="#Load-the-Database-and-Tables">&#182;</a></h1><p><img src="ER_the_hospital.png" alt="Drawing" style="width: 1800px;height:1000px;"/></p>
-
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># configs</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~/.config/postgres/credentials.json&#39;</span><span class="p">)))</span>
-<span class="n">pw</span><span class="p">,</span><span class="n">port</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;port&#39;</span><span class="p">]</span> <span class="c1"># port is 5432</span>
-<span class="n">dbname</span> <span class="o">=</span> <span class="s1">&#39;wbhospital&#39;</span> <span class="c1"># open pdadmin4 and look if this database exists.</span>
-</pre></div>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-     </div>
-</div>
-</div>
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-     <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> sql
-<span class="o">%</span><span class="k">sql</span> postgres://postgres:$pw@localhost:$port/$dbname
-
-<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;postgresql://postgres:</span><span class="si">{</span><span class="n">pw</span><span class="si">}</span><span class="s1">@localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">dbname</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">conn</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="c1"># Jupyter notebook settings for pandas</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_rows&#39;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14370,16 +14328,16 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
+<span class="c1"># last_year = datetime.now() - relativedelta(years=1)</span>
 
-<span class="k">select</span> <span class="n">table_schema</span><span class="p">,</span><span class="k">table_name</span>
-<span class="k">from</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span>
-<span class="k">where</span> <span class="n">table_schema</span> <span class="k">not</span> <span class="k">in</span> <span class="p">(</span><span class="s1">&#39;pg_catalog&#39;</span><span class="p">,</span> <span class="s1">&#39;information_schema&#39;</span><span class="p">)</span>
-<span class="k">and</span> <span class="n">table_schema</span> <span class="k">not</span> <span class="k">like</span> <span class="s1">&#39;pg_toast%&#39;</span>
-<span class="k">order</span> <span class="k">by</span> <span class="n">table_schema</span><span class="p">,</span> <span class="k">table_name</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="n">sqlite3</span><span class="o">.</span><span class="n">sqlite_version</span> <span class="c1"># sqlite database version 3.29</span>
+<span class="n">sqlite3</span><span class="o">.</span><span class="n">version</span> <span class="c1"># python module version</span>
 </pre></div>
 
      </div>
@@ -14395,96 +14353,42 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre> * postgres://postgres:***@localhost:5432/wbhospital
-15 rows affected.
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<table>
-    <tr>
-        <th>table_schema</th>
-        <th>table_name</th>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>affiliated_with</td>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>appointment</td>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>block</td>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>department</td>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>medication</td>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>nurse</td>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>on_call</td>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>patient</td>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>physician</td>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>prescribes</td>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>procedure</td>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>room</td>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>stay</td>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>trained_in</td>
-    </tr>
-    <tr>
-        <td>public</td>
-        <td>undergoes</td>
-    </tr>
-</table>
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>&#39;2.6.0&#39;</pre>
 </div>
 
 </div>
 
 </div>
 
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[5]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># pyspark settings</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">findspark</span>
+
+<span class="n">HOME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">)</span>
+<span class="n">findspark</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">HOME</span> <span class="o">+</span> <span class="s2">&quot;/Softwares/Spark/spark-3.1.2-bin-hadoop3.2&quot;</span><span class="p">)</span>
+
+<span class="c1"># Set spark environments</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;PYSPARK_PYTHON&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">HOME</span><span class="si">}</span><span class="s1">/opt/miniconda3/envs/spk/bin/python&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;PYSPARK_DRIVER_PYTHON&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">HOME</span><span class="si">}</span><span class="s1">/opt/miniconda3/envs/spk/bin/python&#39;</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
@@ -14493,11 +14397,30 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tables</span> <span class="o">=</span> <span class="n">_</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pyspark</span>
+<span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkConf</span><span class="p">,</span> <span class="n">SparkContext</span><span class="p">,</span> <span class="n">SQLContext</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.session</span> <span class="kn">import</span> <span class="n">SparkSession</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">col</span> <span class="k">as</span> <span class="n">_col</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="n">udf</span> <span class="c1"># @udf(&quot;integer&quot;) def myfunc(x,y): return x - y</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="kn">import</span> <span class="n">functions</span> <span class="k">as</span> <span class="n">F</span> <span class="c1"># stddev format_number date_format, dayofyear, when</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.window</span> <span class="kn">import</span> <span class="n">Window</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.types</span> <span class="kn">import</span> <span class="n">StructField</span><span class="p">,</span> <span class="n">StringType</span><span class="p">,</span> <span class="n">IntegerType</span><span class="p">,</span>  <span class="n">FloatType</span><span class="p">,</span> <span class="n">StructType</span>
+<span class="kn">from</span> <span class="nn">pyspark.sql.functions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">mean</span> <span class="k">as</span> <span class="n">_mean</span><span class="p">,</span> <span class="nb">min</span> <span class="k">as</span> <span class="n">_min</span><span class="p">,</span>
+                                   <span class="nb">max</span> <span class="k">as</span> <span class="n">_max</span><span class="p">,</span> <span class="n">avg</span> <span class="k">as</span> <span class="n">_avg</span><span class="p">,</span>
+                                   <span class="n">when</span> <span class="k">as</span> <span class="n">_when</span>
+                                  <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">tables</span><span class="p">))</span>
 
-<span class="n">df_tables</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">tables</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;table_schema&#39;</span><span class="p">,</span><span class="s1">&#39;table_name&#39;</span><span class="p">])</span>
+<span class="n">spark</span> <span class="o">=</span> <span class="n">SparkSession</span>\
+        <span class="o">.</span><span class="n">builder</span>\
+        <span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s2">&quot;bhishan&quot;</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+
+<span class="n">sc</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span>
+<span class="n">sqlContext</span> <span class="o">=</span> <span class="n">pyspark</span><span class="o">.</span><span class="n">SQLContext</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> <span class="c1"># spark_df = sqlContext.createDataFrame(pandas_df)</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">setLogLevel</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pyspark</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14517,7 +14440,7 @@ a.anchor-link {
 
 
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>&lt;class &#39;sql.run.ResultSet&#39;&gt;
+<pre>3.1.2
 </pre>
 </div>
 </div>
@@ -14526,13 +14449,18 @@ a.anchor-link {
 
 </div>
 
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_tables</span><span class="o">.</span><span class="n">columns</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark</span> <span class="kn">import</span> <span class="n">SparkConf</span><span class="p">,</span> <span class="n">SparkContext</span><span class="p">,</span> <span class="n">SQLContext</span>
+
+<span class="n">spark</span> <span class="o">=</span> <span class="n">pyspark</span><span class="o">.</span><span class="n">sql</span><span class="o">.</span><span class="n">SparkSession</span><span class="o">.</span><span class="n">builder</span><span class="o">.</span><span class="n">appName</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">getOrCreate</span><span class="p">()</span>
+<span class="n">sc</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sparkContext</span>
+<span class="n">sqlContext</span> <span class="o">=</span> <span class="n">SQLContext</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span> <span class="c1"># spark_df = sqlContext.createDataFrame(pandas_df)</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">setLogLevel</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14540,38 +14468,24 @@ a.anchor-link {
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[7]:</div>
-
-
-
-
-<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
-<pre>Index([&#39;table_schema&#39;, &#39;table_name&#39;], dtype=&#39;object&#39;)</pre>
 </div>
-
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Utility-Functions">Utility Functions<a class="anchor-link" href="#Utility-Functions">&#182;</a></h1>
 </div>
-
-</div>
-
-</div>
-
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[8]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">df_tables</span><span class="p">[</span><span class="s1">&#39;table_name&#39;</span><span class="p">]:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-    <span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;select * from </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1"> limit 1&#39;</span><span class="p">,</span><span class="n">conn</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">s</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">sdf</span> <span class="o">=</span> <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;nrows: </span><span class="si">{</span><span class="n">sdf</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="si">}</span><span class="s1">, ncols: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">sdf</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sdf</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -14579,1002 +14493,29 @@ a.anchor-link {
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>affiliated_with
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>physician</th>
-      <th>department</th>
-      <th>primaryaffiliation</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>1</td>
-      <td>True</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>appointment
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>appointmentid</th>
-      <th>patient</th>
-      <th>prepnurse</th>
-      <th>physician</th>
-      <th>start</th>
-      <th>End</th>
-      <th>examinationroom</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>13216584</td>
-      <td>100000001</td>
-      <td>101</td>
-      <td>1</td>
-      <td>2008-04-24</td>
-      <td>2008-04-24</td>
-      <td>A</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>block
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>floor</th>
-      <th>code</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>department
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>departmentid</th>
-      <th>name</th>
-      <th>head</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>General Medicine</td>
-      <td>4</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>medication
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>code</th>
-      <th>name</th>
-      <th>brand</th>
-      <th>description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>Procrastin-X</td>
-      <td>X</td>
-      <td>N/A</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>nurse
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>employeeid</th>
-      <th>name</th>
-      <th>position</th>
-      <th>registered</th>
-      <th>ssn</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>101</td>
-      <td>Carla Espinosa</td>
-      <td>Head Nurse</td>
-      <td>True</td>
-      <td>111111110</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>on_call
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>nurse</th>
-      <th>blockfloor</th>
-      <th>blockcode</th>
-      <th>start</th>
-      <th>End</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>101</td>
-      <td>1</td>
-      <td>1</td>
-      <td>2008-11-04</td>
-      <td>2008-11-04</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>patient
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>ssn</th>
-      <th>name</th>
-      <th>address</th>
-      <th>phone</th>
-      <th>insuranceid</th>
-      <th>pcp</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>100000001</td>
-      <td>John Smith</td>
-      <td>42 Foobar Lane</td>
-      <td>555-0256</td>
-      <td>68476213</td>
-      <td>1</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>physician
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>employeeid</th>
-      <th>name</th>
-      <th>position</th>
-      <th>ssn</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>John Dorian</td>
-      <td>Staff Internist</td>
-      <td>111111111</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>prescribes
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>physician</th>
-      <th>patient</th>
-      <th>medication</th>
-      <th>date</th>
-      <th>appointment</th>
-      <th>dose</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>100000001</td>
-      <td>1</td>
-      <td>2008-04-24</td>
-      <td>13216584</td>
-      <td>5</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>procedure
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>code</th>
-      <th>name</th>
-      <th>cost</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>1</td>
-      <td>Reverse Rhinopodoplasty</td>
-      <td>1500.0</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>room
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>number</th>
-      <th>type</th>
-      <th>blockfloor</th>
-      <th>blockcode</th>
-      <th>unavailable</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>101</td>
-      <td>Single</td>
-      <td>1</td>
-      <td>1</td>
-      <td>False</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>stay
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>stayid</th>
-      <th>patient</th>
-      <th>room</th>
-      <th>start</th>
-      <th>End</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>3215</td>
-      <td>100000001</td>
-      <td>111</td>
-      <td>2008-05-01</td>
-      <td>2008-05-04</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>trained_in
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>physician</th>
-      <th>treatment</th>
-      <th>certificationdate</th>
-      <th>certificationexpires</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>3</td>
-      <td>1</td>
-      <td>2008-01-01</td>
-      <td>2008-12-31</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
-<pre>undergoes
-</pre>
-</div>
-</div>
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output " data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>patient</th>
-      <th>procedure</th>
-      <th>stay</th>
-      <th>date</th>
-      <th>physician</th>
-      <th>assistingnurse</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>100000001</td>
-      <td>6</td>
-      <td>3215</td>
-      <td>2008-05-02</td>
-      <td>3</td>
-      <td>101</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="Exercise-Questions">Exercise Questions<a class="anchor-link" href="#Exercise-Questions">&#182;</a></h1>
+<h1 id="Create-Tables">Create Tables<a class="anchor-link" href="#Create-Tables">&#182;</a></h1>
 </div>
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Obtain-the-names-of-all-physicians-that-have-performed-a-medical-procedure-they-have-never-been-certified-to-perform.">Obtain the names of all physicians that have performed a medical procedure they have never been certified to perform.<a class="anchor-link" href="#Obtain-the-names-of-all-physicians-that-have-performed-a-medical-procedure-they-have-never-been-certified-to-perform.">&#182;</a></h2>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT Name </span>
-<span class="s2">  FROM Physician </span>
-<span class="s2"> WHERE EmployeeID IN </span>
-<span class="s2">       (</span>
-<span class="s2">         SELECT Physician FROM Undergoes U WHERE NOT EXISTS </span>
-<span class="s2">            (</span>
-<span class="s2">               SELECT * FROM Trained_In </span>
-<span class="s2">                WHERE Treatment = Procedure </span>
-<span class="s2">                  AND Physician = U.Physician</span>
-<span class="s2">            )</span>
-<span class="s2">       )</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># create db if does not exist</span>
+<span class="n">dbname</span> <span class="o">=</span> <span class="s1">&#39;wbmovie.db&#39;</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">dbname</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dbname</span><span class="p">)</span>
 
-<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">dbname</span><span class="p">)</span>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
 </pre></div>
 
      </div>
 </div>
 </div>
-</div>
-
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[9]:</div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Christopher Turk</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
-
-</div>
-
-</div>
-
 </div>
 
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
@@ -15583,16 +14524,14 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT P.Name FROM </span>
-<span class="s2"> Physician AS P,    </span>
-<span class="s2"> (SELECT Physician, Procedure FROM Undergoes </span>
-<span class="s2">    EXCEPT </span>
-<span class="s2">    SELECT Physician, Treatment FROM Trained_in) AS Pe</span>
-<span class="s2"> WHERE P.EmployeeID=Pe.Physician</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"> CREATE TABLE Movies (</span>
+<span class="sd">   Code INTEGER PRIMARY KEY NOT NULL,</span>
+<span class="sd">   Title TEXT NOT NULL,</span>
+<span class="sd">   Rating TEXT </span>
+<span class="sd"> )</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15612,36 +14551,9 @@ a.anchor-link {
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Christopher Turk</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>&lt;sqlite3.Cursor at 0x7f8eb6ad3030&gt;</pre>
 </div>
 
 </div>
@@ -15656,21 +14568,15 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[11]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT Name </span>
-<span class="s2">  FROM Physician</span>
-<span class="s2"> WHERE EmployeeID IN</span>
-<span class="s2">   (</span>
-<span class="s2">      SELECT Undergoes.Physician</span>
-<span class="s2">        FROM Undergoes </span>
-<span class="s2">             LEFT JOIN Trained_In</span>
-<span class="s2">             ON Undergoes.Physician=Trained_In.Physician</span>
-<span class="s2">                 AND Undergoes.Procedure=Trained_In.Treatment</span>
-<span class="s2">       WHERE Treatment IS NULL</span>
-<span class="s2">   )</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"> CREATE TABLE MovieTheaters (</span>
+<span class="sd">   Code INTEGER PRIMARY KEY NOT NULL,</span>
+<span class="sd">   Name TEXT NOT NULL,</span>
+<span class="sd">   Movie INTEGER  </span>
+<span class="sd">     CONSTRAINT fk_Movies_Code REFERENCES Movies(Code)</span>
+<span class="sd"> )</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15690,36 +14596,9 @@ a.anchor-link {
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Christopher Turk</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>&lt;sqlite3.Cursor at 0x7f8eb6ad3030&gt;</pre>
 </div>
 
 </div>
@@ -15728,32 +14607,37 @@ a.anchor-link {
 
 </div>
 
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Same-as-the-previous-query,-but-include-the-following-information-in-the-results:-Physician-name,-name-of-procedure,-date-when-the-procedure-was-carried-out,-name-of-the-patient-the-procedure-was-carried-out-on.">Same as the previous query, but include the following information in the results: Physician name, name of procedure, date when the procedure was carried out, name of the patient the procedure was carried out on.<a class="anchor-link" href="#Same-as-the-previous-query,-but-include-the-following-information-in-the-results:-Physician-name,-name-of-procedure,-date-when-the-procedure-was-carried-out,-name-of-the-patient-the-procedure-was-carried-out-on.">&#182;</a></h2>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[12]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT P.Name AS Physician, Pr.Name AS Procedure, U.Date, Pt.Name AS Patient </span>
-<span class="s2">  FROM Physician P, Undergoes U, Patient Pt, Procedure Pr</span>
-<span class="s2">  WHERE U.Patient = Pt.SSN</span>
-<span class="s2">    AND U.Procedure = Pr.Code</span>
-<span class="s2">    AND U.Physician = P.EmployeeID</span>
-<span class="s2">    AND NOT EXISTS </span>
-<span class="s2">              (</span>
-<span class="s2">                SELECT * FROM Trained_In T</span>
-<span class="s2">                WHERE T.Treatment = U.Procedure </span>
-<span class="s2">                AND T.Physician = U.Physician</span>
-<span class="s2">              )</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2"> INSERT INTO Movies(Code,Title,Rating) VALUES(9,&#39;Citizen King&#39;,&#39;G&#39;);</span>
+<span class="s2"> INSERT INTO Movies(Code,Title,Rating) VALUES(1,&#39;Citizen Kane&#39;,&#39;PG&#39;);</span>
+<span class="s2"> INSERT INTO Movies(Code,Title,Rating) VALUES(2,&#39;Singin&#39;&#39; in the Rain&#39;,&#39;G&#39;);</span>
+<span class="s2"> INSERT INTO Movies(Code,Title,Rating) VALUES(3,&#39;The Wizard of Oz&#39;,&#39;G&#39;);</span>
+<span class="s2"> INSERT INTO Movies(Code,Title,Rating) VALUES(4,&#39;The Quiet Man&#39;,NULL);</span>
+<span class="s2"> INSERT INTO Movies(Code,Title,Rating) VALUES(5,&#39;North by Northwest&#39;,NULL);</span>
+<span class="s2"> INSERT INTO Movies(Code,Title,Rating) VALUES(6,&#39;The Last Tango in Paris&#39;,&#39;NC-17&#39;);</span>
+<span class="s2"> INSERT INTO Movies(Code,Title,Rating) VALUES(7,&#39;Some Like it Hot&#39;,&#39;PG-13&#39;);</span>
+<span class="s2"> INSERT INTO Movies(Code,Title,Rating) VALUES(8,&#39;A Night at the Opera&#39;,NULL);</span>
+<span class="s2"> </span>
+<span class="s2"> INSERT INTO MovieTheaters(Code,Name,Movie) VALUES(1,&#39;Odeon&#39;,5);</span>
+<span class="s2"> INSERT INTO MovieTheaters(Code,Name,Movie) VALUES(2,&#39;Imperial&#39;,1);</span>
+<span class="s2"> INSERT INTO MovieTheaters(Code,Name,Movie) VALUES(3,&#39;Majestic&#39;,NULL);</span>
+<span class="s2"> INSERT INTO MovieTheaters(Code,Name,Movie) VALUES(4,&#39;Royale&#39;,6);</span>
+<span class="s2"> INSERT INTO MovieTheaters(Code,Name,Movie) VALUES(5,&#39;Paraiso&#39;,3);</span>
+<span class="s2"> INSERT INTO MovieTheaters(Code,Name,Movie) VALUES(6,&#39;Nickelodeon&#39;,NULL);</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
-<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
+        <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        
+        
+<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -15761,81 +14645,18 @@ a.anchor-link {
 </div>
 </div>
 
-<div class="jp-Cell-outputWrapper">
-
-
-<div class="jp-OutputArea jp-Cell-outputArea">
-
-<div class="jp-OutputArea-child">
-
-    
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[12]:</div>
-
-
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>physician</th>
-      <th>procedure</th>
-      <th>date</th>
-      <th>patient</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Christopher Turk</td>
-      <td>Complete Walletectomy</td>
-      <td>2008-05-13</td>
-      <td>Dennis Doe</td>
-    </tr>
-  </tbody>
-</table>
 </div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="data:-Movies">data: Movies<a class="anchor-link" href="#data:-Movies">&#182;</a></h2>
 </div>
-
-</div>
-
-</div>
-
-</div>
-
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[13]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT P.Name,Pr.Name,U.Date,Pt.Name FROM </span>
-<span class="s2"> Physician AS P,    </span>
-<span class="s2"> Procedure AS Pr,</span>
-<span class="s2"> Undergoes AS U,</span>
-<span class="s2"> Patient AS Pt,</span>
-<span class="s2"> (SELECT Physician, Procedure FROM Undergoes </span>
-<span class="s2">    EXCEPT </span>
-<span class="s2">    SELECT Physician, Treatment FROM Trained_in) AS Pe  </span>
-<span class="s2"> WHERE P.EmployeeID=Pe.Physician AND Pe.Procedure=Pr.Code AND Pe.Physician=U.Physician AND Pe.Procedure=U.Procedure AND U.Patient=Pt.SSN</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;select * from Movies&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="nb">print</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -15851,45 +14672,21 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[13]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-      <th>name</th>
-      <th>date</th>
-      <th>name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Christopher Turk</td>
-      <td>Complete Walletectomy</td>
-      <td>2008-05-13</td>
-      <td>Dennis Doe</td>
-    </tr>
-  </tbody>
-</table>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>   Code                    Title Rating
+0     1             Citizen Kane     PG
+1     2      Singin&#39; in the Rain      G
+2     3         The Wizard of Oz      G
+3     4            The Quiet Man   None
+4     5       North by Northwest   None
+5     6  The Last Tango in Paris  NC-17
+6     7         Some Like it Hot  PG-13
+7     8     A Night at the Opera   None
+8     9             Citizen King      G
+</pre>
 </div>
 </div>
 
@@ -15897,36 +14694,23 @@ a.anchor-link {
 
 </div>
 
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Obtain-the-names-of-all-physicians-that-have-performed-a-medical-procedure-that-they-are-certified-to-perform,-but-such-that-the-procedure-was-done-at-a-date-(Undergoes.Date)-after-the-physician's-certification-expired-(Trained_In.CertificationExpires).">Obtain the names of all physicians that have performed a medical procedure that they are certified to perform, but such that the procedure was done at a date (Undergoes.Date) after the physician's certification expired (Trained_In.CertificationExpires).<a class="anchor-link" href="#Obtain-the-names-of-all-physicians-that-have-performed-a-medical-procedure-that-they-are-certified-to-perform,-but-such-that-the-procedure-was-done-at-a-date-(Undergoes.Date)-after-the-physician's-certification-expired-(Trained_In.CertificationExpires).">&#182;</a></h2>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[14]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT Name </span>
-<span class="s2">  FROM Physician </span>
-<span class="s2"> WHERE EmployeeID IN </span>
-<span class="s2">       (</span>
-<span class="s2">         SELECT Physician FROM Undergoes U </span>
-<span class="s2">          WHERE Date &gt; </span>
-<span class="s2">               (</span>
-<span class="s2">                  SELECT CertificationExpires </span>
-<span class="s2">                    FROM Trained_In T </span>
-<span class="s2">                   WHERE T.Physician = U.Physician </span>
-<span class="s2">                     AND T.Treatment = U.Procedure</span>
-<span class="s2">               )</span>
-<span class="s2">       )</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfm</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;Code&#39;</span><span class="p">:</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span>
+    <span class="s1">&#39;Title&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Citizen Kane&#39;</span><span class="p">,</span> <span class="s2">&quot;Singin&#39; in the Rain&quot;</span><span class="p">,</span>
+              <span class="s1">&#39;The Wizard of Oz&#39;</span><span class="p">,</span> <span class="s1">&#39;The Quiet Man&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;North by Northwest&#39;</span><span class="p">,</span> <span class="s1">&#39;The Last Tango in Paris&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;Some Like it Hot&#39;</span><span class="p">,</span> <span class="s1">&#39;A Night at the Opera&#39;</span><span class="p">,</span>
+              <span class="s1">&#39;Citizen King&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Rating&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;PG&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span>
+                    <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;NC-17&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;PG-13&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">]})</span>
+<span class="n">dfm</span>
 </pre></div>
 
      </div>
@@ -15965,13 +14749,65 @@ a.anchor-link {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>name</th>
+      <th>Code</th>
+      <th>Title</th>
+      <th>Rating</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>Todd Quinlan</td>
+      <td>1</td>
+      <td>Citizen Kane</td>
+      <td>PG</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Singin' in the Rain</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>The Wizard of Oz</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>The Quiet Man</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>North by Northwest</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>The Last Tango in Paris</td>
+      <td>NC-17</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>Some Like it Hot</td>
+      <td>PG-13</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>A Night at the Opera</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>Citizen King</td>
+      <td>G</td>
     </tr>
   </tbody>
 </table>
@@ -15990,15 +14826,7 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[15]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT P.Name FROM </span>
-<span class="s2"> Physician AS P,    </span>
-<span class="s2"> Trained_In T,</span>
-<span class="s2"> Undergoes AS U</span>
-<span class="s2"> WHERE T.Physician=U.Physician AND T.Treatment=U.Procedure AND U.Date&gt;T.CertificationExpires AND P.EmployeeID=U.Physician</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfm</span><span class="o">.</span><span class="n">dtypes</span>
 </pre></div>
 
      </div>
@@ -16018,36 +14846,12 @@ a.anchor-link {
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Todd Quinlan</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Code       int64
+Title     object
+Rating    object
+dtype: object</pre>
 </div>
 
 </div>
@@ -16056,29 +14860,20 @@ a.anchor-link {
 
 </div>
 
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Same-as-the-previous-query,-but-include-the-following-information-in-the-results:-Physician-name,-name-of-procedure,-date-when-the-procedure-was-carried-out,-name-of-the-patient-the-procedure-was-carried-out-on,-and-date-when-the-certification-expired.">Same as the previous query, but include the following information in the results: Physician name, name of procedure, date when the procedure was carried out, name of the patient the procedure was carried out on, and date when the certification expired.<a class="anchor-link" href="#Same-as-the-previous-query,-but-include-the-following-information-in-the-results:-Physician-name,-name-of-procedure,-date-when-the-procedure-was-carried-out,-name-of-the-patient-the-procedure-was-carried-out-on,-and-date-when-the-certification-expired.">&#182;</a></h2>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[16]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT P.Name AS Physician, Pr.Name AS Procedure, U.Date, Pt.Name AS Patient, T.CertificationExpires</span>
-<span class="s2">  FROM Physician P, Undergoes U, Patient Pt, Procedure Pr, Trained_In T</span>
-<span class="s2">  WHERE U.Patient = Pt.SSN</span>
-<span class="s2">    AND U.Procedure = Pr.Code</span>
-<span class="s2">    AND U.Physician = P.EmployeeID</span>
-<span class="s2">    AND Pr.Code = T.Treatment</span>
-<span class="s2">    AND P.EmployeeID = T.Physician</span>
-<span class="s2">    AND U.Date &gt; T.CertificationExpires</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s1">&#39;Code&#39;</span><span class="p">,</span><span class="n">IntegerType</span><span class="p">(),</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s1">&#39;Title&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">(),</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s1">&#39;Rating&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">(),</span><span class="kc">True</span><span class="p">),</span>
+    <span class="p">])</span>
 
-<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+<span class="n">sdfm</span> <span class="o">=</span> <span class="n">sqlContext</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">dfm</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+<span class="n">sdfm</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -16094,50 +14889,26 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[16]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>+----+--------------------+------+
+|Code|               Title|Rating|
++----+--------------------+------+
+|   1|        Citizen Kane|    PG|
+|   2| Singin&#39; in the Rain|     G|
+|   3|    The Wizard of Oz|     G|
+|   4|       The Quiet Man|  null|
+|   5|  North by Northwest|  null|
+|   6|The Last Tango in...| NC-17|
+|   7|    Some Like it Hot| PG-13|
+|   8|A Night at the Opera|  null|
+|   9|        Citizen King|     G|
++----+--------------------+------+
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>physician</th>
-      <th>procedure</th>
-      <th>date</th>
-      <th>patient</th>
-      <th>certificationexpires</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Todd Quinlan</td>
-      <td>Obfuscated Dermogastrotomy</td>
-      <td>2008-05-09</td>
-      <td>Dennis Doe</td>
-      <td>2007-12-31</td>
-    </tr>
-  </tbody>
-</table>
+</pre>
 </div>
-</div>
-
 </div>
 
 </div>
@@ -16147,7 +14918,7 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Obtain-the-information-for-appointments-where-a-patient-met-with-a-physician-other-than-his/her-primary-care-physician.-Show-the-following-information:-Patient-name,-physician-name,-nurse-name-(if-any),-start-and-end-time-of-appointment,-examination-room,-and-the-name-of-the-patient's-primary-care-physician.">Obtain the information for appointments where a patient met with a physician other than his/her primary care physician. Show the following information: Patient name, physician name, nurse name (if any), start and end time of appointment, examination room, and the name of the patient's primary care physician.<a class="anchor-link" href="#Obtain-the-information-for-appointments-where-a-patient-met-with-a-physician-other-than-his/her-primary-care-physician.-Show-the-following-information:-Patient-name,-physician-name,-nurse-name-(if-any),-start-and-end-time-of-appointment,-examination-room,-and-the-name-of-the-patient's-primary-care-physician.">&#182;</a></h2>
+<h2 id="data:-MovieTheaters">data: MovieTheaters<a class="anchor-link" href="#data:-MovieTheaters">&#182;</a></h2>
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
@@ -16155,16 +14926,7 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[17]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT Pt.Name AS Patient, Ph.Name AS Physician, N.Name AS Nurse, A.Start, A.&quot;End&quot;, A.ExaminationRoom, PhPCP.Name AS PCP</span>
-<span class="s2">  FROM Patient Pt, Physician Ph, Physician PhPCP, Appointment A LEFT JOIN Nurse N ON A.PrepNurse = N.EmployeeID</span>
-<span class="s2"> WHERE A.Patient = Pt.SSN</span>
-<span class="s2">   AND A.Physician = Ph.EmployeeID</span>
-<span class="s2">   AND Pt.PCP = PhPCP.EmployeeID</span>
-<span class="s2">   AND A.Physician &lt;&gt; Pt.PCP;</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;select * from MovieTheaters&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="nb">print</span><span class="p">)</span>
 </pre></div>
 
      </div>
@@ -16180,81 +14942,18 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[17]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 
 
-
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>patient</th>
-      <th>physician</th>
-      <th>nurse</th>
-      <th>start</th>
-      <th>End</th>
-      <th>examinationroom</th>
-      <th>pcp</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Dennis Doe</td>
-      <td>Percival Cox</td>
-      <td>Paul Flowers</td>
-      <td>2008-04-25</td>
-      <td>2008-04-25</td>
-      <td>B</td>
-      <td>Christopher Turk</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Dennis Doe</td>
-      <td>Percival Cox</td>
-      <td>None</td>
-      <td>2008-04-26</td>
-      <td>2008-04-26</td>
-      <td>C</td>
-      <td>Christopher Turk</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>John Smith</td>
-      <td>Christopher Turk</td>
-      <td>None</td>
-      <td>2008-04-26</td>
-      <td>2008-04-26</td>
-      <td>C</td>
-      <td>John Dorian</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>Dennis Doe</td>
-      <td>Molly Clock</td>
-      <td>Laverne Roberts</td>
-      <td>2008-04-27</td>
-      <td>2008-04-21</td>
-      <td>A</td>
-      <td>Christopher Turk</td>
-    </tr>
-  </tbody>
-</table>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>   Code         Name  Movie
+0     1        Odeon    5.0
+1     2     Imperial    1.0
+2     3     Majestic    NaN
+3     4       Royale    6.0
+4     5      Paraiso    3.0
+5     6  Nickelodeon    NaN
+</pre>
 </div>
 </div>
 
@@ -16262,29 +14961,18 @@ a.anchor-link {
 
 </div>
 
-</div>
-
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="The-Patient-field-in-Undergoes-is-redundant,-since-we-can-obtain-it-from-the-Stay-table.-There-are-no-constraints-in-force-to-prevent-inconsistencies-between-these-two-tables.-More-specifically,-the-Undergoes-table-may-include-a-row-where-the-patient-ID-does-not-match-the-one-we-would-obtain-from-the-Stay-table-through-the-Undergoes.Stay-foreign-key.-Select-all-rows-from-Undergoes-that-exhibit-this-inconsistency.">The Patient field in Undergoes is redundant, since we can obtain it from the Stay table. There are no constraints in force to prevent inconsistencies between these two tables. More specifically, the Undergoes table may include a row where the patient ID does not match the one we would obtain from the Stay table through the Undergoes.Stay foreign key. Select all rows from Undergoes that exhibit this inconsistency.<a class="anchor-link" href="#The-Patient-field-in-Undergoes-is-redundant,-since-we-can-obtain-it-from-the-Stay-table.-There-are-no-constraints-in-force-to-prevent-inconsistencies-between-these-two-tables.-More-specifically,-the-Undergoes-table-may-include-a-row-where-the-patient-ID-does-not-match-the-one-we-would-obtain-from-the-Stay-table-through-the-Undergoes.Stay-foreign-key.-Select-all-rows-from-Undergoes-that-exhibit-this-inconsistency.">&#182;</a></h2>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT * FROM Undergoes U</span>
-<span class="s2"> WHERE Patient &lt;&gt; </span>
-<span class="s2">   (</span>
-<span class="s2">     SELECT Patient FROM Stay S</span>
-<span class="s2">      WHERE U.Stay = S.StayID</span>
-<span class="s2">   );</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dft</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;Code&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+    <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Odeon&#39;</span><span class="p">,</span> <span class="s1">&#39;Imperial&#39;</span><span class="p">,</span> <span class="s1">&#39;Majestic&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;Royale&#39;</span><span class="p">,</span> <span class="s1">&#39;Paraiso&#39;</span><span class="p">,</span> <span class="s1">&#39;Nickelodeon&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Movie&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]})</span>
+<span class="n">dft</span>
 </pre></div>
 
      </div>
@@ -16323,23 +15011,47 @@ a.anchor-link {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>patient</th>
-      <th>procedure</th>
-      <th>stay</th>
-      <th>date</th>
-      <th>physician</th>
-      <th>assistingnurse</th>
+      <th>Code</th>
+      <th>Name</th>
+      <th>Movie</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>100000001</td>
-      <td>7</td>
-      <td>3217</td>
-      <td>2008-05-10</td>
-      <td>7</td>
-      <td>101</td>
+      <td>1</td>
+      <td>Odeon</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Imperial</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Majestic</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Royale</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Paraiso</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>Nickelodeon</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
@@ -16352,29 +15064,13 @@ a.anchor-link {
 
 </div>
 
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Obtain-the-names-of-all-the-nurses-who-have-ever-been-on-call-for-room-123.">Obtain the names of all the nurses who have ever been on call for room 123.<a class="anchor-link" href="#Obtain-the-names-of-all-the-nurses-who-have-ever-been-on-call-for-room-123.">&#182;</a></h2>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT N.Name FROM Nurse N</span>
-<span class="s2"> WHERE EmployeeID IN</span>
-<span class="s2">   (</span>
-<span class="s2">     SELECT OC.Nurse FROM On_Call OC, Room R</span>
-<span class="s2">      WHERE OC.BlockFloor = R.BlockFloor</span>
-<span class="s2">        AND OC.BlockCode = R.BlockCode</span>
-<span class="s2">        AND R.Number = 123</span>
-<span class="s2">   );</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dft</span><span class="o">.</span><span class="n">dtypes</span>
 </pre></div>
 
      </div>
@@ -16394,40 +15090,12 @@ a.anchor-link {
 
 
 
-<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>Laverne Roberts</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>Paul Flowers</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>Code       int64
+Name      object
+Movie    float64
+dtype: object</pre>
 </div>
 
 </div>
@@ -16436,23 +15104,21 @@ a.anchor-link {
 
 </div>
 
-</div>
-<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="The-hospital-has-several-examination-rooms-where-appointments-take-place.-Obtain-the-number-of-appointments-that-have-taken-place-in-each-examination-room.">The hospital has several examination rooms where appointments take place. Obtain the number of appointments that have taken place in each examination room.<a class="anchor-link" href="#The-hospital-has-several-examination-rooms-where-appointments-take-place.-Obtain-the-number-of-appointments-that-have-taken-place-in-each-examination-room.">&#182;</a></h2>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
 <div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT ExaminationRoom, COUNT(AppointmentID) AS Number FROM Appointment</span>
-<span class="s2">GROUP BY ExaminationRoom;</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">schema</span> <span class="o">=</span> <span class="n">StructType</span><span class="p">([</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s1">&#39;Code&#39;</span><span class="p">,</span><span class="n">IntegerType</span><span class="p">(),</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s1">&#39;Name&#39;</span><span class="p">,</span><span class="n">StringType</span><span class="p">(),</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">StructField</span><span class="p">(</span><span class="s1">&#39;Movie&#39;</span><span class="p">,</span><span class="n">FloatType</span><span class="p">(),</span><span class="kc">True</span><span class="p">),</span>
 
-<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+    <span class="p">])</span>
+
+<span class="n">sdft</span> <span class="o">=</span> <span class="n">sqlContext</span><span class="o">.</span><span class="n">createDataFrame</span><span class="p">(</span><span class="n">dft</span><span class="p">,</span> <span class="n">schema</span><span class="p">)</span>
+<span class="n">sdft</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
      </div>
@@ -16468,7 +15134,72 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[20]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>+----+-----------+-----+
+|Code|       Name|Movie|
++----+-----------+-----+
+|   1|      Odeon|  5.0|
+|   2|   Imperial|  1.0|
+|   3|   Majestic|  NaN|
+|   4|     Royale|  6.0|
+|   5|    Paraiso|  3.0|
+|   6|Nickelodeon|  NaN|
++----+-----------+-----+
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># sdft.printSchema()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="data:-combined-data">data: combined data<a class="anchor-link" href="#data:-combined-data">&#182;</a></h2>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[22]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">dfm</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">dft</span><span class="p">,</span><span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;Code&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;Movie&#39;</span><span class="p">,</span><span class="n">suffixes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;_m&#39;</span><span class="p">,</span><span class="s1">&#39;_t&#39;</span><span class="p">])</span>
+<span class="n">df</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[22]:</div>
 
 
 
@@ -16491,25 +15222,50 @@ a.anchor-link {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>examinationroom</th>
-      <th>number</th>
+      <th>Code_m</th>
+      <th>Title</th>
+      <th>Rating</th>
+      <th>Code_t</th>
+      <th>Name</th>
+      <th>Movie</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>B</td>
-      <td>3</td>
+      <td>1</td>
+      <td>Citizen Kane</td>
+      <td>PG</td>
+      <td>2</td>
+      <td>Imperial</td>
+      <td>1.0</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>C</td>
       <td>3</td>
+      <td>The Wizard of Oz</td>
+      <td>G</td>
+      <td>5</td>
+      <td>Paraiso</td>
+      <td>3.0</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>A</td>
-      <td>3</td>
+      <td>5</td>
+      <td>North by Northwest</td>
+      <td>None</td>
+      <td>1</td>
+      <td>Odeon</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>6</td>
+      <td>The Last Tango in Paris</td>
+      <td>NC-17</td>
+      <td>4</td>
+      <td>Royale</td>
+      <td>6.0</td>
     </tr>
   </tbody>
 </table>
@@ -16525,49 +15281,21 @@ a.anchor-link {
 </div>
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Obtain-the-names-of-all-patients-(also-include,-for-each-patient,-the-name-of-the-patient's-primary-care-physician),-such-that-\emph{all}-the-following-are-true:">Obtain the names of all patients (also include, for each patient, the name of the patient's primary care physician), such that \emph{all} the following are true:<a class="anchor-link" href="#Obtain-the-names-of-all-patients-(also-include,-for-each-patient,-the-name-of-the-patient's-primary-care-physician),-such-that-\emph{all}-the-following-are-true:">&#182;</a></h2><ul>
-<li>The patient has been prescribed some medication by his/her primary care physician.</li>
-<li>The patient has undergone a procedure with a cost larger that $5,000</li>
-<li>The patient has had at least two appointment where the nurse who prepped the appointment was a registered nurse.</li>
-<li>The patient's primary care physician is not the head of any department.</li>
+<h2 id="merge-two-dataframes-using-pyspark">merge two dataframes using pyspark<a class="anchor-link" href="#merge-two-dataframes-using-pyspark">&#182;</a></h2><ul>
+<li>we need to rename common columns of two tables.</li>
 </ul>
 
 </div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[21]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">SELECT Pt.Name, PhPCP.Name FROM Patient Pt, Physician PhPCP</span>
-<span class="s2"> WHERE Pt.PCP = PhPCP.EmployeeID</span>
-<span class="s2">   AND EXISTS</span>
-<span class="s2">       (</span>
-<span class="s2">         SELECT * FROM Prescribes Pr</span>
-<span class="s2">          WHERE Pr.Patient = Pt.SSN</span>
-<span class="s2">            AND Pr.Physician = Pt.PCP</span>
-<span class="s2">       )</span>
-<span class="s2">   AND EXISTS</span>
-<span class="s2">       (</span>
-<span class="s2">         SELECT * FROM Undergoes U, Procedure Pr</span>
-<span class="s2">          WHERE U.Procedure = Pr.Code</span>
-<span class="s2">            AND U.Patient = Pt.SSN</span>
-<span class="s2">            AND Pr.Cost &gt; 5000</span>
-<span class="s2">       )</span>
-<span class="s2">   AND 2 &lt;=</span>
-<span class="s2">       (</span>
-<span class="s2">         SELECT COUNT(A.AppointmentID) FROM Appointment A, Nurse N</span>
-<span class="s2">          WHERE A.PrepNurse = N.EmployeeID</span>
-<span class="s2">            AND N.Registered = true</span>
-<span class="s2">       )</span>
-<span class="s2">   AND NOT Pt.PCP IN</span>
-<span class="s2">       (</span>
-<span class="s2">          SELECT Head FROM Department</span>
-<span class="s2">       );</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">cols1</span> <span class="o">=</span> <span class="n">sdft</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">cols2</span>  <span class="o">=</span> <span class="n">sdfm</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">cols_common</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">cols1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="nb">set</span><span class="p">(</span><span class="n">cols2</span><span class="p">)</span>
+<span class="n">cols1</span><span class="p">,</span> <span class="n">cols2</span><span class="p">,</span> <span class="n">cols_common</span>
 </pre></div>
 
      </div>
@@ -16583,7 +15311,223 @@ a.anchor-link {
 <div class="jp-OutputArea-child">
 
     
-    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[21]:</div>
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[23]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>([&#39;Code&#39;, &#39;Name&#39;, &#39;Movie&#39;], [&#39;Code&#39;, &#39;Title&#39;, &#39;Rating&#39;], {&#39;Code&#39;})</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[24]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># rename common columns of first spark dataframe.</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[25]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sdfm2</span> <span class="o">=</span> <span class="n">sdfm</span><span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s1">&#39;Code&#39;</span><span class="p">,</span><span class="s1">&#39;Code_m&#39;</span><span class="p">)</span>
+<span class="n">sdfm2</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>+------+-------------------+------+
+|Code_m|              Title|Rating|
++------+-------------------+------+
+|     1|       Citizen Kane|    PG|
+|     2|Singin&#39; in the Rain|     G|
++------+-------------------+------+
+only showing top 2 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[26]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># rename common columns of second spark dataframe.</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[27]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sdft2</span> <span class="o">=</span> <span class="n">sdft</span><span class="o">.</span><span class="n">withColumnRenamed</span><span class="p">(</span><span class="s1">&#39;Code&#39;</span><span class="p">,</span><span class="s1">&#39;Code_t&#39;</span><span class="p">)</span>
+<span class="n">sdft2</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>+------+--------+-----+
+|Code_t|    Name|Movie|
++------+--------+-----+
+|     1|   Odeon|  5.0|
+|     2|Imperial|  1.0|
++------+--------+-----+
+only showing top 2 rows
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[28]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># now join two spark dataframes which have different column names.</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[29]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sdf</span> <span class="o">=</span> <span class="n">sdfm2</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sdft2</span><span class="p">,</span><span class="n">sdfm2</span><span class="o">.</span><span class="n">Code_m</span><span class="o">==</span><span class="n">sdft2</span><span class="o">.</span><span class="n">Movie</span><span class="p">)</span>
+<span class="n">sdf</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>+------+--------------------+------+------+--------+-----+
+|Code_m|               Title|Rating|Code_t|    Name|Movie|
++------+--------------------+------+------+--------+-----+
+|     5|  North by Northwest|  null|     1|   Odeon|  5.0|
+|     3|    The Wizard of Oz|     G|     5| Paraiso|  3.0|
+|     1|        Citizen Kane|    PG|     2|Imperial|  1.0|
+|     6|The Last Tango in...| NC-17|     4|  Royale|  6.0|
++------+--------------------+------+------+--------+-----+
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="spark-dataframe-attributes">spark dataframe attributes<a class="anchor-link" href="#spark-dataframe-attributes">&#182;</a></h2>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[30]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">bp</span><span class="o">.</span><span class="n">show_methods</span><span class="p">(</span><span class="n">sdf</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<span class="c1"># count, fillna, filter, where, groubpy, first, corr,</span>
+<span class="c1"># missing than pandas: max, min, sum, etc.</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[30]:</div>
 
 
 
@@ -16606,15 +15550,1636 @@ a.anchor-link {
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>name</th>
-      <th>name</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>John Smith</td>
-      <td>John Dorian</td>
+      <td>agg</td>
+      <td>drop_duplicates</td>
+      <td>localCheckpoint</td>
+      <td>sql_ctx</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>alias</td>
+      <td>dropna</td>
+      <td>mapInPandas</td>
+      <td>stat</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>approxQuantile</td>
+      <td>dtypes</td>
+      <td>na</td>
+      <td>storageLevel</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>cache</td>
+      <td>exceptAll</td>
+      <td>orderBy</td>
+      <td>subtract</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>checkpoint</td>
+      <td>explain</td>
+      <td>persist</td>
+      <td>summary</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>coalesce</td>
+      <td>fillna</td>
+      <td>printSchema</td>
+      <td>tail</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>colRegex</td>
+      <td>filter</td>
+      <td>randomSplit</td>
+      <td>take</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>collect</td>
+      <td>first</td>
+      <td>rdd</td>
+      <td>toDF</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>columns</td>
+      <td>foreach</td>
+      <td>registerTempTable</td>
+      <td>toJSON</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>corr</td>
+      <td>foreachPartition</td>
+      <td>repartition</td>
+      <td>toLocalIterator</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>count</td>
+      <td>freqItems</td>
+      <td>repartitionByRange</td>
+      <td>toPandas</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>cov</td>
+      <td>groupBy</td>
+      <td>replace</td>
+      <td>transform</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>createGlobalTempView</td>
+      <td>groupby</td>
+      <td>rollup</td>
+      <td>union</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>createOrReplaceGlobalTempView</td>
+      <td>head</td>
+      <td>sameSemantics</td>
+      <td>unionAll</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>createOrReplaceTempView</td>
+      <td>hint</td>
+      <td>sample</td>
+      <td>unionByName</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>createTempView</td>
+      <td>inputFiles</td>
+      <td>sampleBy</td>
+      <td>unpersist</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>crossJoin</td>
+      <td>intersect</td>
+      <td>schema</td>
+      <td>where</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>crosstab</td>
+      <td>intersectAll</td>
+      <td>select</td>
+      <td>withColumn</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>cube</td>
+      <td>isLocal</td>
+      <td>selectExpr</td>
+      <td>withColumnRenamed</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>describe</td>
+      <td>isStreaming</td>
+      <td>semanticHash</td>
+      <td>withWatermark</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>distinct</td>
+      <td>is_cached</td>
+      <td>show</td>
+      <td>write</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>drop</td>
+      <td>join</td>
+      <td>sort</td>
+      <td>writeStream</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>dropDuplicates</td>
+      <td>limit</td>
+      <td>sortWithinPartitions</td>
+      <td>writeTo</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Create-SQL-table-from-spark-dataframes">Create SQL table from spark dataframes<a class="anchor-link" href="#Create-SQL-table-from-spark-dataframes">&#182;</a></h1><ul>
+<li><a href="https://spark.apache.org/docs/2.2.0/sql-programming-guide.html">https://spark.apache.org/docs/2.2.0/sql-programming-guide.html</a></li>
+</ul>
+<p><strong>Global Temporary View</strong></p>
+<p>Temporary views in Spark SQL are session-scoped and will disappear if the session that creates it terminates. If you want to have a temporary view that is shared among all sessions and keep alive until the Spark application terminates, you can create a global temporary view. Global temporary view is tied to a system preserved database global_temp, and we must use the qualified name to refer it, e.g. <code>SELECT * FROM global_temp.view1</code>.</p>
+
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[31]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Register the DataFrame as a SQL temporary view</span>
+<span class="n">sdfm</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;Movies&quot;</span><span class="p">)</span>
+<span class="n">sdft</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;MovieTheaters&quot;</span><span class="p">)</span>
+<span class="n">sdf</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="s2">&quot;sdf&quot;</span><span class="p">)</span>
+
+<span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s1">&#39;select * from Movies limit 2&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>+----+-------------------+------+
+|Code|              Title|Rating|
++----+-------------------+------+
+|   1|       Citizen Kane|    PG|
+|   2|Singin&#39; in the Rain|     G|
++----+-------------------+------+
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Exercise-Questions">Exercise Questions<a class="anchor-link" href="#Exercise-Questions">&#182;</a></h1>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="1.-Select-the-title-of-all-movies.">1. Select the title of all movies.<a class="anchor-link" href="#1.-Select-the-title-of-all-movies.">&#182;</a></h2>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[32]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># dfm[&#39;Title&#39;]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[33]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># sdfm.select(&#39;Title&#39;).show()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[34]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;select title from Movies&quot;&quot;&quot;</span><span class="p">;</span>
+<span class="c1"># f(q)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[35]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># s(q)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="2.-Show-all-the-distinct-ratings-in-the-database.">2. Show all the distinct ratings in the database.<a class="anchor-link" href="#2.-Show-all-the-distinct-ratings-in-the-database.">&#182;</a></h2>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[36]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfm</span><span class="p">[</span><span class="s1">&#39;Rating&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[36]:</div>
+
+
+
+
+<div class="jp-RenderedText jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/plain">
+<pre>array([&#39;PG&#39;, &#39;G&#39;, None, &#39;NC-17&#39;, &#39;PG-13&#39;], dtype=object)</pre>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[37]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sdfm</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s1">&#39;Rating&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>+------+
+|Rating|
++------+
+|  null|
+|    PG|
+| NC-17|
+|     G|
+| PG-13|
++------+
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[38]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;select distinct rating from Movies&quot;</span>
+<span class="c1"># f(q)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[39]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># s(q)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="3.-Show-all-unrated-movies.">3. Show all unrated movies.<a class="anchor-link" href="#3.-Show-all-unrated-movies.">&#182;</a></h2>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[40]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfm</span><span class="p">[</span><span class="n">dfm</span><span class="o">.</span><span class="n">Rating</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[40]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Code</th>
+      <th>Title</th>
+      <th>Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>The Quiet Man</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>North by Northwest</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>A Night at the Opera</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[41]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sdfm</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">sdfm</span><span class="o">.</span><span class="n">Rating</span><span class="o">.</span><span class="n">isNull</span><span class="p">())</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>+----+--------------------+------+
+|Code|               Title|Rating|
++----+--------------------+------+
+|   4|       The Quiet Man|  null|
+|   5|  North by Northwest|  null|
+|   8|A Night at the Opera|  null|
++----+--------------------+------+
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[42]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;select * from Movies where Rating is null&quot;</span>
+<span class="c1"># f(q)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[43]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>nrows: 3, ncols: 3
++----+--------------------+------+
+|Code|               Title|Rating|
++----+--------------------+------+
+|   4|       The Quiet Man|  null|
+|   5|  North by Northwest|  null|
+|   8|A Night at the Opera|  null|
++----+--------------------+------+
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="4.-Select-all-movie-theaters-that-are-not-currently-showing-a-movie.">4. Select all movie theaters that are not currently showing a movie.<a class="anchor-link" href="#4.-Select-all-movie-theaters-that-are-not-currently-showing-a-movie.">&#182;</a></h2>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[44]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dft</span><span class="p">[</span><span class="n">dft</span><span class="o">.</span><span class="n">Movie</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[44]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Code</th>
+      <th>Name</th>
+      <th>Movie</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Majestic</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>Nickelodeon</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[45]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sdft</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">sdft</span><span class="o">.</span><span class="n">Movie</span><span class="o">.</span><span class="n">isNull</span><span class="p">())</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="c1"># fails, gives empty result</span>
+<span class="n">sdft</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="s1">&#39;Movie&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="c1"># gives empty result</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>+----+----+-----+
+|Code|Name|Movie|
++----+----+-----+
++----+----+-----+
+
++----+----+-----+
+|Code|Name|Movie|
++----+----+-----+
++----+----+-----+
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[46]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;select * from MovieTheaters where Movie = &#39;NaN&#39; &quot;&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>+----+-----------+-----+
+|Code|       Name|Movie|
++----+-----------+-----+
+|   3|   Majestic|  NaN|
+|   6|Nickelodeon|  NaN|
++----+-----------+-----+
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[47]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="s2">&quot;select * from MovieTheaters where isnan(Movie)&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>+----+-----------+-----+
+|Code|       Name|Movie|
++----+-----------+-----+
+|   3|   Majestic|  NaN|
+|   6|Nickelodeon|  NaN|
++----+-----------+-----+
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[48]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s1">&#39;select * from MovieTheaters where Movie is null&#39;</span>
+<span class="n">f</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[48]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Code</th>
+      <th>Name</th>
+      <th>Movie</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>3</td>
+      <td>Majestic</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>6</td>
+      <td>Nickelodeon</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[49]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">s</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>nrows: 0, ncols: 3
++----+----+-----+
+|Code|Name|Movie|
++----+----+-----+
++----+----+-----+
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="5.-Select-all-data-from-all-movie-theaters-and,-additionally,-the-data-from-the-movie-that-is-being-shown-in-the-theater-(if-one-is-being-shown).">5. Select all data from all movie theaters and, additionally, the data from the movie that is being shown in the theater (if one is being shown).<a class="anchor-link" href="#5.-Select-all-data-from-all-movie-theaters-and,-additionally,-the-data-from-the-movie-that-is-being-shown-in-the-theater-(if-one-is-being-shown).">&#182;</a></h2>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[50]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dft</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[50]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Code</th>
+      <th>Name</th>
+      <th>Movie</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Odeon</td>
+      <td>5.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[51]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfm</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[51]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Code</th>
+      <th>Title</th>
+      <th>Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Citizen Kane</td>
+      <td>PG</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[52]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dft</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">dfm</span><span class="p">,</span><span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;Movie&#39;</span><span class="p">,</span><span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;Code&#39;</span><span class="p">,</span><span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span><span class="n">suffixes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;_t&#39;</span><span class="p">,</span><span class="s1">&#39;_m&#39;</span><span class="p">])</span>
+<span class="c1"># left join also include nulls.</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[52]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Code_t</th>
+      <th>Name</th>
+      <th>Movie</th>
+      <th>Code_m</th>
+      <th>Title</th>
+      <th>Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Odeon</td>
+      <td>5.0</td>
+      <td>5.0</td>
+      <td>North by Northwest</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Imperial</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>Citizen Kane</td>
+      <td>PG</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Majestic</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Royale</td>
+      <td>6.0</td>
+      <td>6.0</td>
+      <td>The Last Tango in Paris</td>
+      <td>NC-17</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Paraiso</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>The Wizard of Oz</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>Nickelodeon</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[53]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">(</span><span class="n">sdft2</span>
+ <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sdfm2</span><span class="p">,</span>
+       <span class="n">sdfm2</span><span class="o">.</span><span class="n">Code_m</span><span class="o">==</span><span class="n">sdft2</span><span class="o">.</span><span class="n">Movie</span><span class="p">,</span>
+       <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span>
+      <span class="p">)</span>
+
+ <span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>+------+-----------+-----+------+--------------------+------+
+|Code_t|       Name|Movie|Code_m|               Title|Rating|
++------+-----------+-----+------+--------------------+------+
+|     1|      Odeon|  5.0|     5|  North by Northwest|  null|
+|     5|    Paraiso|  3.0|     3|    The Wizard of Oz|     G|
+|     2|   Imperial|  1.0|     1|        Citizen Kane|    PG|
+|     4|     Royale|  6.0|     6|The Last Tango in...| NC-17|
+|     3|   Majestic|  NaN|  null|                null|  null|
+|     6|Nickelodeon|  NaN|  null|                null|  null|
++------+-----------+-----+------+--------------------+------+
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[54]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">select *</span>
+<span class="s2">from MovieTheaters t</span>
+<span class="s2">left join Movies m</span>
+<span class="s2">on m.code = t.movie</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">f</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[54]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Code</th>
+      <th>Name</th>
+      <th>Movie</th>
+      <th>Code</th>
+      <th>Title</th>
+      <th>Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Odeon</td>
+      <td>5.0</td>
+      <td>5.0</td>
+      <td>North by Northwest</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Imperial</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>Citizen Kane</td>
+      <td>PG</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Majestic</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Royale</td>
+      <td>6.0</td>
+      <td>6.0</td>
+      <td>The Last Tango in Paris</td>
+      <td>NC-17</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Paraiso</td>
+      <td>3.0</td>
+      <td>3.0</td>
+      <td>The Wizard of Oz</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>Nickelodeon</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="6.-Select-all-data-from-all-movies-and,-if-that-movie-is-being-shown-in-a-theater,-show-the-data-from-the-theater.">6. Select all data from all movies and, if that movie is being shown in a theater, show the data from the theater.<a class="anchor-link" href="#6.-Select-all-data-from-all-movies-and,-if-that-movie-is-being-shown-in-a-theater,-show-the-data-from-the-theater.">&#182;</a></h2>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[55]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">select *</span>
+<span class="s2">from MovieTheaters t</span>
+<span class="s2">right join Movies m</span>
+<span class="s2">on m.code=t.movie</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">s</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>nrows: 9, ncols: 6
++----+--------+-----+----+--------------------+------+
+|Code|    Name|Movie|Code|               Title|Rating|
++----+--------+-----+----+--------------------+------+
+|null|    null| null|   9|        Citizen King|     G|
+|   1|   Odeon|  5.0|   5|  North by Northwest|  null|
+|null|    null| null|   7|    Some Like it Hot| PG-13|
+|null|    null| null|   2| Singin&#39; in the Rain|     G|
+|   5| Paraiso|  3.0|   3|    The Wizard of Oz|     G|
+|   2|Imperial|  1.0|   1|        Citizen Kane|    PG|
+|   4|  Royale|  6.0|   6|The Last Tango in...| NC-17|
+|null|    null| null|   8|A Night at the Opera|  null|
+|null|    null| null|   4|       The Quiet Man|  null|
++----+--------+-----+----+--------------------+------+
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="7.-Show-the-titles-of-movies-not-currently-being-shown-in-any-theaters.">7. Show the titles of movies not currently being shown in any theaters.<a class="anchor-link" href="#7.-Show-the-titles-of-movies-not-currently-being-shown-in-any-theaters.">&#182;</a></h2>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[56]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dfm</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[56]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Code</th>
+      <th>Title</th>
+      <th>Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Citizen Kane</td>
+      <td>PG</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Singin' in the Rain</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>The Wizard of Oz</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>The Quiet Man</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>North by Northwest</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>The Last Tango in Paris</td>
+      <td>NC-17</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>Some Like it Hot</td>
+      <td>PG-13</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>A Night at the Opera</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>Citizen King</td>
+      <td>G</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[57]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">dft</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[57]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Code</th>
+      <th>Name</th>
+      <th>Movie</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Odeon</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Imperial</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Majestic</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Royale</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Paraiso</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>Nickelodeon</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
@@ -16630,15 +17195,569 @@ a.anchor-link {
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[&nbsp;]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[58]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
      <div class="CodeMirror cm-s-jupyter">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># I see only moives 1,3,5,6 are showing in theaters.</span>
+<span class="c1"># movies 2,4,7-9 are not being shown in any theater.</span>
+
+<span class="c1"># 2	Singin&#39; in the Rain	G</span>
+<span class="c1"># 4	The Quiet Man	None</span>
 </pre></div>
 
      </div>
 </div>
 </div>
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[59]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">select *</span>
+<span class="s2">from Movies m</span>
+<span class="s2">left join MovieTheaters t</span>
+<span class="s2">on t.movie = m.code</span>
+<span class="s2">where t.movie is null</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">s</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>nrows: 5, ncols: 6
++----+--------------------+------+----+----+-----+
+|Code|               Title|Rating|Code|Name|Movie|
++----+--------------------+------+----+----+-----+
+|   9|        Citizen King|     G|null|null| null|
+|   7|    Some Like it Hot| PG-13|null|null| null|
+|   2| Singin&#39; in the Rain|     G|null|null| null|
+|   8|A Night at the Opera|  null|null|null| null|
+|   4|       The Quiet Man|  null|null|null| null|
++----+--------------------+------+----+----+-----+
+
+</pre>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[60]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">select title</span>
+<span class="s2">from Movies m</span>
+<span class="s2">where code not in</span>
+<span class="s2">(</span>
+<span class="s2">  select movie from MovieTheaters where movie is not null</span>
+<span class="s2">)</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">f</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="mi">9</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[60]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Singin' in the Rain</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>The Quiet Man</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Some Like it Hot</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>A Night at the Opera</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Citizen King</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="8.-Add-the-unrated-movie-&quot;One,-Two,-Three&quot;.">8. Add the unrated movie "One, Two, Three".<a class="anchor-link" href="#8.-Add-the-unrated-movie-&quot;One,-Two,-Three&quot;.">&#182;</a></h2>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[61]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;INSERT INTO Movies(Title,Rating) VALUES(&#39;One, Two, Three&#39;,NULL);&quot;</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;select * from Movies&#39;</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[61]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Code</th>
+      <th>Title</th>
+      <th>Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Citizen Kane</td>
+      <td>PG</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Singin' in the Rain</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>The Wizard of Oz</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>The Quiet Man</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>North by Northwest</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>The Last Tango in Paris</td>
+      <td>NC-17</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>Some Like it Hot</td>
+      <td>PG-13</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>A Night at the Opera</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>Citizen King</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>One, Two, Three</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="9.-Set-the-rating-of-all-unrated-movies-to-&quot;G&quot;.">9. Set the rating of all unrated movies to "G".<a class="anchor-link" href="#9.-Set-the-rating-of-all-unrated-movies-to-&quot;G&quot;.">&#182;</a></h2>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[62]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;UPDATE Movies SET Rating=&#39;G&#39; WHERE Rating IS NULL;&quot;</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;select * from Movies&#39;</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[62]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Code</th>
+      <th>Title</th>
+      <th>Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Citizen Kane</td>
+      <td>PG</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Singin' in the Rain</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>The Wizard of Oz</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>The Quiet Man</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>North by Northwest</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>The Last Tango in Paris</td>
+      <td>NC-17</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>Some Like it Hot</td>
+      <td>PG-13</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>A Night at the Opera</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>Citizen King</td>
+      <td>G</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>One, Two, Three</td>
+      <td>G</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="10.-Remove-movie-theaters-projecting-movies-rated-&quot;NC-17&quot;.">10. Remove movie theaters projecting movies rated "NC-17".<a class="anchor-link" href="#10.-Remove-movie-theaters-projecting-movies-rated-&quot;NC-17&quot;.">&#182;</a></h2>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[63]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">q</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">DELETE FROM MovieTheaters WHERE Movie IN</span>
+<span class="s2">   (SELECT Code FROM Movies WHERE Rating = &#39;NC-17&#39;);</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s1">&#39;select * from MovieTheaters&#39;</span><span class="p">,</span><span class="n">conn</span><span class="p">)</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt">Out[63]:</div>
+
+
+
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Code</th>
+      <th>Name</th>
+      <th>Movie</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>Odeon</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>Imperial</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Majestic</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5</td>
+      <td>Paraiso</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>6</td>
+      <td>Nickelodeon</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h1 id="Time-Taken">Time Taken<a class="anchor-link" href="#Time-Taken">&#182;</a></h1>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell   ">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In&nbsp;[64]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+     <div class="CodeMirror cm-s-jupyter">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">time_taken</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_start_notebook</span>
+<span class="n">h</span><span class="p">,</span><span class="n">m</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">time_taken</span><span class="p">,</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Time taken: </span><span class="si">{:.0f}</span><span class="s1"> hr </span><span class="si">{:.0f}</span><span class="s1"> min </span><span class="si">{:.0f}</span><span class="s1"> secs&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="o">*</span><span class="nb">divmod</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">60</span><span class="p">)))</span>
+</pre></div>
+
+     </div>
+</div>
+</div>
+</div>
+
+<div class="jp-Cell-outputWrapper">
+
+
+<div class="jp-OutputArea jp-Cell-outputArea">
+
+<div class="jp-OutputArea-child">
+
+    
+    <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+
+
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain">
+<pre>Time taken: 0 hr 0 min 29 secs
+</pre>
+</div>
+</div>
+
+</div>
+
 </div>
 
 </div>
