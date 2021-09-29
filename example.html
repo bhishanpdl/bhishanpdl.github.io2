@@ -13882,7 +13882,22 @@ Here is full width colorful horizontal line:
   </details>
 
 
+<!-- ================= CExpand and Collapse Elements via JavaScript ===================== -->
+</br>
+</br>
+<h3> Expand and Collapse Elements via JavaScript </h3>
+<!-- Trigger Buttons HTML -->
+<a href="#myCollapse" data-bs-toggle="collapse">Toggle Element</a>
+<button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#myCollapse">Toggle Element</button>
 
+<!-- Collapsible Element HTML -->
+<div class="collapse show" id="myCollapse">
+    <div class="card card-body">This is a simple example of showing and hiding specific element via data attributes. Click any trigger buttons to toggle this panel.
+      This did not work for me in Chrome. If I click Toggle Element, it takes me to
+      the bottom of the page and does not collapse the content.
+      <a href="https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-collapse.php">Reference: Bootstrap Collapse</a>
+    </div>
+</div>
 
 
 <!-- ========================= Blockquote ============================== -->
@@ -13911,6 +13926,60 @@ Here is full width colorful horizontal line:
 <h3> Using images </h3>
 <img src="assets/images/example.png" alt="assets/images/example.png">
 
+
+
+
+<!-- ========================== Alerts ============================== -->
+</br>
+</br>
+<h3> Alerts </h3>
+<!-- Success Alert -->
+<div class="alert alert-success alert-dismissible fade show">
+  <strong>Success!</strong> Your message has been sent successfully.
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+<!-- Error Alert -->
+<div class="alert alert-danger alert-dismissible fade show">
+  <strong>Error!</strong> A problem has been occurred while submitting your data.
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+<!-- Warning Alert -->
+<div class="alert alert-warning alert-dismissible fade show">
+  <strong>Warning!</strong> There was a problem with your network connection.
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+<!-- Info Alert -->
+<div class="alert alert-info alert-dismissible fade show">
+  <strong>Info!</strong> Please read the comments carefully.
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+<!-- Primary Alert -->
+<div class="alert alert-primary alert-dismissible fade show">
+  <strong>Primary!</strong> This is a simple primary alert box.
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+<!-- Secondary Alert -->
+<div class="alert alert-secondary alert-dismissible fade show">
+  <strong>Secondary!</strong> This is a simple secondary alert box.
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+<!-- Dark Alert -->
+<div class="alert alert-dark alert-dismissible fade show">
+  <strong>Dark!</strong> This is a simple dark alert box.
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+<!-- Light Alert -->
+<div class="alert alert-light alert-dismissible fade show">
+  <strong>Light!</strong> This is a simple light alert box.
+  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
 
 
 
@@ -14013,6 +14082,94 @@ value="API of My Private Module bp (Click to Show/Hide)" onclick="showHide()">
 value="Regression: House Price Prediction" onclick="show_house()">
 
 
+<!-- ======================= Tooltips =========================== -->
+</br>
+</br>
+<h3> Tooltips</h3>
+<a href="https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-tooltips.php" data-bs-toggle="tooltip" title="Some text">Reference: Tooltips</a>
+
+
+
+<!-- ======================= Tooltips =========================== -->
+</br>
+</br>
+<h3>Bootstrap Stateful Buttons</h3>
+<a href="https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-stateful-buttons.php" data-bs-toggle="tooltip" title="Some text">Reference: Bootstrap Stateful Buttons</a>
+</br>
+</br>
+Nothing happens when I click on toggle buttons here.
+
+<button type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off">Toggle button</button>
+<button type="button" class="btn btn-outline-primary active" data-bs-toggle="button" autocomplete="off">Active toggle button</button>
+<button type="button" class="btn btn-outline-primary" data-bs-toggle="button" autocomplete="off" disabled>Disabled toggle button</button>
+
+</br>
+</br>
+When I click on Radio 1, the first circle button is activated.
+<div class="btn-group">
+  <input type="radio" class="btn-check" name="options" id="radio1" autocomplete="off">
+  <label class="btn btn-outline-primary" for="radio1">Radio 1</label>
+
+  <input type="radio" class="btn-check" name="options" id="radio2" autocomplete="off" checked>
+  <label class="btn btn-outline-primary" for="radio2">Radio 2</label>
+
+  <input type="radio" class="btn-check" name="options" id="radio3" autocomplete="off">
+  <label class="btn btn-outline-primary" for="radio3">Radio 3</label>
+</div>
+
+<!-- ======================= Tooltips =========================== -->
+</br>
+</br>
+<h3> Spinners (does not work)</h3>
+<a href="https://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-spinners.php" data-bs-toggle="spinner" title="spinner">Reference: spinners</a>
+
+<div class="spinner-border text-primary">
+  <span class="visually-hidden">Loading...</span>
+</div>
+<div class="spinner-border text-secondary">
+  <span class="visually-hidden">Loading...</span>
+</div>
+<div class="spinner-border text-success">
+  <span class="visually-hidden">Loading...</span>
+</div>
+<div class="spinner-border text-danger">
+  <span class="visually-hidden">Loading...</span>
+</div>
+<div class="spinner-border text-warning">
+  <span class="visually-hidden">Loading...</span>
+</div>
+<div class="spinner-border text-info">
+  <span class="visually-hidden">Loading...</span>
+</div>
+<div class="spinner-border text-dark">
+  <span class="visually-hidden">Loading...</span>
+</div>
+<div class="spinner-border text-light">
+  <span class="visually-hidden">Loading...</span>
+</div>
+
+</br>
+</br>
+<!-- Border spinners inside buttons -->
+<button class="btn btn-primary" type="button" disabled>
+  <span class="spinner-border spinner-border-sm"></span>
+  <span class="visually-hidden">Loading...</span>
+</button>
+<button class="btn btn-primary" type="button" disabled>
+  <span class="spinner-border spinner-border-sm"></span>
+  Loading...
+</button>
+
+<!-- Growing spinners inside buttons -->
+<button class="btn btn-primary" type="button" disabled>
+  <span class="spinner-grow spinner-grow-sm"></span>
+  <span class="visually-hidden">Loading...</span>
+</button>
+<button class="btn btn-primary" type="button" disabled>
+  <span class="spinner-grow spinner-grow-sm"></span>
+  Loading...
+</button>
+
 
 <!-- ===================END OF Examples ============================ -->
 
@@ -14023,7 +14180,27 @@ value="Regression: House Price Prediction" onclick="show_house()">
   }
 </script>
 
+<!-- Script for the tooltip -->
+<script>
+  $(document).ready(function(){
+      $('[data-bs-toggle="tooltip"]').tooltip();
+  });
+  </script>
 
+<!-- Script for collapsible headers -->
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+      var btn = document.getElementById("myBtn");
+      var element = document.getElementById("myCollapse");
+
+      // Create a collapse instance, toggles the collapse element on invocation
+      var myCollapse = new bootstrap.Collapse(element);
+
+      btn.addEventListener("click", function(){
+          myCollapse.toggle();
+      });
+  });
+  </script>
 
 </br>
 </br>
